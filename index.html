@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMD ARQUITECTURA S.R.L. - Dashboard Contable 2026</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1a2e;--card:#16213e;--accent:#0f3460;--highlight:#e94560;
+  --text:#e0e0e0;--text-muted:#8892a4;--green:#00c9a7;--red:#e94560;
+  --yellow:#ffc107;--blue:#4da8da;--orange:#ff8c42;--gray:#6c7a89;
+  --border:rgba(255,255,255,0.06);
+}
+html{font-size:14px}
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:48px 40px;text-align:center;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.login-box h1{font-size:1.5rem;font-weight:700;margin-bottom:4px;letter-spacing:0.5px}
+.login-box .cuit{color:var(--text-muted);font-size:.85rem;margin-bottom:24px}
+.login-box .subtitle{color:var(--text-muted);font-size:.9rem;margin-bottom:32px}
+.login-box input{width:100%;padding:14px 16px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:1rem;outline:none;transition:border-color .2s}
+.login-box input:focus{border-color:var(--blue)}
+.login-box input.error{border-color:var(--red);animation:shake .4s}
+.login-box button{width:100%;margin-top:16px;padding:14px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--blue));color:#fff;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity .2s}
+.login-box button:hover{opacity:.9}
+.login-error{color:var(--red);font-size:.85rem;margin-top:12px;min-height:20px}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+/* DASHBOARD */
+#dashboard{display:none;opacity:0;transition:opacity .5s ease}
+#dashboard.visible{display:block;opacity:1}
+
+/* HEADER */
+header{background:var(--card);border-bottom:1px solid var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+.header-left h1{font-size:1.35rem;font-weight:700;letter-spacing:.5px}
+.header-left .header-sub{color:var(--text-muted);font-size:.85rem;display:flex;gap:16px;flex-wrap:wrap;margin-top:2px}
+.header-right{display:flex;align-items:center;gap:12px}
+.header-right .update-date{color:var(--text-muted);font-size:.8rem}
+.gear-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text-muted);cursor:pointer;font-size:1.1rem;transition:all .2s}
+.gear-btn:hover{color:var(--text);border-color:var(--blue)}
+
+/* SETTINGS MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px;max-width:520px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.modal h2{font-size:1.15rem;margin-bottom:4px}
+.modal p{color:var(--text-muted);font-size:.85rem;margin-bottom:20px}
+.modal label{font-size:.85rem;color:var(--text-muted);display:block;margin-bottom:6px}
+.modal input{width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:.9rem;outline:none}
+.modal input:focus{border-color:var(--blue)}
+.modal-actions{display:flex;gap:12px;margin-top:20px;justify-content:flex-end}
+.modal-actions button{padding:10px 20px;border-radius:8px;font-size:.9rem;cursor:pointer;border:none}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-secondary{background:transparent;border:1px solid var(--border)!important;color:var(--text-muted)}
+.modal-status{font-size:.8rem;margin-top:12px;min-height:18px}
+.modal-status.ok{color:var(--green)}
+.modal-status.err{color:var(--red)}
+
+/* MAIN */
+main{max-width:1400px;margin:0 auto;padding:24px 20px 60px}
+
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;position:relative;overflow:hidden}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
+.kpi-card:nth-child(1)::before{background:var(--green)}
+.kpi-card:nth-child(2)::before{background:var(--green)}
+.kpi-card:nth-child(3)::before{background:var(--blue)}
+.kpi-card:nth-child(4)::before{background:var(--red)}
+.kpi-label{font-size:.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.kpi-value{font-size:1.6rem;font-weight:700}
+.kpi-value.green{color:var(--green)}
+.kpi-value.blue{color:var(--blue)}
+.kpi-value.red{color:var(--highlight)}
+.kpi-sub{font-size:.78rem;color:var(--text-muted);margin-top:6px;display:flex;align-items:center;gap:6px}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600;text-transform:uppercase}
+.badge-green{background:rgba(0,201,167,.15);color:var(--green)}
+.badge-red{background:rgba(233,69,96,.15);color:var(--red)}
+.badge-blue{background:rgba(77,168,218,.15);color:var(--blue)}
+
+/* CHARTS */
+.charts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:28px}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px}
+.chart-card h3{font-size:.95rem;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.chart-card h3 .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.chart-wrap{position:relative;height:280px}
+
+/* CHEQUES TABLE */
+.section-title{font-size:1.1rem;font-weight:600;margin:28px 0 16px;padding-left:12px;border-left:3px solid var(--blue)}
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow-x:auto;margin-bottom:28px}
+table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:700px}
+thead{background:var(--accent)}
+th{padding:12px 16px;text-align:left;font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);white-space:nowrap}
+td{padding:10px 16px;border-top:1px solid var(--border);white-space:nowrap}
+tr:nth-child(even){background:rgba(255,255,255,.02)}
+tr:hover{background:rgba(77,168,218,.06)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+td.green{color:var(--green)}
+td.red{color:var(--red)}
+.missing{color:var(--text-muted);font-style:italic}
+
+/* FOOTER */
+footer{background:var(--card);border-top:1px solid var(--border);padding:20px 32px;text-align:center;color:var(--text-muted);font-size:.8rem}
+footer p+p{margin-top:4px}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .charts-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  header{padding:16px}
+  main{padding:16px 12px 40px}
+  .kpi-grid{grid-template-columns:1fr}
+  .kpi-value{font-size:1.3rem}
+  .header-left h1{font-size:1.1rem}
+  .chart-wrap{height:220px}
+}
+
+/* PRINT */
+@media print{
+  body{background:#fff;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #login-screen{display:none!important}
+  #dashboard{display:block!important;opacity:1!important}
+  header{position:static;background:#fff;border-bottom:2px solid #333}
+  .header-left h1,.header-left .header-sub{color:#111}
+  .gear-btn,.modal-overlay{display:none!important}
+  .kpi-card{border:1px solid #ccc;break-inside:avoid}
+  .chart-card{break-inside:avoid;page-break-inside:avoid}
+  .chart-wrap{height:250px}
+  .table-wrap{break-inside:avoid}
+  footer{border-top:1px solid #ccc;background:#fff}
+  footer p{color:#555}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>PMD ARQUITECTURA S.R.L.</h1>
+    <div class="cuit">CUIT 33-71639054-9</div>
+    <div class="subtitle">Dashboard Contable 2026</div>
+    <input type="password" id="pwd-input" placeholder="Ingrese la clave de acceso" autocomplete="off">
+    <button id="login-btn" type="button">Ingresar</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <h2>Configuracion Google Sheets</h2>
+    <p>Ingrese el ID de su Google Sheet para actualizar los datos automaticamente. La hoja debe tener un tab llamado "DatosMensuales".</p>
+    <label for="sheet-id-input">Google Sheet ID</label>
+    <input type="text" id="sheet-id-input" placeholder="Ej: 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms">
+    <div class="modal-actions">
+      <button class="btn-secondary" id="modal-cancel">Cancelar</button>
+      <button class="btn-secondary" id="modal-clear" style="color:var(--red)">Borrar</button>
+      <button class="btn-primary" id="modal-save">Guardar y Probar</button>
+    </div>
+    <div class="modal-status" id="modal-status"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <header>
+    <div class="header-left">
+      <h1>PMD ARQUITECTURA S.R.L.</h1>
+      <div class="header-sub">
+        <span>Dashboard Contable 2026</span>
+        <span>CUIT 33-71639054-9</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="update-date" id="last-update"></span>
+      <button class="gear-btn" id="gear-btn" title="Configuracion Google Sheets">&#9881;</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Saldo Bancario Total</div>
+        <div class="kpi-value green" id="kpi-bank"></div>
+        <div class="kpi-sub" id="kpi-bank-detail"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">IVA Saldo Tecnico</div>
+        <div class="kpi-value green" id="kpi-iva"></div>
+        <div class="kpi-sub"><span class="badge badge-green">A favor</span> <span id="kpi-iva-period"></span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Ventas Acumuladas</div>
+        <div class="kpi-value blue" id="kpi-ventas"></div>
+        <div class="kpi-sub" id="kpi-ventas-detail"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Costo Financiero Total</div>
+        <div class="kpi-value red" id="kpi-costo"></div>
+        <div class="kpi-sub"><span class="badge badge-red" id="kpi-costo-rate"></span> <span>4 operaciones de descuento</span></div>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW 1 -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3><span class="dot" style="background:var(--blue)"></span>Saldos Bancarios</h3>
+        <div class="chart-wrap"><canvas id="chart-banks"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3><span class="dot" style="background:var(--yellow)"></span>Posicion IVA</h3>
+        <div class="chart-wrap"><canvas id="chart-iva"></canvas></div>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW 2 -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3><span class="dot" style="background:var(--orange)"></span>Impuestos Mensuales</h3>
+        <div class="chart-wrap"><canvas id="chart-taxes"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3><span class="dot" style="background:var(--green)"></span>Descuento de Cheques Galicia</h3>
+        <div class="chart-wrap"><canvas id="chart-cheques"></canvas></div>
+      </div>
+    </div>
+
+    <!-- CHEQUES TABLE -->
+    <h2 class="section-title">Detalle Descuento de Cheques - Banco Galicia</h2>
+    <div class="table-wrap">
+      <table id="table-cheques">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Bruto</th>
+            <th>Interes</th>
+            <th>IIBB</th>
+            <th>Sellos</th>
+            <th>IVA</th>
+            <th>Percep. IVA</th>
+            <th>Costos Total</th>
+            <th>Neto Recibido</th>
+            <th>Tasa Efectiva</th>
+          </tr>
+        </thead>
+        <tbody id="cheques-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- MONTHLY TABLE -->
+    <h2 class="section-title">Resumen Mensual Completo</h2>
+    <div class="table-wrap">
+      <table id="table-monthly">
+        <thead>
+          <tr>
+            <th>Concepto</th>
+            <th>Ene</th>
+            <th>Feb</th>
+            <th>Mar</th>
+            <th>Abr</th>
+            <th>May</th>
+            <th>Jun</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="monthly-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- VEPs TABLE -->
+    <h2 class="section-title">VEPs Pagados</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Fecha</th><th>Concepto</th><th>Importe</th></tr>
+        </thead>
+        <tbody id="veps-tbody"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    <p>Datos extraidos de documentacion oficial ARCA / Bancos</p>
+    <p id="footer-date"></p>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+(() => {
+'use strict';
+
+/* ===== FORMATTERS ===== */
+const fmt = (n) => n == null ? 'â' : '$' + n.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const fmtM = (n) => n == null ? 'â' : '$' + (n/1000000).toFixed(1) + 'M';
+const fmtPct = (n) => n == null ? 'â' : n.toFixed(2) + '%';
+
+/* ===== EMBEDDED DATA ===== */
+const DATA = {
+  months: ['Ene','Feb','Mar','Abr','May','Jun'],
+  iva: {
+    debito:  [0, 2371319.50, 937525.90, 5206611.57, 7745525.50, null],
+    credito: [1792721.90, 2443698.69, 2113594.51, 16717118.71, 2671551.08, null],
+    saldo:   [1792721.90, 1865101.09, 3041169.70, 14551676.84, 9477702.42, null],
+    ventas:  [0, 11291997.62, 4464409.05, 24793388.43, 36883454.76, null],
+    retPercep: [11511.82, 3397.60, 49148.81, 33905.55, 17120.84, null],
+    saldoLibreDisp: [11511.82, 14909.42, 64058.23, 97963.78, 115084.62, null]
+  },
+  sicore: [120711.57, 149525.21, 130117.44, 108242.41, 123761.78, 214639.27],
+  f931:   [63913.68, 112418.68, 97078.62, null, 100641.62, 221428.59],
+  iibb: {
+    pagar: [0, 0, 0, 0, 201497.70, null],
+    favor: [654974.97, 463945.24, 601643.09, 808897.63, 542088.86, null]
+  },
+  banks: {
+    icbc:    [null, null, -834156.18, -1267802.17, 5311749.02, null],
+    galicia: [0, 0, 13988782.87, 13921.23, 13921.23, 11411378.56],
+    mp:      [44236.53, 56434.65, 6992.46, 19595.12, 285260.05, null]
+  },
+  cheques: [
+    { fecha:'27/03/26', bruto:20000000, interes:1349003.58, iibb:40470.11, sellos:57863.01, iva:141645.38, percIva:20235.05, costos:1609217.13, neto:18390782.87, tasa:8.05 },
+    { fecha:'07/04/26', bruto:20000000, interes:1584592.81, iibb:47537.78, sellos:54575.34, iva:166382.25, percIva:23768.89, costos:1876857.07, neto:18123142.93, tasa:9.38 },
+    { fecha:'01/06/26', bruto:25000000, interes:2029347.05, iibb:50733.68, sellos:75616.44, iva:213081.44, percIva:30440.21, costos:2399218.82, neto:22600781.18, tasa:9.60 },
+    { fecha:'25/06/26', bruto:25000000, interes:1614556.64, iibb:40363.92, sellos:69041.10, iva:169528.45, percIva:24218.35, costos:1917708.46, neto:23082291.54, tasa:7.67 }
+  ],
+  chequesTotals: { bruto:90000000, costos:7803001.48, tasaPromedio:8.67 },
+  veps: [
+    { fecha:'29/05/26', concepto:'Autonomos SUSS (04/2026)', importe:300582.32 },
+    { fecha:'29/05/26', concepto:'Autonomos SUSS (05/2026)', importe:310742.00 },
+    { fecha:'29/05/26', concepto:'Anticipo Ganancias', importe:100385.62 },
+    { fecha:'29/05/26', concepto:'Anticipo Ganancias', importe:108242.41 },
+    { fecha:'29/05/26', concepto:'Anticipo Ganancias', importe:95068.00 },
+    { fecha:'02/06/26', concepto:'Anticipo Ganancias', importe:100641.62 },
+    { fecha:'02/06/26', concepto:'Anticipo Ganancias', importe:17016.00 },
+    { fecha:'02/06/26', concepto:'Anticipo Ganancias', importe:334.68 },
+    { fecha:'02/06/26', concepto:'Anticipo Ganancias', importe:8630.47 }
+  ],
+  vepsTotal: 1041643.12
+};
+
+/* ===== ACTIVE DATA (may be overridden by Google Sheet) ===== */
+let D = JSON.parse(JSON.stringify(DATA));
+
+/* ===== PASSWORD AUTH ===== */
+const HASH = '5b1b148e3c3d17460cba1c440af5dcc35f76f1163d7b050ba4ad39b044210c71';
+
+const sha256 = async (text) => {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+};
+
+const checkAuth = () => sessionStorage.getItem('pmd_auth') === 'ok';
+
+const showDashboard = () => {
+  document.getElementById('login-screen').style.display = 'none';
+  const db = document.getElementById('dashboard');
+  db.style.display = 'block';
+  requestAnimationFrame(() => { db.classList.add('visible'); });
+  initDashboard();
+};
+
+document.getElementById('login-btn').addEventListener('click', async () => {
+  const pwd = document.getElementById('pwd-input').value;
+  const hash = await sha256(pwd);
+  if (hash === HASH) {
+    sessionStorage.setItem('pmd_auth', 'ok');
+    showDashboard();
+  } else {
+    const inp = document.getElementById('pwd-input');
+    inp.classList.remove('error');
+    void inp.offsetWidth;
+    inp.classList.add('error');
+    document.getElementById('login-error').textContent = 'Clave incorrecta';
+  }
+});
+
+document.getElementById('pwd-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') document.getElementById('login-btn').click();
+});
+
+/* ===== GOOGLE SHEETS ===== */
+const getSheetId = () => localStorage.getItem('pmd_sheet_id') || '';
+
+const fetchSheet = async (sheetId) => {
+  if (!sheetId) return null;
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=DatosMensuales`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const text = await res.text();
+    return parseCSV(text);
+  } catch { return null; }
+};
+
+const parseCSV = (csv) => {
+  const lines = csv.trim().split('\n');
+  if (lines.length < 2) return null;
+  const headers = lines[0].replace(/"/g,'').split(',').map(h => h.trim());
+  const data = {};
+  const colMap = {};
+  headers.forEach((h, i) => { colMap[h] = i; });
+
+  const monthNames = ['Ene','Feb','Mar','Abr','May','Jun'];
+  const required = ['Mes','ICBC_Saldo','Galicia_Saldo','MP_Saldo','IVA_DF','IVA_CF','IVA_Saldo','Ventas_Netas','SICORE','F931','IIBB_PMD_Pagar','IIBB_PMD_Favor'];
+  for (const r of required) { if (!(r in colMap)) return null; }
+
+  const getVal = (row, col) => {
+    const v = row[colMap[col]];
+    if (!v || v === '""' || v === '' || v.replace(/"/g,'').trim() === '') return null;
+    const n = parseFloat(v.replace(/"/g,'').replace(/\./g,'').replace(',','.'));
+    return isNaN(n) ? null : n;
+  };
+
+  const result = { icbc:[], galicia:[], mp:[], df:[], cf:[], saldo:[], ventas:[], sicore:[], f931:[], iibbPagar:[], iibbFavor:[] };
+
+  for (let i = 1; i < lines.length && i <= 6; i++) {
+    const row = lines[i].split(',');
+    result.icbc.push(getVal(row, 'ICBC_Saldo'));
+    result.galicia.push(getVal(row, 'Galicia_Saldo'));
+    result.mp.push(getVal(row, 'MP_Saldo'));
+    result.df.push(getVal(row, 'IVA_DF'));
+    result.cf.push(getVal(row, 'IVA_CF'));
+    result.saldo.push(getVal(row, 'IVA_Saldo'));
+    result.ventas.push(getVal(row, 'Ventas_Netas'));
+    result.sicore.push(getVal(row, 'SICORE'));
+    result.f931.push(getVal(row, 'F931'));
+    result.iibbPagar.push(getVal(row, 'IIBB_PMD_Pagar'));
+    result.iibbFavor.push(getVal(row, 'IIBB_PMD_Favor'));
+  }
+
+  return result;
+};
+
+const applySheetData = (sd) => {
+  if (!sd) return;
+  D.banks.icbc = sd.icbc;
+  D.banks.galicia = sd.galicia;
+  D.banks.mp = sd.mp;
+  D.iva.debito = sd.df;
+  D.iva.credito = sd.cf;
+  D.iva.saldo = sd.saldo;
+  D.iva.ventas = sd.ventas;
+  D.sicore = sd.sicore;
+  D.f931 = sd.f931;
+  D.iibb.pagar = sd.iibbPagar;
+  D.iibb.favor = sd.iibbFavor;
+};
+
+/* ===== SETTINGS MODAL ===== */
+document.getElementById('gear-btn').addEventListener('click', () => {
+  document.getElementById('sheet-id-input').value = getSheetId();
+  document.getElementById('modal-status').textContent = '';
+  document.getElementById('settings-modal').classList.add('active');
+});
+document.getElementById('modal-cancel').addEventListener('click', () => {
+  document.getElementById('settings-modal').classList.remove('active');
+});
+document.getElementById('modal-clear').addEventListener('click', () => {
+  localStorage.removeItem('pmd_sheet_id');
+  document.getElementById('sheet-id-input').value = '';
+  const st = document.getElementById('modal-status');
+  st.className = 'modal-status ok';
+  st.textContent = 'ID eliminado. Se usaran datos embebidos.';
+  D = JSON.parse(JSON.stringify(DATA));
+  renderAll();
+});
+document.getElementById('modal-save').addEventListener('click', async () => {
+  const id = document.getElementById('sheet-id-input').value.trim();
+  const st = document.getElementById('modal-status');
+  if (!id) { st.className = 'modal-status err'; st.textContent = 'Ingrese un ID.'; return; }
+  st.className = 'modal-status';
+  st.textContent = 'Conectando...';
+  const sd = await fetchSheet(id);
+  if (sd) {
+    localStorage.setItem('pmd_sheet_id', id);
+    st.className = 'modal-status ok';
+    st.textContent = 'Conexion exitosa. Datos actualizados.';
+    D = JSON.parse(JSON.stringify(DATA));
+    applySheetData(sd);
+    renderAll();
+  } else {
+    st.className = 'modal-status err';
+    st.textContent = 'Error al conectar. Verifique el ID y que la hoja sea publica.';
+  }
+});
+document.getElementById('settings-modal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) document.getElementById('settings-modal').classList.remove('active');
+});
+
+/* ===== HELPERS ===== */
+const lastNonNull = (arr) => {
+  for (let i = arr.length - 1; i >= 0; i--) { if (arr[i] != null) return arr[i]; }
+  return null;
+};
+const lastNonNullIdx = (arr) => {
+  for (let i = arr.length - 1; i >= 0; i--) { if (arr[i] != null) return i; }
+  return -1;
+};
+const sumNonNull = (arr) => arr.reduce((s, v) => s + (v ?? 0), 0);
+
+/* ===== CHART CONFIG ===== */
+const chartDefaults = () => {
+  Chart.defaults.color = '#8892a4';
+  Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+  Chart.defaults.font.family = "system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif";
+  Chart.defaults.font.size = 12;
+};
+
+/* ===== CHARTS INSTANCES ===== */
+let charts = {};
+
+const destroyCharts = () => {
+  Object.values(charts).forEach(c => c.destroy());
+  charts = {};
+};
+
+/* ===== RENDER KPIs ===== */
+const renderKPIs = () => {
+  const icbc = lastNonNull(D.banks.icbc);
+  const gal = lastNonNull(D.banks.galicia);
+  const mp = lastNonNull(D.banks.mp);
+  const totalBank = (icbc ?? 0) + (gal ?? 0) + (mp ?? 0);
+  document.getElementById('kpi-bank').textContent = fmt(totalBank);
+
+  const icbcLabel = icbc != null ? `ICBC: ${fmtM(icbc)}` : '';
+  const galLabel = gal != null ? `Galicia: ${fmtM(gal)}` : '';
+  const mpLabel = mp != null ? `MP: ${fmtM(mp)}` : '';
+  document.getElementById('kpi-bank-detail').textContent = [icbcLabel, galLabel, mpLabel].filter(Boolean).join(' | ');
+
+  const ivaSaldo = lastNonNull(D.iva.saldo);
+  document.getElementById('kpi-iva').textContent = fmt(ivaSaldo);
+  const ivaPeriodIdx = lastNonNullIdx(D.iva.saldo);
+  document.getElementById('kpi-iva-period').textContent = ivaPeriodIdx >= 0 ? `al ${D.months[ivaPeriodIdx]} 2026` : '';
+
+  const totalVentas = sumNonNull(D.iva.ventas);
+  document.getElementById('kpi-ventas').textContent = fmt(totalVentas);
+  const ventasMeses = D.iva.ventas.filter(v => v != null).length;
+  document.getElementById('kpi-ventas-detail').textContent = `${ventasMeses} meses declarados`;
+
+  document.getElementById('kpi-costo').textContent = fmt(D.chequesTotals.costos);
+  document.getElementById('kpi-costo-rate').textContent = `${D.chequesTotals.tasaPromedio}% promedio`;
+};
+
+/* ===== RENDER CHARTS ===== */
+const renderCharts = () => {
+  destroyCharts();
+
+  // Chart 1: Bank balances
+  charts.banks = new Chart(document.getElementById('chart-banks'), {
+    type: 'line',
+    data: {
+      labels: D.months,
+      datasets: [
+        { label:'ICBC', data:D.banks.icbc, borderColor:'#4da8da', backgroundColor:'rgba(77,168,218,0.1)', tension:0.3, fill:false, pointRadius:4, pointHoverRadius:6, spanGaps:true },
+        { label:'Galicia', data:D.banks.galicia, borderColor:'#ff8c42', backgroundColor:'rgba(255,140,66,0.1)', tension:0.3, fill:false, pointRadius:4, pointHoverRadius:6, spanGaps:true },
+        { label:'Mercado Pago', data:D.banks.mp, borderColor:'#6c7a89', backgroundColor:'rgba(108,122,137,0.1)', tension:0.3, fill:false, pointRadius:4, pointHoverRadius:6, borderDash:[5,5], spanGaps:true }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ usePointStyle:true, padding:16 } },
+        tooltip:{ callbacks:{ label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+      },
+      scales:{ y:{ ticks:{ callback:(v) => fmtM(v) }, grid:{ color:'rgba(255,255,255,0.04)' } }, x:{ grid:{ display:false } } }
+    }
+  });
+
+  // Chart 2: IVA position
+  const ivaMonths = D.months.slice(0, D.iva.debito.filter(v => v != null).length);
+  const ivaDF = D.iva.debito.filter(v => v != null);
+  const ivaCF = D.iva.credito.filter(v => v != null);
+  const ivaSaldo = D.iva.saldo.filter(v => v != null);
+
+  charts.iva = new Chart(document.getElementById('chart-iva'), {
+    type: 'bar',
+    data: {
+      labels: ivaMonths,
+      datasets: [
+        { label:'Debito Fiscal', data:ivaDF, backgroundColor:'rgba(233,69,96,0.7)', borderRadius:4, order:2 },
+        { label:'Credito Fiscal', data:ivaCF, backgroundColor:'rgba(0,201,167,0.7)', borderRadius:4, order:2 },
+        { label:'Saldo Tecnico', data:ivaSaldo, type:'line', borderColor:'#ffc107', backgroundColor:'transparent', tension:0.3, pointRadius:5, pointHoverRadius:7, borderWidth:2.5, yAxisID:'y1', order:1 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ usePointStyle:true, padding:16 } },
+        tooltip:{ callbacks:{ label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+      },
+      scales:{
+        y:{ ticks:{ callback:(v) => fmtM(v) }, grid:{ color:'rgba(255,255,255,0.04)' } },
+        y1:{ position:'right', ticks:{ callback:(v) => fmtM(v) }, grid:{ display:false } },
+        x:{ grid:{ display:false } }
+      }
+    }
+  });
+
+  // Chart 3: Monthly taxes
+  const iibbData = D.iibb.pagar.map((v, i) => (v ?? 0));
+
+  charts.taxes = new Chart(document.getElementById('chart-taxes'), {
+    type: 'bar',
+    data: {
+      labels: D.months,
+      datasets: [
+        { label:'SICORE', data:D.sicore, backgroundColor:'rgba(77,168,218,0.8)', borderRadius:4 },
+        { label:'F931 (Cargas Sociales)', data:D.f931.map(v => v ?? 0), backgroundColor:'rgba(255,140,66,0.8)', borderRadius:4 },
+        { label:'IIBB a pagar', data:iibbData, backgroundColor:'rgba(233,69,96,0.8)', borderRadius:4 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ usePointStyle:true, padding:16 } },
+        tooltip:{ callbacks:{ label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+      },
+      scales:{
+        x:{ stacked:true, grid:{ display:false } },
+        y:{ stacked:true, ticks:{ callback:(v) => fmtM(v) }, grid:{ color:'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+
+  // Chart 4: Check discounting
+  const chequeFechas = D.cheques.map(c => c.fecha);
+  const chequeBruto = D.cheques.map(c => c.bruto);
+  const chequeCostos = D.cheques.map(c => c.costos);
+
+  charts.cheques = new Chart(document.getElementById('chart-cheques'), {
+    type: 'bar',
+    data: {
+      labels: chequeFechas,
+      datasets: [
+        { label:'Monto Neto', data:D.cheques.map(c => c.neto), backgroundColor:'rgba(0,201,167,0.7)', borderRadius:4 },
+        { label:'Costos Financieros', data:chequeCostos, backgroundColor:'rgba(233,69,96,0.7)', borderRadius:4 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ position:'bottom', labels:{ usePointStyle:true, padding:16 } },
+        tooltip:{ callbacks:{ label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`, afterBody: (items) => { const i = items[0].dataIndex; return `Tasa: ${fmtPct(D.cheques[i].tasa)}`; } } }
+      },
+      scales:{
+        x:{ stacked:true, grid:{ display:false } },
+        y:{ stacked:true, ticks:{ callback:(v) => fmtM(v) }, grid:{ color:'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+};
+
+/* ===== RENDER TABLES ===== */
+const renderTables = () => {
+  // Cheques table
+  const ctb = document.getElementById('cheques-tbody');
+  let html = '';
+  D.cheques.forEach(c => {
+    html += `<tr>
+      <td>${c.fecha}</td>
+      <td class="num">${fmt(c.bruto)}</td>
+      <td class="num red">${fmt(c.interes)}</td>
+      <td class="num">${fmt(c.iibb)}</td>
+      <td class="num">${fmt(c.sellos)}</td>
+      <td class="num">${fmt(c.iva)}</td>
+      <td class="num">${fmt(c.percIva)}</td>
+      <td class="num red">${fmt(c.costos)}</td>
+      <td class="num green">${fmt(c.neto)}</td>
+      <td class="num">${fmtPct(c.tasa)}</td>
+    </tr>`;
+  });
+  const totalBruto = D.cheques.reduce((s,c) => s + c.bruto, 0);
+  const totalInteres = D.cheques.reduce((s,c) => s + c.interes, 0);
+  const totalIIBB = D.cheques.reduce((s,c) => s + c.iibb, 0);
+  const totalSellos = D.cheques.reduce((s,c) => s + c.sellos, 0);
+  const totalIVA = D.cheques.reduce((s,c) => s + c.iva, 0);
+  const totalPercIva = D.cheques.reduce((s,c) => s + c.percIva, 0);
+  const totalCostos = D.cheques.reduce((s,c) => s + c.costos, 0);
+  const totalNeto = D.cheques.reduce((s,c) => s + c.neto, 0);
+  html += `<tr style="font-weight:700;border-top:2px solid var(--blue)">
+    <td>TOTAL</td>
+    <td class="num">${fmt(totalBruto)}</td>
+    <td class="num red">${fmt(totalInteres)}</td>
+    <td class="num">${fmt(totalIIBB)}</td>
+    <td class="num">${fmt(totalSellos)}</td>
+    <td class="num">${fmt(totalIVA)}</td>
+    <td class="num">${fmt(totalPercIva)}</td>
+    <td class="num red">${fmt(totalCostos)}</td>
+    <td class="num green">${fmt(totalNeto)}</td>
+    <td class="num">${fmtPct(D.chequesTotals.tasaPromedio)}</td>
+  </tr>`;
+  ctb.innerHTML = html;
+
+  // Monthly summary table
+  const rows = [
+    { label:'Ventas Netas', data:D.iva.ventas, cls:'', bold:false },
+    { label:'Debito Fiscal', data:D.iva.debito, cls:'', bold:false },
+    { label:'Credito Fiscal', data:D.iva.credito, cls:'', bold:false },
+    { label:'Saldo Tecnico IVA', data:D.iva.saldo, cls:'green', bold:true },
+    { label:'Ret./Percep. IVA', data:D.iva.retPercep, cls:'', bold:false },
+    { label:'Saldo Libre Disp.', data:D.iva.saldoLibreDisp, cls:'', bold:false },
+    { label:'SICORE', data:D.sicore, cls:'red', bold:false },
+    { label:'F931 (Cargas Soc.)', data:D.f931, cls:'red', bold:false },
+    { label:'IIBB a Pagar', data:D.iibb.pagar, cls:'red', bold:false },
+    { label:'IIBB a Favor Contrib.', data:D.iibb.favor, cls:'green', bold:false },
+    { label:'Saldo ICBC', data:D.banks.icbc, cls:'', bold:false },
+    { label:'Saldo Galicia', data:D.banks.galicia, cls:'', bold:false },
+    { label:'Saldo Mercado Pago', data:D.banks.mp, cls:'', bold:false }
+  ];
+
+  const mtb = document.getElementById('monthly-tbody');
+  let mhtml = '';
+  rows.forEach(r => {
+    const total = sumNonNull(r.data);
+    const style = r.bold ? 'font-weight:700' : '';
+    mhtml += `<tr style="${style}">`;
+    mhtml += `<td>${r.label}</td>`;
+    r.data.forEach(v => {
+      if (v == null) {
+        mhtml += `<td class="num missing">â</td>`;
+      } else if (v < 0) {
+        mhtml += `<td class="num red">${fmt(v)}</td>`;
+      } else {
+        mhtml += `<td class="num ${r.cls}">${fmt(v)}</td>`;
+      }
+    });
+    // Show total only for rows where it makes sense (not bank balances)
+    const showTotal = !r.label.startsWith('Saldo ');
+    mhtml += `<td class="num ${r.cls}" style="font-weight:600">${showTotal ? fmt(total) : 'â'}</td>`;
+    mhtml += `</tr>`;
+  });
+  mtb.innerHTML = mhtml;
+
+  // VEPs table
+  const vtb = document.getElementById('veps-tbody');
+  let vhtml = '';
+  D.veps.forEach(v => {
+    vhtml += `<tr><td>${v.fecha}</td><td>${v.concepto}</td><td class="num">${fmt(v.importe)}</td></tr>`;
+  });
+  vhtml += `<tr style="font-weight:700;border-top:2px solid var(--blue)"><td colspan="2">TOTAL VEPs PAGADOS</td><td class="num">${fmt(D.vepsTotal)}</td></tr>`;
+  vtb.innerHTML = vhtml;
+};
+
+/* ===== RENDER ALL ===== */
+const renderAll = () => {
+  renderKPIs();
+  renderCharts();
+  renderTables();
+};
+
+/* ===== INIT ===== */
+const initDashboard = async () => {
+  chartDefaults();
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('es-AR', { day:'2-digit', month:'long', year:'numeric' });
+  document.getElementById('last-update').textContent = `Actualizado: ${dateStr}`;
+  document.getElementById('footer-date').textContent = `Actualizado al ${dateStr}`;
+
+  // Try Google Sheet first
+  const sheetId = getSheetId();
+  if (sheetId) {
+    const sd = await fetchSheet(sheetId);
+    if (sd) applySheetData(sd);
+  }
+
+  renderAll();
+};
+
+/* ===== ON LOAD ===== */
+if (checkAuth()) {
+  showDashboard();
+}
+
+})();
+</script>
+</body>
+</html>
