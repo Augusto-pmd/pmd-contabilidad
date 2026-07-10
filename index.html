@@ -30,7 +30,7 @@ body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 
 /* DASHBOARD */
-#dashboard{display:none;opacity:0;transition:opacity .5s ease}
+#dashboard{display:block;opacity:1;transition:opacity .5s ease}
 #dashboard.visible{display:block;opacity:1}
 
 /* HEADER */
@@ -139,17 +139,8 @@ footer p+p{margin-top:4px}
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
-<div id="login-screen">
-  <div class="login-box">
-    <h1>PMD ARQUITECTURA S.R.L.</h1>
-    <div class="cuit">CUIT 33-71639054-9</div>
-    <div class="subtitle">Dashboard Contable 2026</div>
-    <input type="password" id="pwd-input" placeholder="Ingrese la clave de acceso" autocomplete="off">
-    <button id="login-btn" type="button">Ingresar</button>
-    <div class="login-error" id="login-error"></div>
-  </div>
-</div>
+<!-- LOGIN SCREEN (desactivado) -->
+<div id="login-screen" style="display:none"></div>
 
 <!-- SETTINGS MODAL -->
 <div class="modal-overlay" id="settings-modal">
@@ -184,6 +175,12 @@ footer p+p{margin-top:4px}
   </header>
 
   <main>
+    <!-- BALANCE APERTURA INFO -->
+    <div style="background:var(--accent);border:1px solid var(--border);border-radius:8px;padding:12px 20px;margin-bottom:16px;font-size:.82rem;color:var(--text-muted);display:flex;align-items:center;gap:8px">
+      <span style="color:var(--yellow)">&#9888;</span>
+      <span>Datos incorporan saldos de apertura del <strong style="color:var(--text)">Balance certificado al 31/12/2025</strong> (Dr. Garcia Rodriguez, CPCECABA). Patrimonio Neto: <strong style="color:var(--green)" id="info-pn"></strong> | Resultado 2025: <strong style="color:var(--green)" id="info-res"></strong></span>
+    </div>
+
     <!-- KPIs -->
     <div class="kpi-grid">
       <div class="kpi-card">
@@ -192,9 +189,9 @@ footer p+p{margin-top:4px}
         <div class="kpi-sub" id="kpi-bank-detail"></div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">IVA Saldo Tecnico</div>
+        <div class="kpi-label">IVA Posicion Real (c/Apertura)</div>
         <div class="kpi-value green" id="kpi-iva"></div>
-        <div class="kpi-sub"><span class="badge badge-green">A favor</span> <span id="kpi-iva-period"></span></div>
+        <div class="kpi-sub"><span class="badge" id="kpi-iva-badge">â</span> <span id="kpi-iva-period"></span></div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Ventas Acumuladas</div>
@@ -261,6 +258,7 @@ footer p+p{margin-top:4px}
         <thead>
           <tr>
             <th>Concepto</th>
+            <th>Dic-25</th>
             <th>Ene</th>
             <th>Feb</th>
             <th>Mar</th>
@@ -342,48 +340,28 @@ const DATA = {
     { fecha:'02/06/26', concepto:'Anticipo Ganancias', importe:334.68 },
     { fecha:'02/06/26', concepto:'Anticipo Ganancias', importe:8630.47 }
   ],
-  vepsTotal: 1041643.12
+  vepsTotal: 1041643.12,
+
+  balance2025: {
+    cajaBancos: { cajaLocal: 46895.61, icbc: 80384.07, galicia: 0, mp: 0, total: 127279.68 },
+    deudasFiscales: { iva: 5751411.29, iibb: 79363.91, sicore: 24995.72, planesArca: 143660.15, total: 5999431.07 },
+    otrosPasivos: { proveedores: 15685642.58, deudasLaborales: 1488594.69, otrasDeudas: 25000000 },
+    patrimonioNeto: 65558037.75,
+    resultado2025: 17370631.27,
+    ingresos2025: 379061838.92,
+    bienesUso: 19709845.01,
+    bienesCambio: 69171909.98,
+    otrosCreditos: 39639567.53
+  }
 };
 
 /* ===== ACTIVE DATA (may be overridden by Google Sheet) ===== */
 let D = JSON.parse(JSON.stringify(DATA));
 
-/* ===== PASSWORD AUTH ===== */
-const HASH = '5b1b148e3c3d17460cba1c440af5dcc35f76f1163d7b050ba4ad39b044210c71';
-
-const sha256 = async (text) => {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-};
-
-const checkAuth = () => sessionStorage.getItem('pmd_auth') === 'ok';
-
+/* ===== NO PASSWORD - acceso directo ===== */
 const showDashboard = () => {
-  document.getElementById('login-screen').style.display = 'none';
-  const db = document.getElementById('dashboard');
-  db.style.display = 'block';
-  requestAnimationFrame(() => { db.classList.add('visible'); });
   initDashboard();
 };
-
-document.getElementById('login-btn').addEventListener('click', async () => {
-  const pwd = document.getElementById('pwd-input').value;
-  const hash = await sha256(pwd);
-  if (hash === HASH) {
-    sessionStorage.setItem('pmd_auth', 'ok');
-    showDashboard();
-  } else {
-    const inp = document.getElementById('pwd-input');
-    inp.classList.remove('error');
-    void inp.offsetWidth;
-    inp.classList.add('error');
-    document.getElementById('login-error').textContent = 'Clave incorrecta';
-  }
-});
-
-document.getElementById('pwd-input').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') document.getElementById('login-btn').click();
-});
 
 /* ===== GOOGLE SHEETS ===== */
 const getSheetId = () => localStorage.getItem('pmd_sheet_id') || '';
@@ -523,9 +501,10 @@ const destroyCharts = () => {
 
 /* ===== RENDER KPIs ===== */
 const renderKPIs = () => {
-  const icbc = lastNonNull(D.banks.icbc);
-  const gal = lastNonNull(D.banks.galicia);
-  const mp = lastNonNull(D.banks.mp);
+  // Bank KPI: use latest available for each bank, fallback to balance2025 opening
+  const icbc = lastNonNull(D.banks.icbc) ?? D.balance2025.cajaBancos.icbc;
+  const gal = lastNonNull(D.banks.galicia) ?? D.balance2025.cajaBancos.galicia;
+  const mp = lastNonNull(D.banks.mp) ?? D.balance2025.cajaBancos.mp;
   const totalBank = (icbc ?? 0) + (gal ?? 0) + (mp ?? 0);
   document.getElementById('kpi-bank').textContent = fmt(totalBank);
 
@@ -534,10 +513,25 @@ const renderKPIs = () => {
   const mpLabel = mp != null ? `MP: ${fmtM(mp)}` : '';
   document.getElementById('kpi-bank-detail').textContent = [icbcLabel, galLabel, mpLabel].filter(Boolean).join(' | ');
 
+  // IVA KPI: real position = cumulative saldo - opening IVA debt
   const ivaSaldo = lastNonNull(D.iva.saldo);
-  document.getElementById('kpi-iva').textContent = fmt(ivaSaldo);
+  const realIVA = ivaSaldo != null ? ivaSaldo - D.balance2025.deudasFiscales.iva : null;
+  const kpiIvaEl = document.getElementById('kpi-iva');
+  kpiIvaEl.textContent = fmt(realIVA);
+
+  const ivaBadge = document.getElementById('kpi-iva-badge');
+  if (realIVA != null && realIVA < 0) {
+    kpiIvaEl.className = 'kpi-value red';
+    ivaBadge.className = 'badge badge-red';
+    ivaBadge.textContent = 'EN DEUDA';
+  } else {
+    kpiIvaEl.className = 'kpi-value green';
+    ivaBadge.className = 'badge badge-green';
+    ivaBadge.textContent = 'A FAVOR';
+  }
+
   const ivaPeriodIdx = lastNonNullIdx(D.iva.saldo);
-  document.getElementById('kpi-iva-period').textContent = ivaPeriodIdx >= 0 ? `al ${D.months[ivaPeriodIdx]} 2026` : '';
+  document.getElementById('kpi-iva-period').textContent = ivaPeriodIdx >= 0 ? `al ${D.months[ivaPeriodIdx]} 2026 (c/apertura)` : '';
 
   const totalVentas = sumNonNull(D.iva.ventas);
   document.getElementById('kpi-ventas').textContent = fmt(totalVentas);
@@ -552,15 +546,20 @@ const renderKPIs = () => {
 const renderCharts = () => {
   destroyCharts();
 
-  // Chart 1: Bank balances
+  // Chart 1: Bank balances (with Dic-25 opening)
+  const bankLabels = ['Dic-25', ...D.months];
+  const bankICBC = [D.balance2025.cajaBancos.icbc, ...D.banks.icbc];
+  const bankGalicia = [D.balance2025.cajaBancos.galicia, ...D.banks.galicia];
+  const bankMP = [D.balance2025.cajaBancos.mp, ...D.banks.mp];
+
   charts.banks = new Chart(document.getElementById('chart-banks'), {
     type: 'line',
     data: {
-      labels: D.months,
+      labels: bankLabels,
       datasets: [
-        { label:'ICBC', data:D.banks.icbc, borderColor:'#4da8da', backgroundColor:'rgba(77,168,218,0.1)', tension:0.3, fill:false, pointRadius:4, pointHoverRadius:6, spanGaps:true },
-        { label:'Galicia', data:D.banks.galicia, borderColor:'#ff8c42', backgroundColor:'rgba(255,140,66,0.1)', tension:0.3, fill:false, pointRadius:4, pointHoverRadius:6, spanGaps:true },
-        { label:'Mercado Pago', data:D.banks.mp, borderColor:'#6c7a89', backgroundColor:'rgba(108,122,137,0.1)', tension:0.3, fill:false, pointRadius:4, pointHoverRadius:6, borderDash:[5,5], spanGaps:true }
+        { label:'ICBC', data:bankICBC, borderColor:'#4da8da', backgroundColor:'rgba(77,168,218,0.1)', tension:0.3, fill:false, pointRadius:4, pointHoverRadius:6, spanGaps:true },
+        { label:'Galicia', data:bankGalicia, borderColor:'#ff8c42', backgroundColor:'rgba(255,140,66,0.1)', tension:0.3, fill:false, pointRadius:4, pointHoverRadius:6, spanGaps:true },
+        { label:'Mercado Pago', data:bankMP, borderColor:'#6c7a89', backgroundColor:'rgba(108,122,137,0.1)', tension:0.3, fill:false, pointRadius:4, pointHoverRadius:6, borderDash:[5,5], spanGaps:true }
       ]
     },
     options: {
@@ -572,20 +571,30 @@ const renderCharts = () => {
     }
   });
 
-  // Chart 2: IVA position
-  const ivaMonths = D.months.slice(0, D.iva.debito.filter(v => v != null).length);
-  const ivaDF = D.iva.debito.filter(v => v != null);
-  const ivaCF = D.iva.credito.filter(v => v != null);
-  const ivaSaldo = D.iva.saldo.filter(v => v != null);
+  // Chart 2: IVA position (with real position line including opening debt)
+  const ivaMonthsFiltered = D.months.slice(0, D.iva.debito.filter(v => v != null).length);
+  const ivaChartLabels = ['Dic-25', ...ivaMonthsFiltered];
+  const ivaDF = [0, ...D.iva.debito.filter(v => v != null)];
+  const ivaCF = [0, ...D.iva.credito.filter(v => v != null)];
+  const ivaSaldo = [0, ...D.iva.saldo.filter(v => v != null)];
+  // Real position: cumulative saldo minus opening IVA debt
+  const ivaDeudaApertura = D.balance2025.deudasFiscales.iva;
+  const ivaRealPos = [-ivaDeudaApertura];
+  for (let i = 0; i < D.iva.saldo.length; i++) {
+    if (D.iva.saldo[i] != null) {
+      ivaRealPos.push(D.iva.saldo[i] - ivaDeudaApertura);
+    }
+  }
 
   charts.iva = new Chart(document.getElementById('chart-iva'), {
     type: 'bar',
     data: {
-      labels: ivaMonths,
+      labels: ivaChartLabels,
       datasets: [
-        { label:'Debito Fiscal', data:ivaDF, backgroundColor:'rgba(233,69,96,0.7)', borderRadius:4, order:2 },
-        { label:'Credito Fiscal', data:ivaCF, backgroundColor:'rgba(0,201,167,0.7)', borderRadius:4, order:2 },
-        { label:'Saldo Tecnico', data:ivaSaldo, type:'line', borderColor:'#ffc107', backgroundColor:'transparent', tension:0.3, pointRadius:5, pointHoverRadius:7, borderWidth:2.5, yAxisID:'y1', order:1 }
+        { label:'Debito Fiscal', data:ivaDF, backgroundColor:'rgba(233,69,96,0.7)', borderRadius:4, order:3 },
+        { label:'Credito Fiscal', data:ivaCF, backgroundColor:'rgba(0,201,167,0.7)', borderRadius:4, order:3 },
+        { label:'Saldo Tecnico', data:ivaSaldo, type:'line', borderColor:'#ffc107', backgroundColor:'transparent', tension:0.3, pointRadius:5, pointHoverRadius:7, borderWidth:2.5, yAxisID:'y1', order:2 },
+        { label:'Posicion Real (c/Balance)', data:ivaRealPos, type:'line', borderColor:'#e94560', backgroundColor:'rgba(233,69,96,0.1)', tension:0.3, pointRadius:5, pointHoverRadius:7, borderWidth:2.5, borderDash:[6,3], yAxisID:'y1', order:1, fill:true }
       ]
     },
     options: {
@@ -695,7 +704,24 @@ const renderTables = () => {
   </tr>`;
   ctb.innerHTML = html;
 
-  // Monthly summary table
+  // Monthly summary table (with Dic-25 opening column)
+  // Dic-25 opening values from balance2025
+  const dic25Map = {
+    'Ventas Netas': null,
+    'Debito Fiscal': null,
+    'Credito Fiscal': null,
+    'Saldo Tecnico IVA': null,
+    'Ret./Percep. IVA': null,
+    'Saldo Libre Disp.': null,
+    'SICORE': D.balance2025.deudasFiscales.sicore,
+    'F931 (Cargas Soc.)': null,
+    'IIBB a Pagar': D.balance2025.deudasFiscales.iibb,
+    'IIBB a Favor Contrib.': null,
+    'Saldo ICBC': D.balance2025.cajaBancos.icbc,
+    'Saldo Galicia': D.balance2025.cajaBancos.galicia,
+    'Saldo Mercado Pago': D.balance2025.cajaBancos.mp
+  };
+
   const rows = [
     { label:'Ventas Netas', data:D.iva.ventas, cls:'', bold:false },
     { label:'Debito Fiscal', data:D.iva.debito, cls:'', bold:false },
@@ -714,11 +740,30 @@ const renderTables = () => {
 
   const mtb = document.getElementById('monthly-tbody');
   let mhtml = '';
+
+  // IVA Deuda Apertura row (first row)
+  mhtml += `<tr style="font-weight:700;background:rgba(233,69,96,0.08)">`;
+  mhtml += `<td>IVA Deuda Apertura</td>`;
+  mhtml += `<td class="num red">${fmt(-D.balance2025.deudasFiscales.iva)}</td>`;
+  for (let i = 0; i < D.months.length; i++) { mhtml += `<td class="num missing">â</td>`; }
+  mhtml += `<td class="num missing">â</td>`;
+  mhtml += `</tr>`;
+
   rows.forEach(r => {
     const total = sumNonNull(r.data);
     const style = r.bold ? 'font-weight:700' : '';
     mhtml += `<tr style="${style}">`;
     mhtml += `<td>${r.label}</td>`;
+    // Dic-25 opening column
+    const dic25Val = dic25Map[r.label];
+    if (dic25Val == null) {
+      mhtml += `<td class="num missing">â</td>`;
+    } else if (dic25Val < 0) {
+      mhtml += `<td class="num red">${fmt(dic25Val)}</td>`;
+    } else {
+      mhtml += `<td class="num ${r.cls}">${fmt(dic25Val)}</td>`;
+    }
+    // Monthly columns
     r.data.forEach(v => {
       if (v == null) {
         mhtml += `<td class="num missing">â</td>`;
@@ -733,6 +778,37 @@ const renderTables = () => {
     mhtml += `<td class="num ${r.cls}" style="font-weight:600">${showTotal ? fmt(total) : 'â'}</td>`;
     mhtml += `</tr>`;
   });
+
+  // Separator row
+  mhtml += `<tr><td colspan="${D.months.length + 3}" style="border-top:2px solid var(--yellow);padding:2px"></td></tr>`;
+
+  // Posicion IVA Real row
+  const ivaDeuda = D.balance2025.deudasFiscales.iva;
+  mhtml += `<tr style="font-weight:700;background:rgba(233,69,96,0.08)">`;
+  mhtml += `<td>Posicion IVA Real</td>`;
+  mhtml += `<td class="num red">${fmt(-ivaDeuda)}</td>`;
+  let realTotal = 0;
+  let hasRealData = false;
+  D.iva.saldo.forEach(v => {
+    if (v != null) {
+      const realVal = v - ivaDeuda;
+      hasRealData = true;
+      realTotal = realVal;
+      const cls = realVal < 0 ? 'red' : 'green';
+      mhtml += `<td class="num ${cls}" style="font-weight:700">${fmt(realVal)}</td>`;
+    } else {
+      mhtml += `<td class="num missing">â</td>`;
+    }
+  });
+  const lastRealIVA = hasRealData ? realTotal : null;
+  if (lastRealIVA != null) {
+    const cls = lastRealIVA < 0 ? 'red' : 'green';
+    mhtml += `<td class="num ${cls}" style="font-weight:700">${fmt(lastRealIVA)}</td>`;
+  } else {
+    mhtml += `<td class="num missing">â</td>`;
+  }
+  mhtml += `</tr>`;
+
   mtb.innerHTML = mhtml;
 
   // VEPs table
@@ -761,6 +837,10 @@ const initDashboard = async () => {
   document.getElementById('last-update').textContent = `Actualizado: ${dateStr}`;
   document.getElementById('footer-date').textContent = `Actualizado al ${dateStr}`;
 
+  // Populate balance apertura info banner
+  document.getElementById('info-pn').textContent = fmt(D.balance2025.patrimonioNeto);
+  document.getElementById('info-res').textContent = fmt(D.balance2025.resultado2025);
+
   // Try Google Sheet first
   const sheetId = getSheetId();
   if (sheetId) {
@@ -771,12 +851,11 @@ const initDashboard = async () => {
   renderAll();
 };
 
-/* ===== ON LOAD ===== */
-if (checkAuth()) {
-  showDashboard();
-}
+/* ===== ON LOAD - inicio directo sin contraseÃ±a ===== */
+showDashboard();
 
 })();
 </script>
 </body>
 </html>
+
