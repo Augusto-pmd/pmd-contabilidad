@@ -110,6 +110,12 @@ td.red{color:var(--red)}
 .alert-item .alert-text{flex:1}
 .alert-item .alert-title{font-weight:600;font-size:.9rem;margin-bottom:2px}
 .alert-item .alert-desc{font-size:.82rem;color:var(--text-muted)}
+.alert-item{cursor:pointer;transition:background .2s}
+.alert-item:hover{background:rgba(255,255,255,.04)}
+.alert-item .alert-explain{display:none;font-size:.82rem;color:var(--text);margin-top:8px;padding:10px 12px;background:rgba(255,255,255,.03);border-radius:6px;border-left:3px solid var(--accent);line-height:1.5}
+.alert-item.expanded .alert-explain{display:block}
+.alert-item .expand-icon{color:var(--text-muted);font-size:.75rem;margin-left:auto;flex-shrink:0;transition:transform .2s}
+.alert-item.expanded .expand-icon{transform:rotate(90deg)}
 .progress-wrap{background:rgba(255,255,255,.06);border-radius:4px;height:8px;overflow:hidden;margin-top:6px}
 .progress-bar{height:100%;border-radius:4px;transition:width .3s}
 .kpi-value.yellow{color:var(--yellow)}
@@ -478,20 +484,36 @@ const DATA = {
 
   /* === ALERTAS AUDITORIA === */
   alertas: [
-    {sev:'ALTA', titulo:'Bienes de cambio +537.7%', desc:'$10.8M a $69.2M - verificar valuacion'},
-    {sev:'ALTA', titulo:'Resultado neto -51.7%', desc:'Pese a +19.6% ventas; Gastos admin +90.3%'},
-    {sev:'ALTA', titulo:'Deudas fiscales +170%', desc:'De $7.9M a $21.3M interanual'},
-    {sev:'ALTA', titulo:'F931 Abril FALTANTE', desc:'DDJJ no presentada al estudio'},
-    {sev:'ALTA', titulo:'IIBB ratio anomalo', desc:'Base IIBB $3.9M vs Ventas IVA $77.4M = 5%'},
-    {sev:'ALTA', titulo:'ICBC SOBREGIRO Mar-Abr', desc:'Hasta -$1.27M en cuenta corriente'},
-    {sev:'ALTA', titulo:'Ventas 2026 proyectadas bajas', desc:'Proy. $185.8M vs $379M en 2025'},
-    {sev:'ALTA', titulo:'Prestamo ICBC $17.2M', desc:'Cuota ~$1.35M/mes, tasa 3% mensual (36% anual) - Op.0210348700'},
-    {sev:'MEDIA', titulo:'Otras deudas $25M sin identificar', desc:'Balance 2025 - investigar origen'},
-    {sev:'MEDIA', titulo:'Honorarios 76% gastos admin', desc:'Concentracion excesiva en un rubro'},
-    {sev:'MEDIA', titulo:'IVA Abril CF $16.7M pico', desc:'Verificar origen del credito fiscal anomalo'},
-    {sev:'MEDIA', titulo:'F931 Jun remuneracion $4.5M', desc:'Doble del promedio - verificar causa'},
-    {sev:'MEDIA', titulo:'IIBB Feb Augusto faltante', desc:'Sin DDJJ presentada ese periodo'},
-    {sev:'MEDIA', titulo:'Transf. denegadas ICBC $690K', desc:'3 transferencias rechazadas en Feb'}
+    {sev:'ALTA', titulo:'Bienes de cambio +537.7%', desc:'$10.8M a $69.2M - verificar valuacion',
+     explicacion:'El rubro bienes de cambio (obra en proceso, materiales) salto mas de 5 veces entre ejercicios. Puede indicar acumulacion de costos de obras sin facturar o valuacion incorrecta del inventario. ACCION: Revisar con el contador si hay obras terminadas que deberian haberse pasado a costo de ventas.'},
+    {sev:'ALTA', titulo:'Resultado neto -51.7%', desc:'Pese a +19.6% ventas; Gastos admin +90.3%',
+     explicacion:'PMD factura mas pero gana menos. Los gastos de administracion casi se duplicaron, probablemente por aumento de estructura, honorarios o gastos extraordinarios. ACCION: Desglosar gastos admin para identificar que crecio tanto y si es recurrente o puntual.'},
+    {sev:'ALTA', titulo:'Deudas fiscales +170%', desc:'De $7.9M a $21.3M interanual',
+     explicacion:'Las deudas con ARCA/ARBA se triplicaron (IVA, anticipos Ganancias, IIBB, etc). Riesgo de intimaciones, intereses resarcitorios y embargos. ACCION: Mapear que impuestos se deben y evaluar plan de pagos con ARCA.'},
+    {sev:'ALTA', titulo:'F931 Abril FALTANTE', desc:'DDJJ no presentada al estudio',
+     explicacion:'La declaracion jurada de cargas sociales (aportes/contribuciones UOCRA) de abril no fue presentada o no se recibio del estudio contable. Genera multas automaticas y puede trabar ECHEQ, prestamos y certificados. ACCION: Reclamar al estudio que la presente urgente.'},
+    {sev:'ALTA', titulo:'IIBB ratio anomalo', desc:'Base IIBB $3.9M vs Ventas IVA $77.4M = 5%',
+     explicacion:'La base imponible declarada en IIBB representa solo el 5% de las ventas en IVA. Si se vende $77M y se declara $3.9M en IIBB, ARBA puede presumir evasion y hacer ajuste de oficio. ACCION: Verificar si hay exencion, diferimiento, o subdeclaracion real.'},
+    {sev:'ALTA', titulo:'ICBC SOBREGIRO Mar-Abr', desc:'Hasta -$1.27M en cuenta corriente',
+     explicacion:'La cuenta corriente ICBC llego a saldo negativo de $1.27M. El descubierto genera intereses altisimos y puede afectar la calificacion crediticia de PMD. ACCION: Evitar que se repita; analizar si fue por timing entre cobros y pagos UOCRA.'},
+    {sev:'ALTA', titulo:'Ventas 2026 proyectadas bajas', desc:'Proy. $185.8M vs $379M en 2025',
+     explicacion:'Al ritmo actual, PMD cerraria 2026 con menos de la mitad de facturacion que 2025. Puede ser real (menos obras) o estacionalidad (concentracion en 2do semestre). ACCION: Evaluar backlog de obras y contratos pendientes de facturar.'},
+    {sev:'ALTA', titulo:'Prestamo ICBC $17.2M', desc:'Cuota ~$1.35M/mes, tasa 3% mensual (36% anual) - Op.0210348700',
+     explicacion:'Prestamo comercial ICBC Op.0210348700 con cuota mensual de ~$1.35M hasta nov-2027. Es el compromiso fijo mas pesado de PMD. La cuota vence el 20 de cada mes y debe estar disponible en cuenta. ACCION: Asegurar liquidez el dia 20; evaluar cancelacion anticipada si hay caja o refinanciacion si baja la tasa.'},
+    {sev:'MEDIA', titulo:'Otras deudas $25M sin identificar', desc:'Balance 2025 - investigar origen',
+     explicacion:'En el balance 2025 aparece "Otras deudas" por $25M sin detalle. Puede ser deuda comercial, anticipos de clientes o prestamos entre partes. ACCION: Pedir al contador que abra el rubro y documente cada componente.'},
+    {sev:'MEDIA', titulo:'Honorarios 76% gastos admin', desc:'Concentracion excesiva en un rubro',
+     explicacion:'Los honorarios profesionales representan el 76% de los gastos de administracion. Alta concentracion que ARCA puede cuestionar por razonabilidad. ACCION: Verificar si incluye honorarios de socios gerentes y si estan aprobados por asamblea.'},
+    {sev:'MEDIA', titulo:'IVA Abril CF $16.7M pico', desc:'Verificar origen del credito fiscal anomalo',
+     explicacion:'En abril hubo un credito fiscal inusualmente alto de $16.7M. Puede ser factura de compra grande (materiales, subcontrato) o error de imputacion. ACCION: Verificar que el credito este respaldado por factura valida; ARCA puede observarlo.'},
+    {sev:'MEDIA', titulo:'F931 Jun remuneracion $4.5M', desc:'Doble del promedio - verificar causa',
+     explicacion:'El F931 de junio declaro remuneraciones por $4.5M, el doble del promedio mensual. Puede ser SAC (aguinaldo), personal extra o error. ACCION: Confirmar si corresponde a SAC de junio; si es asi, esta correcto.'},
+    {sev:'MEDIA', titulo:'IIBB Feb Augusto faltante', desc:'Sin DDJJ presentada ese periodo',
+     explicacion:'No hay DDJJ de IIBB de febrero a nombre de Augusto persona fisica. Si tiene actividad gravada en PBA, la presentacion es obligatoria. ACCION: Verificar si corresponde segun situacion de monotributo.'},
+    {sev:'MEDIA', titulo:'Transf. denegadas ICBC $690K', desc:'3 transferencias rechazadas en Feb',
+     explicacion:'En febrero 3 transferencias del ICBC fueron rechazadas por $690K total (incluye pagos a Naudir 308 y proveedores). Puede ser falta de fondos, limites de transferencia o bloqueos. ACCION: Verificar causa con el banco para evitar problemas con proveedores.'},
+    {sev:'MEDIA', titulo:'Sueldo Augusto 2026 - verificar pagos', desc:'Solo $8M via haberes Galicia (mar-abr) vs $12M declarados ene-jun',
+     explicacion:'En 2026 no hay transferencias directas ICBC a Augusto Menendez por sueldo. Se detectaron $8M via acreditacion de haberes Galicia (mar-abr). Contra los ~$12M declarados como sueldo socio gerente ene-jun, faltarian ~$4M. En ene-2026 se pago $7M como dif. sueldo 2025. ACCION: Cruzar con extracto personal para confirmar acreditaciones recibidas.'}
   ]
 };
 
@@ -1103,14 +1125,16 @@ const renderTables = () => {
   // Alertas y Hallazgos
   const alertDiv = document.getElementById('alertas-container');
   let alertHtml = '';
-  D.alertas.forEach(a => {
+  D.alertas.forEach((a,i) => {
     const sevCls = a.sev === 'ALTA' ? 'sev-alta' : 'sev-media';
-    alertHtml += `<div class="alert-item">
+    alertHtml += `<div class="alert-item" onclick="this.classList.toggle('expanded')">
       <span class="sev ${sevCls}">${a.sev}</span>
       <div class="alert-text">
         <div class="alert-title">${a.titulo}</div>
         <div class="alert-desc">${a.desc}</div>
+        ${a.explicacion ? `<div class="alert-explain">${a.explicacion}</div>` : ''}
       </div>
+      <span class="expand-icon">&#9654;</span>
     </div>`;
   });
   alertDiv.innerHTML = alertHtml;
