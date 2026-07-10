@@ -310,13 +310,13 @@ footer p+p{margin-top:4px}
     </div>
 
     <!-- PRESTAMO MACRO TABLE -->
-    <h2 class="section-title">Prestamo Banco Macro - Amortizacion</h2>
+    <h2 class="section-title">Prestamo ICBC - Amortizacion (Op. 0210348700)</h2>
     <div class="table-wrap">
-      <table id="table-macro">
+      <table id="table-icbc">
         <thead>
           <tr><th>Cuota</th><th>Fecha</th><th>Capital</th><th>Interes</th><th>Total Cuota</th><th>Saldo</th></tr>
         </thead>
-        <tbody id="macro-tbody"></tbody>
+        <tbody id="icbc-tbody"></tbody>
       </table>
     </div>
 
@@ -416,37 +416,37 @@ const DATA = {
     otrosCreditos: 39639567.53
   },
 
-  /* === PRESTAMO BANCO MACRO === */
-  prestamoMacro: {
+  /* === PRESTAMO ICBC === */
+  prestamoIcbc: {
     capital:18000000, fecha:'20/05/2026', cuotas:18, pagadas:1,
-    tasaMensual:1.70, tasaAnual:20.4, saldoActual:17231243.48,
-    cuotaActual:1084750.36, vto:'20/11/2027',
+    tasaMensual:3.00, tasaAnual:36.0, saldoActual:17231243.48,
+    cuotaActual:1387784.17, vto:'20/11/2027', operacion:'0210348700',
     amort: [
       {n:0, fecha:'20/05/26', cap:0, int:0, total:0, saldo:18000000},
-      {n:1, fecha:'20/06/26', cap:768757, int:292931, total:1084750, saldo:17231243},
-      {n:2, fecha:'20/07/26', cap:792000, int:293000, total:1085000, saldo:16439243},
-      {n:3, fecha:'20/08/26', cap:792000, int:279467, total:1071467, saldo:15647243},
-      {n:4, fecha:'20/09/26', cap:792000, int:266003, total:1058003, saldo:14855243},
-      {n:5, fecha:'20/10/26', cap:792000, int:252539, total:1044539, saldo:14063243},
-      {n:6, fecha:'20/11/26', cap:792000, int:239075, total:1031075, saldo:13271243},
-      {n:7, fecha:'20/12/26', cap:792000, int:225611, total:1017611, saldo:12479243},
-      {n:8, fecha:'20/01/27', cap:792000, int:212147, total:1004147, saldo:11687243},
-      {n:9, fecha:'20/02/27', cap:792000, int:198683, total:990683, saldo:10895243},
-      {n:10, fecha:'20/03/27', cap:792000, int:185219, total:977219, saldo:10103243},
-      {n:11, fecha:'20/04/27', cap:792000, int:171755, total:963755, saldo:9311243},
-      {n:12, fecha:'20/05/27', cap:792000, int:158291, total:950291, saldo:8519243},
-      {n:13, fecha:'20/06/27', cap:792000, int:144827, total:936827, saldo:7727243},
-      {n:14, fecha:'20/07/27', cap:792000, int:131363, total:923363, saldo:6935243},
-      {n:15, fecha:'20/08/27', cap:792000, int:117899, total:909899, saldo:6143243},
-      {n:16, fecha:'20/09/27', cap:792000, int:104435, total:896435, saldo:5351243},
-      {n:17, fecha:'20/10/27', cap:792000, int:90971, total:882971, saldo:4559243},
-      {n:18, fecha:'20/11/27', cap:4559243, int:77507, total:4636750, saldo:0}
+      {n:1, fecha:'20/06/26', cap:768757, int:540000, total:1392000, saldo:17231243},
+      {n:2, fecha:'20/07/26', cap:791819, int:516937, total:1387784, saldo:16439424},
+      {n:3, fecha:'20/08/26', cap:815574, int:493183, total:1384693, saldo:15623850},
+      {n:4, fecha:'20/09/26', cap:840041, int:468716, total:1380926, saldo:14783809},
+      {n:5, fecha:'20/10/26', cap:865242, int:443514, total:1376560, saldo:13918567},
+      {n:6, fecha:'20/11/26', cap:891200, int:417557, total:1373049, saldo:13027368},
+      {n:7, fecha:'20/12/26', cap:917935, int:390821, total:1368504, saldo:12109432},
+      {n:8, fecha:'20/01/27', cap:945474, int:363283, total:1364692, saldo:11163959},
+      {n:9, fecha:'20/02/27', cap:973838, int:334919, total:1360325, saldo:10190121},
+      {n:10, fecha:'20/03/27', cap:1003053, int:305704, total:1354821, saldo:9187068},
+      {n:11, fecha:'20/04/27', cap:1033144, int:275612, total:1351193, saldo:8153924},
+      {n:12, fecha:'20/05/27', cap:1064139, int:244618, total:1346153, saldo:7089785},
+      {n:13, fecha:'20/06/27', cap:1096063, int:212694, total:1341505, saldo:5993722},
+      {n:14, fecha:'20/07/27', cap:1128945, int:179812, total:1336246, saldo:4864777},
+      {n:15, fecha:'20/08/27', cap:1162813, int:145943, total:1331228, saldo:3701964},
+      {n:16, fecha:'20/09/27', cap:1197698, int:111059, total:1325857, saldo:2504266},
+      {n:17, fecha:'20/10/27', cap:1233629, int:75128, total:1320242, saldo:1270637},
+      {n:18, fecha:'20/11/27', cap:1270637, int:38119, total:1314626, saldo:0}
     ]
   },
 
   /* === MAPA DE DEUDAS === */
   deudas: {
-    financiera: {macro:17231243.48, visaIcbc:267231.18, total:17498474.66},
+    financiera: {prestamoIcbc:17231243.48, visaIcbc:267231.18, total:17498474.66},
     fiscal: {iva:5751411.29, retAntic:-7641625.66, planes:143660.15, otras:13068000, total:11321445.78},
     comercial: {proveedores:15685642.58, laborales:1488594.69, otras:25000000, total:42174237.27},
     total: 70994157.71
@@ -455,7 +455,7 @@ const DATA = {
   /* === COMPROMISOS MENSUALES === */
   compromisos: {
     items: [
-      {concepto:'Prestamo Banco Macro', mensual:1085000, pctVentas:7.0},
+      {concepto:'Prestamo ICBC (Op.0210348700)', mensual:1354000, pctVentas:8.7},
       {concepto:'F931 Cargas Sociales', mensual:120000, pctVentas:0.8},
       {concepto:'SICORE Retenciones', mensual:125000, pctVentas:0.8},
       {concepto:'IIBB PMD', mensual:50000, pctVentas:0.3},
@@ -466,7 +466,7 @@ const DATA = {
       {concepto:'Sueldo Augusto', mensual:2000000, pctVentas:12.9},
       {concepto:'Honorarios Terceros', mensual:10140000, pctVentas:65.5}
     ],
-    totalMensual:14330000, ventasPromedio:15486649, margen:1156649, ratio:92.5
+    totalMensual:14599000, ventasPromedio:15486649, margen:887649, ratio:94.3
   },
 
   /* === IMPOSITIVO COMPLETO === */
@@ -485,7 +485,7 @@ const DATA = {
     {sev:'ALTA', titulo:'IIBB ratio anomalo', desc:'Base IIBB $3.9M vs Ventas IVA $77.4M = 5%'},
     {sev:'ALTA', titulo:'ICBC SOBREGIRO Mar-Abr', desc:'Hasta -$1.27M en cuenta corriente'},
     {sev:'ALTA', titulo:'Ventas 2026 proyectadas bajas', desc:'Proy. $185.8M vs $379M en 2025'},
-    {sev:'ALTA', titulo:'Prestamo Macro $18M', desc:'Cuota ~$1.08M/mes, tasa ~20% anual'},
+    {sev:'ALTA', titulo:'Prestamo ICBC $17.2M', desc:'Cuota ~$1.35M/mes, tasa 3% mensual (36% anual) - Op.0210348700'},
     {sev:'MEDIA', titulo:'Otras deudas $25M sin identificar', desc:'Balance 2025 - investigar origen'},
     {sev:'MEDIA', titulo:'Honorarios 76% gastos admin', desc:'Concentracion excesiva en un rubro'},
     {sev:'MEDIA', titulo:'IVA Abril CF $16.7M pico', desc:'Verificar origen del credito fiscal anomalo'},
@@ -828,7 +828,7 @@ const renderCharts = () => {
   charts.deudas = new Chart(document.getElementById('chart-deudas'), {
     type: 'doughnut',
     data: {
-      labels: ['Financiera (Macro+Visa)', 'Fiscal (neta)', 'Comercial (Prov.+Lab.+Otras)'],
+      labels: ['Financiera (ICBC+Visa)', 'Fiscal (neta)', 'Comercial (Prov.+Lab.+Otras)'],
       datasets: [{
         data: [D.deudas.financiera.total, D.deudas.fiscal.total, D.deudas.comercial.total],
         backgroundColor: ['rgba(77,168,218,0.8)', 'rgba(255,193,7,0.8)', 'rgba(233,69,96,0.8)'],
@@ -1041,13 +1041,13 @@ const renderTables = () => {
   vhtml += `<tr style="font-weight:700;border-top:2px solid var(--blue)"><td colspan="2">TOTAL VEPs PAGADOS</td><td class="num">${fmt(D.vepsTotal)}</td></tr>`;
   vtb.innerHTML = vhtml;
 
-  // Prestamo Macro amortization table
-  const mtb2 = document.getElementById('macro-tbody');
-  let macroHtml = '';
-  D.prestamoMacro.amort.forEach(r => {
-    const isPaid = r.n <= D.prestamoMacro.pagadas;
+  // Prestamo ICBC amortization table
+  const mtb2 = document.getElementById('icbc-tbody');
+  let icbcHtml = '';
+  D.prestamoIcbc.amort.forEach(r => {
+    const isPaid = r.n <= D.prestamoIcbc.pagadas;
     const style = r.n === 0 ? 'font-weight:700;background:rgba(77,168,218,.08)' : isPaid ? 'background:rgba(0,201,167,.06)' : '';
-    macroHtml += `<tr style="${style}">
+    icbcHtml += `<tr style="${style}">
       <td>${r.n === 0 ? 'Desembolso' : r.n + (isPaid ? ' (pagada)' : ' (est.)')}</td>
       <td>${r.fecha}</td>
       <td class="num">${fmt(r.cap)}</td>
@@ -1056,17 +1056,17 @@ const renderTables = () => {
       <td class="num blue">${fmt(r.saldo)}</td>
     </tr>`;
   });
-  const totalCap = D.prestamoMacro.amort.reduce((s,r)=>s+r.cap,0);
-  const totalInt = D.prestamoMacro.amort.reduce((s,r)=>s+r.int,0);
-  const totalCuota = D.prestamoMacro.amort.reduce((s,r)=>s+r.total,0);
-  macroHtml += `<tr style="font-weight:700;border-top:2px solid var(--blue)">
+  const totalCap = D.prestamoIcbc.amort.reduce((s,r)=>s+r.cap,0);
+  const totalInt = D.prestamoIcbc.amort.reduce((s,r)=>s+r.int,0);
+  const totalCuota = D.prestamoIcbc.amort.reduce((s,r)=>s+r.total,0);
+  icbcHtml += `<tr style="font-weight:700;border-top:2px solid var(--blue)">
     <td colspan="2">TOTALES</td>
     <td class="num">${fmt(totalCap)}</td>
     <td class="num red">${fmt(totalInt)}</td>
     <td class="num">${fmt(totalCuota)}</td>
     <td class="num">$0,00</td>
   </tr>`;
-  mtb2.innerHTML = macroHtml;
+  mtb2.innerHTML = icbcHtml;
 
   // Compromisos mensuales table
   const ctb2 = document.getElementById('compromisos-tbody');
