@@ -63,13 +63,15 @@ header{background:var(--card);border-bottom:1px solid var(--border);padding:20px
 main{max-width:1400px;margin:0 auto;padding:24px 20px 60px}
 
 /* KPI CARDS */
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
 .kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;position:relative;overflow:hidden}
 .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
 .kpi-card:nth-child(1)::before{background:var(--green)}
 .kpi-card:nth-child(2)::before{background:var(--green)}
 .kpi-card:nth-child(3)::before{background:var(--blue)}
 .kpi-card:nth-child(4)::before{background:var(--red)}
+.kpi-card:nth-child(5)::before{background:var(--yellow)}
+.kpi-card:nth-child(6)::before{background:var(--highlight)}
 .kpi-label{font-size:.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 .kpi-value{font-size:1.6rem;font-weight:700}
 .kpi-value.green{color:var(--green)}
@@ -101,6 +103,17 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
 td.green{color:var(--green)}
 td.red{color:var(--red)}
 .missing{color:var(--text-muted);font-style:italic}
+.alert-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px}
+.alert-item .sev{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:700;text-transform:uppercase;min-width:50px;text-align:center;flex-shrink:0}
+.sev-alta{background:rgba(233,69,96,.15);color:var(--red)}
+.sev-media{background:rgba(255,193,7,.15);color:var(--yellow)}
+.alert-item .alert-text{flex:1}
+.alert-item .alert-title{font-weight:600;font-size:.9rem;margin-bottom:2px}
+.alert-item .alert-desc{font-size:.82rem;color:var(--text-muted)}
+.progress-wrap{background:rgba(255,255,255,.06);border-radius:4px;height:8px;overflow:hidden;margin-top:6px}
+.progress-bar{height:100%;border-radius:4px;transition:width .3s}
+.kpi-value.yellow{color:var(--yellow)}
+.badge-yellow{background:rgba(255,193,7,.15);color:var(--yellow)}
 
 /* FOOTER */
 footer{background:var(--card);border-top:1px solid var(--border);padding:20px 32px;text-align:center;color:var(--text-muted);font-size:.8rem}
@@ -191,7 +204,7 @@ footer p+p{margin-top:4px}
       <div class="kpi-card">
         <div class="kpi-label">IVA Posicion Real (c/Apertura)</div>
         <div class="kpi-value green" id="kpi-iva"></div>
-        <div class="kpi-sub"><span class="badge" id="kpi-iva-badge">â</span> <span id="kpi-iva-period"></span></div>
+        <div class="kpi-sub"><span class="badge" id="kpi-iva-badge">—</span> <span id="kpi-iva-period"></span></div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Ventas Acumuladas</div>
@@ -202,6 +215,18 @@ footer p+p{margin-top:4px}
         <div class="kpi-label">Costo Financiero Total</div>
         <div class="kpi-value red" id="kpi-costo"></div>
         <div class="kpi-sub"><span class="badge badge-red" id="kpi-costo-rate"></span> <span>4 operaciones de descuento</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Deuda Total PMD</div>
+        <div class="kpi-value red" id="kpi-deuda"></div>
+        <div class="kpi-sub" id="kpi-deuda-detail"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Margen Mensual Disponible</div>
+        <div class="kpi-value" id="kpi-margen"></div>
+        <div class="kpi-sub" id="kpi-margen-detail">
+          <div class="progress-wrap" style="width:100%"><div class="progress-bar" id="kpi-margen-bar"></div></div>
+        </div>
       </div>
     </div>
 
@@ -226,6 +251,18 @@ footer p+p{margin-top:4px}
       <div class="chart-card">
         <h3><span class="dot" style="background:var(--green)"></span>Descuento de Cheques Galicia</h3>
         <div class="chart-wrap"><canvas id="chart-cheques"></canvas></div>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW 3 -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3><span class="dot" style="background:var(--highlight)"></span>Mapa de Deudas PMD ($70.99M)</h3>
+        <div class="chart-wrap"><canvas id="chart-deudas"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3><span class="dot" style="background:var(--yellow)"></span>Compromisos Mensuales vs Ventas</h3>
+        <div class="chart-wrap"><canvas id="chart-compromisos"></canvas></div>
       </div>
     </div>
 
@@ -272,6 +309,28 @@ footer p+p{margin-top:4px}
       </table>
     </div>
 
+    <!-- PRESTAMO MACRO TABLE -->
+    <h2 class="section-title">Prestamo Banco Macro - Amortizacion</h2>
+    <div class="table-wrap">
+      <table id="table-macro">
+        <thead>
+          <tr><th>Cuota</th><th>Fecha</th><th>Capital</th><th>Interes</th><th>Total Cuota</th><th>Saldo</th></tr>
+        </thead>
+        <tbody id="macro-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- COMPROMISOS TABLE -->
+    <h2 class="section-title">Compromisos Mensuales Fijos</h2>
+    <div class="table-wrap">
+      <table id="table-compromisos">
+        <thead>
+          <tr><th>Concepto</th><th>Monto Mensual</th><th>% s/Ventas</th><th>Monto Anual</th></tr>
+        </thead>
+        <tbody id="compromisos-tbody"></tbody>
+      </table>
+    </div>
+
     <!-- VEPs TABLE -->
     <h2 class="section-title">VEPs Pagados</h2>
     <div class="table-wrap">
@@ -282,6 +341,9 @@ footer p+p{margin-top:4px}
         <tbody id="veps-tbody"></tbody>
       </table>
     </div>
+    <!-- ALERTAS Y HALLAZGOS -->
+    <h2 class="section-title" style="border-left-color:var(--red)">Alertas y Hallazgos de Auditoria</h2>
+    <div id="alertas-container"></div>
   </main>
 
   <footer>
@@ -296,9 +358,9 @@ footer p+p{margin-top:4px}
 'use strict';
 
 /* ===== FORMATTERS ===== */
-const fmt = (n) => n == null ? 'â' : '$' + n.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-const fmtM = (n) => n == null ? 'â' : '$' + (n/1000000).toFixed(1) + 'M';
-const fmtPct = (n) => n == null ? 'â' : n.toFixed(2) + '%';
+const fmt = (n) => n == null ? '—' : '$' + n.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const fmtM = (n) => n == null ? '—' : '$' + (n/1000000).toFixed(1) + 'M';
+const fmtPct = (n) => n == null ? '—' : n.toFixed(2) + '%';
 
 /* ===== EMBEDDED DATA ===== */
 const DATA = {
@@ -352,7 +414,85 @@ const DATA = {
     bienesUso: 19709845.01,
     bienesCambio: 69171909.98,
     otrosCreditos: 39639567.53
-  }
+  },
+
+  /* === PRESTAMO BANCO MACRO === */
+  prestamoMacro: {
+    capital:18000000, fecha:'20/05/2026', cuotas:18, pagadas:1,
+    tasaMensual:1.70, tasaAnual:20.4, saldoActual:17231243.48,
+    cuotaActual:1084750.36, vto:'20/11/2027',
+    amort: [
+      {n:0, fecha:'20/05/26', cap:0, int:0, total:0, saldo:18000000},
+      {n:1, fecha:'20/06/26', cap:768757, int:292931, total:1084750, saldo:17231243},
+      {n:2, fecha:'20/07/26', cap:792000, int:293000, total:1085000, saldo:16439243},
+      {n:3, fecha:'20/08/26', cap:792000, int:279467, total:1071467, saldo:15647243},
+      {n:4, fecha:'20/09/26', cap:792000, int:266003, total:1058003, saldo:14855243},
+      {n:5, fecha:'20/10/26', cap:792000, int:252539, total:1044539, saldo:14063243},
+      {n:6, fecha:'20/11/26', cap:792000, int:239075, total:1031075, saldo:13271243},
+      {n:7, fecha:'20/12/26', cap:792000, int:225611, total:1017611, saldo:12479243},
+      {n:8, fecha:'20/01/27', cap:792000, int:212147, total:1004147, saldo:11687243},
+      {n:9, fecha:'20/02/27', cap:792000, int:198683, total:990683, saldo:10895243},
+      {n:10, fecha:'20/03/27', cap:792000, int:185219, total:977219, saldo:10103243},
+      {n:11, fecha:'20/04/27', cap:792000, int:171755, total:963755, saldo:9311243},
+      {n:12, fecha:'20/05/27', cap:792000, int:158291, total:950291, saldo:8519243},
+      {n:13, fecha:'20/06/27', cap:792000, int:144827, total:936827, saldo:7727243},
+      {n:14, fecha:'20/07/27', cap:792000, int:131363, total:923363, saldo:6935243},
+      {n:15, fecha:'20/08/27', cap:792000, int:117899, total:909899, saldo:6143243},
+      {n:16, fecha:'20/09/27', cap:792000, int:104435, total:896435, saldo:5351243},
+      {n:17, fecha:'20/10/27', cap:792000, int:90971, total:882971, saldo:4559243},
+      {n:18, fecha:'20/11/27', cap:4559243, int:77507, total:4636750, saldo:0}
+    ]
+  },
+
+  /* === MAPA DE DEUDAS === */
+  deudas: {
+    financiera: {macro:17231243.48, visaIcbc:267231.18, total:17498474.66},
+    fiscal: {iva:5751411.29, retAntic:-7641625.66, planes:143660.15, otras:13068000, total:11321445.78},
+    comercial: {proveedores:15685642.58, laborales:1488594.69, otras:25000000, total:42174237.27},
+    total: 70994157.71
+  },
+
+  /* === COMPROMISOS MENSUALES === */
+  compromisos: {
+    items: [
+      {concepto:'Prestamo Banco Macro', mensual:1085000, pctVentas:7.0},
+      {concepto:'F931 Cargas Sociales', mensual:120000, pctVentas:0.8},
+      {concepto:'SICORE Retenciones', mensual:125000, pctVentas:0.8},
+      {concepto:'IIBB PMD', mensual:50000, pctVentas:0.3},
+      {concepto:'IIBB Augusto', mensual:200000, pctVentas:1.3},
+      {concepto:'Autonomos SUSS x2', mensual:310000, pctVentas:2.0},
+      {concepto:'Anticipos Ganancias', mensual:100000, pctVentas:0.6},
+      {concepto:'Visa ICBC Corp.', mensual:200000, pctVentas:1.3},
+      {concepto:'Sueldo Augusto', mensual:2000000, pctVentas:12.9},
+      {concepto:'Honorarios Terceros', mensual:10140000, pctVentas:65.5}
+    ],
+    totalMensual:14330000, ventasPromedio:15486649, margen:1156649, ratio:92.5
+  },
+
+  /* === IMPOSITIVO COMPLETO === */
+  iibbAugusto: [0, null, 0, 0, 1133643.40, null],
+  autonomos: [300582, 310742, 310000, 300582, 310742, 310000],
+  anticiposGan: [100386, null, 95068, 108242, 100642, 100000],
+  sueldoSocio: [1250000.10, 2253333.39, 1933333.43, null, 2000000.10, 4499999.40],
+  comprasEst: [8536771, 11636660, 10064736, 79605327, 12721672, null],
+
+  /* === ALERTAS AUDITORIA === */
+  alertas: [
+    {sev:'ALTA', titulo:'Bienes de cambio +537.7%', desc:'$10.8M a $69.2M - verificar valuacion'},
+    {sev:'ALTA', titulo:'Resultado neto -51.7%', desc:'Pese a +19.6% ventas; Gastos admin +90.3%'},
+    {sev:'ALTA', titulo:'Deudas fiscales +170%', desc:'De $7.9M a $21.3M interanual'},
+    {sev:'ALTA', titulo:'F931 Abril FALTANTE', desc:'DDJJ no presentada al estudio'},
+    {sev:'ALTA', titulo:'IIBB ratio anomalo', desc:'Base IIBB $3.9M vs Ventas IVA $77.4M = 5%'},
+    {sev:'ALTA', titulo:'ICBC SOBREGIRO Mar-Abr', desc:'Hasta -$1.27M en cuenta corriente'},
+    {sev:'ALTA', titulo:'Ventas 2026 proyectadas bajas', desc:'Proy. $185.8M vs $379M en 2025'},
+    {sev:'ALTA', titulo:'Prestamo Macro $18M', desc:'Cuota ~$1.08M/mes, tasa ~20% anual'},
+    {sev:'MEDIA', titulo:'Otras deudas $25M sin identificar', desc:'Balance 2025 - investigar origen'},
+    {sev:'MEDIA', titulo:'Honorarios 76% gastos admin', desc:'Concentracion excesiva en un rubro'},
+    {sev:'MEDIA', titulo:'IVA Abril CF $16.7M pico', desc:'Verificar origen del credito fiscal anomalo'},
+    {sev:'MEDIA', titulo:'F931 Jun remuneracion $4.5M', desc:'Doble del promedio - verificar causa'},
+    {sev:'MEDIA', titulo:'IIBB Feb Augusto faltante', desc:'Sin DDJJ presentada ese periodo'},
+    {sev:'MEDIA', titulo:'Transf. denegadas ICBC $690K', desc:'3 transferencias rechazadas en Feb'}
+  ]
 };
 
 /* ===== ACTIVE DATA (may be overridden by Google Sheet) ===== */
@@ -540,6 +680,27 @@ const renderKPIs = () => {
 
   document.getElementById('kpi-costo').textContent = fmt(D.chequesTotals.costos);
   document.getElementById('kpi-costo-rate').textContent = `${D.chequesTotals.tasaPromedio}% promedio`;
+
+  // Deuda Total KPI
+  document.getElementById('kpi-deuda').textContent = fmt(D.deudas.total);
+  document.getElementById('kpi-deuda-detail').textContent = `Financiera: ${fmtM(D.deudas.financiera.total)} | Fiscal: ${fmtM(D.deudas.fiscal.total)} | Comercial: ${fmtM(D.deudas.comercial.total)}`;
+
+  // Margen Mensual KPI
+  const margen = D.compromisos.margen;
+  const ratio = D.compromisos.ratio;
+  const kpiMargenEl = document.getElementById('kpi-margen');
+  kpiMargenEl.textContent = fmt(margen) + '/mes';
+  kpiMargenEl.className = ratio > 90 ? 'kpi-value red' : ratio > 80 ? 'kpi-value yellow' : 'kpi-value green';
+  const margenBadge = document.getElementById('kpi-margen-badge');
+  if (margenBadge) {
+    margenBadge.className = ratio > 90 ? 'badge badge-red' : ratio > 80 ? 'badge badge-yellow' : 'badge badge-green';
+    margenBadge.textContent = `${ratio}% comprometido`;
+  }
+  const bar = document.getElementById('kpi-margen-bar');
+  if (bar) {
+    bar.style.width = Math.min(ratio, 100) + '%';
+    bar.style.background = ratio > 90 ? 'var(--red)' : ratio > 80 ? 'var(--yellow)' : 'var(--green)';
+  }
 };
 
 /* ===== RENDER CHARTS ===== */
@@ -610,22 +771,23 @@ const renderCharts = () => {
     }
   });
 
-  // Chart 3: Monthly taxes
-  const iibbData = D.iibb.pagar.map((v, i) => (v ?? 0));
-
+  // Chart 3: Monthly taxes (COMPLETE with all obligations)
   charts.taxes = new Chart(document.getElementById('chart-taxes'), {
     type: 'bar',
     data: {
       labels: D.months,
       datasets: [
-        { label:'SICORE', data:D.sicore, backgroundColor:'rgba(77,168,218,0.8)', borderRadius:4 },
-        { label:'F931 (Cargas Sociales)', data:D.f931.map(v => v ?? 0), backgroundColor:'rgba(255,140,66,0.8)', borderRadius:4 },
-        { label:'IIBB a pagar', data:iibbData, backgroundColor:'rgba(233,69,96,0.8)', borderRadius:4 }
+        { label:'SICORE', data:D.sicore.map(v=>v??0), backgroundColor:'rgba(77,168,218,0.8)', borderRadius:4 },
+        { label:'F931', data:D.f931.map(v=>v??0), backgroundColor:'rgba(255,140,66,0.8)', borderRadius:4 },
+        { label:'IIBB PMD', data:D.iibb.pagar.map(v=>v??0), backgroundColor:'rgba(233,69,96,0.8)', borderRadius:4 },
+        { label:'IIBB Augusto', data:D.iibbAugusto.map(v=>v??0), backgroundColor:'rgba(233,69,96,0.5)', borderRadius:4 },
+        { label:'Autonomos SUSS', data:D.autonomos.map(v=>v??0), backgroundColor:'rgba(108,122,137,0.8)', borderRadius:4 },
+        { label:'Antic. Ganancias', data:D.anticiposGan.map(v=>v??0), backgroundColor:'rgba(0,201,167,0.6)', borderRadius:4 }
       ]
     },
     options: {
       responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{ usePointStyle:true, padding:16 } },
+      plugins:{ legend:{ position:'bottom', labels:{ usePointStyle:true, padding:12, font:{size:10} } },
         tooltip:{ callbacks:{ label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
       },
       scales:{
@@ -658,6 +820,55 @@ const renderCharts = () => {
       scales:{
         x:{ stacked:true, grid:{ display:false } },
         y:{ stacked:true, ticks:{ callback:(v) => fmtM(v) }, grid:{ color:'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+
+  // Chart 5: Debt donut
+  charts.deudas = new Chart(document.getElementById('chart-deudas'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Financiera (Macro+Visa)', 'Fiscal (neta)', 'Comercial (Prov.+Lab.+Otras)'],
+      datasets: [{
+        data: [D.deudas.financiera.total, D.deudas.fiscal.total, D.deudas.comercial.total],
+        backgroundColor: ['rgba(77,168,218,0.8)', 'rgba(255,193,7,0.8)', 'rgba(233,69,96,0.8)'],
+        borderColor: ['rgba(77,168,218,1)', 'rgba(255,193,7,1)', 'rgba(233,69,96,1)'],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ position:'bottom', labels:{ usePointStyle:true, padding:16 } },
+        tooltip:{ callbacks:{ label: (ctx) => `${ctx.label}: ${fmt(ctx.parsed)} (${((ctx.parsed/D.deudas.total)*100).toFixed(1)}%)` } }
+      }
+    }
+  });
+
+  // Chart 6: Compromisos vs Ventas
+  const compLabels = D.compromisos.items.map(i => i.concepto.length > 15 ? i.concepto.substring(0,15)+'...' : i.concepto);
+  const compValues = D.compromisos.items.map(i => i.mensual);
+  const compColors = D.compromisos.items.map((_,i) => {
+    const palette = ['#4da8da','#6c7a89','#6c7a89','#e94560','#e94560','#6c7a89','#00c9a7','#ff8c42','#ffc107','#ffc107'];
+    return palette[i % palette.length];
+  });
+  charts.compromisos = new Chart(document.getElementById('chart-compromisos'), {
+    type: 'bar',
+    data: {
+      labels: compLabels,
+      datasets: [
+        { label:'Monto Mensual', data:compValues, backgroundColor:compColors.map(c=>c+'cc'), borderColor:compColors, borderWidth:1, borderRadius:4 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false, indexAxis:'y',
+      plugins:{
+        legend:{ display:false },
+        tooltip:{ callbacks:{ label: (ctx) => `${fmt(ctx.parsed.x)} (${D.compromisos.items[ctx.dataIndex].pctVentas}% ventas)` } }
+      },
+      scales:{
+        x:{ ticks:{ callback:(v) => fmtM(v) }, grid:{ color:'rgba(255,255,255,0.04)' } },
+        y:{ grid:{ display:false }, ticks:{ font:{size:10} } }
       }
     }
   });
@@ -715,8 +926,13 @@ const renderTables = () => {
     'Saldo Libre Disp.': null,
     'SICORE': D.balance2025.deudasFiscales.sicore,
     'F931 (Cargas Soc.)': null,
-    'IIBB a Pagar': D.balance2025.deudasFiscales.iibb,
+    'IIBB PMD a Pagar': D.balance2025.deudasFiscales.iibb,
+    'IIBB Augusto a Pagar': null,
+    'Autonomos SUSS': null,
+    'Antic. Ganancias': null,
     'IIBB a Favor Contrib.': null,
+    'Compras Estimadas': null,
+    'Sueldo Socio Gerente': null,
     'Saldo ICBC': D.balance2025.cajaBancos.icbc,
     'Saldo Galicia': D.balance2025.cajaBancos.galicia,
     'Saldo Mercado Pago': D.balance2025.cajaBancos.mp
@@ -731,8 +947,13 @@ const renderTables = () => {
     { label:'Saldo Libre Disp.', data:D.iva.saldoLibreDisp, cls:'', bold:false },
     { label:'SICORE', data:D.sicore, cls:'red', bold:false },
     { label:'F931 (Cargas Soc.)', data:D.f931, cls:'red', bold:false },
-    { label:'IIBB a Pagar', data:D.iibb.pagar, cls:'red', bold:false },
+    { label:'IIBB PMD a Pagar', data:D.iibb.pagar, cls:'red', bold:false },
+    { label:'IIBB Augusto a Pagar', data:D.iibbAugusto, cls:'red', bold:false },
+    { label:'Autonomos SUSS', data:D.autonomos, cls:'red', bold:false },
+    { label:'Antic. Ganancias', data:D.anticiposGan, cls:'red', bold:false },
     { label:'IIBB a Favor Contrib.', data:D.iibb.favor, cls:'green', bold:false },
+    { label:'Compras Estimadas', data:D.comprasEst, cls:'', bold:false },
+    { label:'Sueldo Socio Gerente', data:D.sueldoSocio, cls:'', bold:false },
     { label:'Saldo ICBC', data:D.banks.icbc, cls:'', bold:false },
     { label:'Saldo Galicia', data:D.banks.galicia, cls:'', bold:false },
     { label:'Saldo Mercado Pago', data:D.banks.mp, cls:'', bold:false }
@@ -745,8 +966,8 @@ const renderTables = () => {
   mhtml += `<tr style="font-weight:700;background:rgba(233,69,96,0.08)">`;
   mhtml += `<td>IVA Deuda Apertura</td>`;
   mhtml += `<td class="num red">${fmt(-D.balance2025.deudasFiscales.iva)}</td>`;
-  for (let i = 0; i < D.months.length; i++) { mhtml += `<td class="num missing">â</td>`; }
-  mhtml += `<td class="num missing">â</td>`;
+  for (let i = 0; i < D.months.length; i++) { mhtml += `<td class="num missing">—</td>`; }
+  mhtml += `<td class="num missing">—</td>`;
   mhtml += `</tr>`;
 
   rows.forEach(r => {
@@ -757,7 +978,7 @@ const renderTables = () => {
     // Dic-25 opening column
     const dic25Val = dic25Map[r.label];
     if (dic25Val == null) {
-      mhtml += `<td class="num missing">â</td>`;
+      mhtml += `<td class="num missing">—</td>`;
     } else if (dic25Val < 0) {
       mhtml += `<td class="num red">${fmt(dic25Val)}</td>`;
     } else {
@@ -766,7 +987,7 @@ const renderTables = () => {
     // Monthly columns
     r.data.forEach(v => {
       if (v == null) {
-        mhtml += `<td class="num missing">â</td>`;
+        mhtml += `<td class="num missing">—</td>`;
       } else if (v < 0) {
         mhtml += `<td class="num red">${fmt(v)}</td>`;
       } else {
@@ -775,7 +996,7 @@ const renderTables = () => {
     });
     // Show total only for rows where it makes sense (not bank balances)
     const showTotal = !r.label.startsWith('Saldo ');
-    mhtml += `<td class="num ${r.cls}" style="font-weight:600">${showTotal ? fmt(total) : 'â'}</td>`;
+    mhtml += `<td class="num ${r.cls}" style="font-weight:600">${showTotal ? fmt(total) : '—'}</td>`;
     mhtml += `</tr>`;
   });
 
@@ -797,7 +1018,7 @@ const renderTables = () => {
       const cls = realVal < 0 ? 'red' : 'green';
       mhtml += `<td class="num ${cls}" style="font-weight:700">${fmt(realVal)}</td>`;
     } else {
-      mhtml += `<td class="num missing">â</td>`;
+      mhtml += `<td class="num missing">—</td>`;
     }
   });
   const lastRealIVA = hasRealData ? realTotal : null;
@@ -805,7 +1026,7 @@ const renderTables = () => {
     const cls = lastRealIVA < 0 ? 'red' : 'green';
     mhtml += `<td class="num ${cls}" style="font-weight:700">${fmt(lastRealIVA)}</td>`;
   } else {
-    mhtml += `<td class="num missing">â</td>`;
+    mhtml += `<td class="num missing">—</td>`;
   }
   mhtml += `</tr>`;
 
@@ -819,6 +1040,80 @@ const renderTables = () => {
   });
   vhtml += `<tr style="font-weight:700;border-top:2px solid var(--blue)"><td colspan="2">TOTAL VEPs PAGADOS</td><td class="num">${fmt(D.vepsTotal)}</td></tr>`;
   vtb.innerHTML = vhtml;
+
+  // Prestamo Macro amortization table
+  const mtb2 = document.getElementById('macro-tbody');
+  let macroHtml = '';
+  D.prestamoMacro.amort.forEach(r => {
+    const isPaid = r.n <= D.prestamoMacro.pagadas;
+    const style = r.n === 0 ? 'font-weight:700;background:rgba(77,168,218,.08)' : isPaid ? 'background:rgba(0,201,167,.06)' : '';
+    macroHtml += `<tr style="${style}">
+      <td>${r.n === 0 ? 'Desembolso' : r.n + (isPaid ? ' (pagada)' : ' (est.)')}</td>
+      <td>${r.fecha}</td>
+      <td class="num">${fmt(r.cap)}</td>
+      <td class="num red">${fmt(r.int)}</td>
+      <td class="num" style="font-weight:600">${fmt(r.total)}</td>
+      <td class="num blue">${fmt(r.saldo)}</td>
+    </tr>`;
+  });
+  const totalCap = D.prestamoMacro.amort.reduce((s,r)=>s+r.cap,0);
+  const totalInt = D.prestamoMacro.amort.reduce((s,r)=>s+r.int,0);
+  const totalCuota = D.prestamoMacro.amort.reduce((s,r)=>s+r.total,0);
+  macroHtml += `<tr style="font-weight:700;border-top:2px solid var(--blue)">
+    <td colspan="2">TOTALES</td>
+    <td class="num">${fmt(totalCap)}</td>
+    <td class="num red">${fmt(totalInt)}</td>
+    <td class="num">${fmt(totalCuota)}</td>
+    <td class="num">$0,00</td>
+  </tr>`;
+  mtb2.innerHTML = macroHtml;
+
+  // Compromisos mensuales table
+  const ctb2 = document.getElementById('compromisos-tbody');
+  let compHtml = '';
+  D.compromisos.items.forEach(item => {
+    const anual = item.mensual * 12;
+    compHtml += `<tr>
+      <td>${item.concepto}</td>
+      <td class="num">${fmt(item.mensual)}</td>
+      <td class="num" style="color:${item.pctVentas > 10 ? 'var(--red)' : 'var(--text-muted)'}">${item.pctVentas}%</td>
+      <td class="num">${fmt(anual)}</td>
+    </tr>`;
+  });
+  compHtml += `<tr style="font-weight:700;border-top:2px solid var(--yellow)">
+    <td>TOTAL COMPROMISOS</td>
+    <td class="num red">${fmt(D.compromisos.totalMensual)}</td>
+    <td class="num red">${D.compromisos.ratio}%</td>
+    <td class="num red">${fmt(D.compromisos.totalMensual * 12)}</td>
+  </tr>`;
+  compHtml += `<tr style="background:rgba(0,201,167,.06)">
+    <td>Ventas Promedio Mensual</td>
+    <td class="num green">${fmt(D.compromisos.ventasPromedio)}</td>
+    <td class="num">100%</td>
+    <td class="num green">${fmt(D.compromisos.ventasPromedio * 12)}</td>
+  </tr>`;
+  compHtml += `<tr style="font-weight:700;background:rgba(233,69,96,.06)">
+    <td>MARGEN DISPONIBLE</td>
+    <td class="num" style="color:${D.compromisos.margen > 0 ? 'var(--green)' : 'var(--red)'}">${fmt(D.compromisos.margen)}</td>
+    <td class="num">${(100 - D.compromisos.ratio).toFixed(1)}%</td>
+    <td class="num">${fmt(D.compromisos.margen * 12)}</td>
+  </tr>`;
+  ctb2.innerHTML = compHtml;
+
+  // Alertas y Hallazgos
+  const alertDiv = document.getElementById('alertas-container');
+  let alertHtml = '';
+  D.alertas.forEach(a => {
+    const sevCls = a.sev === 'ALTA' ? 'sev-alta' : 'sev-media';
+    alertHtml += `<div class="alert-item">
+      <span class="sev ${sevCls}">${a.sev}</span>
+      <div class="alert-text">
+        <div class="alert-title">${a.titulo}</div>
+        <div class="alert-desc">${a.desc}</div>
+      </div>
+    </div>`;
+  });
+  alertDiv.innerHTML = alertHtml;
 };
 
 /* ===== RENDER ALL ===== */
@@ -851,11 +1146,10 @@ const initDashboard = async () => {
   renderAll();
 };
 
-/* ===== ON LOAD - inicio directo sin contraseÃ±a ===== */
+/* ===== ON LOAD - inicio directo sin contraseña ===== */
 showDashboard();
 
 })();
 </script>
 </body>
 </html>
-
