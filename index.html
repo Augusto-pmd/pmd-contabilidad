@@ -476,42 +476,42 @@ const DATA = {
   },
 
   /* === IMPOSITIVO COMPLETO === */
-  iibbAugusto: [0, null, 0, 0, 1133643.40, null],
+  iibbAugusto: [0, 0, 0, 0, 1133643.40, null],
   autonomos: [300582, 310742, 310000, 300582, 310742, 310000],
   anticiposGan: [100386, null, 95068, 108242, 100642, 100000],
-  sueldoSocio: [1250000.10, 2253333.39, 1933333.43, null, 2000000.10, 4499999.40],
+  sueldoSocio: [1250000.10, 2253333.39, 1933333.43, 2000000.10, 2000000.10, 4499999.40],
   comprasEst: [8536771, 11636660, 10064736, 79605327, 12721672, null],
 
-  /* === ALERTAS AUDITORIA === */
+  /* === ALERTAS AUDITORIA (11 alertas - actualizado 10/07/2026) === */
   alertas: [
-    {sev:'ALTA', titulo:'Bienes de cambio +537.7%', desc:'$10.8M a $69.2M - verificar valuacion',
+    /* --- ALTA: Balance y rentabilidad --- */
+    {sev:'ALTA', titulo:'Bienes de cambio +537.7%', desc:'$10.8M a $69.2M interanual - verificar valuacion',
      explicacion:'El rubro bienes de cambio (obra en proceso, materiales) salto mas de 5 veces entre ejercicios. Puede indicar acumulacion de costos de obras sin facturar o valuacion incorrecta del inventario. ACCION: Revisar con el contador si hay obras terminadas que deberian haberse pasado a costo de ventas.'},
-    {sev:'ALTA', titulo:'Resultado neto -51.7%', desc:'Pese a +19.6% ventas; Gastos admin +90.3%',
+    {sev:'ALTA', titulo:'Resultado neto -51.7%', desc:'Menos ganancia pese a +19.6% ventas; Gastos admin +90.3%',
      explicacion:'PMD factura mas pero gana menos. Los gastos de administracion casi se duplicaron, probablemente por aumento de estructura, honorarios o gastos extraordinarios. ACCION: Desglosar gastos admin para identificar que crecio tanto y si es recurrente o puntual.'},
-    {sev:'ALTA', titulo:'Deudas fiscales +170%', desc:'De $7.9M a $21.3M interanual',
+    {sev:'ALTA', titulo:'Deudas fiscales +170%', desc:'De $7.9M a $21.3M interanual con ARCA/ARBA',
      explicacion:'Las deudas con ARCA/ARBA se triplicaron (IVA, anticipos Ganancias, IIBB, etc). Riesgo de intimaciones, intereses resarcitorios y embargos. ACCION: Mapear que impuestos se deben y evaluar plan de pagos con ARCA.'},
-    {sev:'ALTA', titulo:'F931 Abril FALTANTE', desc:'DDJJ no presentada al estudio',
-     explicacion:'La declaracion jurada de cargas sociales (aportes/contribuciones UOCRA) de abril no fue presentada o no se recibio del estudio contable. Genera multas automaticas y puede trabar ECHEQ, prestamos y certificados. ACCION: Reclamar al estudio que la presente urgente.'},
-    {sev:'ALTA', titulo:'IIBB ratio anomalo', desc:'Base IIBB $3.9M vs Ventas IVA $77.4M = 5%',
-     explicacion:'La base imponible declarada en IIBB representa solo el 5% de las ventas en IVA. Si se vende $77M y se declara $3.9M en IIBB, ARBA puede presumir evasion y hacer ajuste de oficio. ACCION: Verificar si hay exencion, diferimiento, o subdeclaracion real.'},
-    {sev:'ALTA', titulo:'ICBC SOBREGIRO Mar-Abr', desc:'Hasta -$1.27M en cuenta corriente',
-     explicacion:'La cuenta corriente ICBC llego a saldo negativo de $1.27M. El descubierto genera intereses altisimos y puede afectar la calificacion crediticia de PMD. ACCION: Evitar que se repita; analizar si fue por timing entre cobros y pagos UOCRA.'},
-    {sev:'ALTA', titulo:'Ventas 2026 proyectadas bajas', desc:'Proy. $185.8M vs $379M en 2025',
-     explicacion:'Al ritmo actual, PMD cerraria 2026 con menos de la mitad de facturacion que 2025. Puede ser real (menos obras) o estacionalidad (concentracion en 2do semestre). ACCION: Evaluar backlog de obras y contratos pendientes de facturar.'},
-    {sev:'ALTA', titulo:'Prestamo ICBC $17.2M', desc:'Cuota ~$1.35M/mes, tasa 3% mensual (36% anual) - Op.0210348700',
-     explicacion:'Prestamo comercial ICBC Op.0210348700 con cuota mensual de ~$1.35M hasta nov-2027. Es el compromiso fijo mas pesado de PMD. La cuota vence el 20 de cada mes y debe estar disponible en cuenta. ACCION: Asegurar liquidez el dia 20; evaluar cancelacion anticipada si hay caja o refinanciacion si baja la tasa.'},
-    {sev:'MEDIA', titulo:'Otras deudas $25M sin identificar', desc:'Balance 2025 - investigar origen',
+    {sev:'MEDIA', titulo:'Otras deudas $25M sin identificar', desc:'Balance 2025 - origen no documentado',
      explicacion:'En el balance 2025 aparece "Otras deudas" por $25M sin detalle. Puede ser deuda comercial, anticipos de clientes o prestamos entre partes. ACCION: Pedir al contador que abra el rubro y documente cada componente.'},
-    {sev:'MEDIA', titulo:'Honorarios 76% gastos admin', desc:'Concentracion excesiva en un rubro',
+    {sev:'MEDIA', titulo:'Honorarios 76% de gastos admin', desc:'Alta concentracion en un solo rubro',
      explicacion:'Los honorarios profesionales representan el 76% de los gastos de administracion. Alta concentracion que ARCA puede cuestionar por razonabilidad. ACCION: Verificar si incluye honorarios de socios gerentes y si estan aprobados por asamblea.'},
-    {sev:'MEDIA', titulo:'IVA Abril CF $16.7M pico', desc:'Verificar origen del credito fiscal anomalo',
+    /* --- ALTA: Impositivo y bancos --- */
+    {sev:'ALTA', titulo:'IIBB: ratio anomalo vs IVA', desc:'Base IIBB $3.9M vs Ventas IVA $77.4M = solo 5%',
+     explicacion:'La base imponible declarada en IIBB representa solo el 5% de las ventas en IVA. Si se vende $77M y se declara $3.9M en IIBB, ARBA puede presumir evasion y hacer ajuste de oficio. ACCION: Verificar si hay exencion, diferimiento, o subdeclaracion real.'},
+    {sev:'ALTA', titulo:'ICBC: sobregiro Mar-Abr 2026', desc:'Saldo negativo hasta -$1.27M en cuenta corriente',
+     explicacion:'La cuenta corriente ICBC llego a saldo negativo de $1.27M. El descubierto genera intereses altisimos y puede afectar la calificacion crediticia de PMD. ACCION: Evitar que se repita; analizar si fue por timing entre cobros y pagos UOCRA.'},
+    {sev:'ALTA', titulo:'Prestamo ICBC $17.2M vigente', desc:'Cuota ~$1.35M/mes hasta nov-2027 (36% TNA) - Op.0210348700',
+     explicacion:'Prestamo comercial ICBC Op.0210348700 con cuota mensual de ~$1.35M hasta nov-2027. Es el compromiso fijo mas pesado de PMD. La cuota vence el 20 de cada mes y debe estar disponible en cuenta. ACCION: Asegurar liquidez el dia 20; evaluar cancelacion anticipada si hay caja o refinanciacion si baja la tasa.'},
+    /* --- ALTA: Facturacion --- */
+    {sev:'ALTA', titulo:'Ventas 2026 muy por debajo de 2025', desc:'Proyectado $185.8M vs $379M facturados en 2025',
+     explicacion:'Al ritmo actual, PMD cerraria 2026 con menos de la mitad de facturacion que 2025. Puede ser real (menos obras) o estacionalidad (concentracion en 2do semestre). ACCION: Evaluar backlog de obras y contratos pendientes de facturar.'},
+    /* --- MEDIA: Verificaciones puntuales --- */
+    {sev:'MEDIA', titulo:'IVA Abril: credito fiscal $16.7M anomalo', desc:'Pico inusual - verificar factura de respaldo',
      explicacion:'En abril hubo un credito fiscal inusualmente alto de $16.7M. Puede ser factura de compra grande (materiales, subcontrato) o error de imputacion. ACCION: Verificar que el credito este respaldado por factura valida; ARCA puede observarlo.'},
-    {sev:'MEDIA', titulo:'F931 Jun remuneracion $4.5M', desc:'Doble del promedio - verificar causa',
-     explicacion:'El F931 de junio declaro remuneraciones por $4.5M, el doble del promedio mensual. Puede ser SAC (aguinaldo), personal extra o error. ACCION: Confirmar si corresponde a SAC de junio; si es asi, esta correcto.'},
-    {sev:'MEDIA', titulo:'IIBB Feb Augusto faltante', desc:'Sin DDJJ presentada ese periodo',
-     explicacion:'No hay DDJJ de IIBB de febrero a nombre de Augusto persona fisica. Si tiene actividad gravada en PBA, la presentacion es obligatoria. ACCION: Verificar si corresponde segun situacion de monotributo.'},
-    {sev:'MEDIA', titulo:'Sueldo Augusto 2026 - verificar pagos', desc:'Solo $8M via haberes Galicia (mar-abr) vs $12M declarados ene-jun',
-     explicacion:'En 2026 no hay transferencias directas ICBC a Augusto Menendez por sueldo. Se detectaron $8M via acreditacion de haberes Galicia (mar-abr). Contra los ~$12M declarados como sueldo socio gerente ene-jun, faltarian ~$4M. En ene-2026 se pago $7M como dif. sueldo 2025. ACCION: Cruzar con extracto personal para confirmar acreditaciones recibidas.'}
+    {sev:'MEDIA', titulo:'F931 Junio: remuneracion $4.5M (doble)', desc:'Posible SAC/aguinaldo o error - confirmar',
+     explicacion:'El F931 de junio declaro remuneraciones por $4.5M, el doble del promedio mensual (~$2M). Puede ser SAC (aguinaldo), personal extra o error. ACCION: Confirmar si corresponde a SAC de junio; si es asi, esta correcto.'},
+    {sev:'MEDIA', titulo:'Sueldo Augusto 2026: verificar pagos', desc:'$8M detectados via haberes Galicia vs ~$14M declarados ene-jun',
+     explicacion:'En 2026 se declararon ~$14M como sueldo socio gerente (ene-jun). Se detectaron $8M via acreditacion de haberes Galicia (mar-abr). En ene-2026 se pago $7M como dif. sueldo 2025 via ICBC. No hay otras transferencias directas ICBC a Augusto Menendez por sueldo 2026. ACCION: Cruzar con extracto bancario personal para confirmar si se recibieron las acreditaciones restantes (~$6M).'}
   ]
 };
 
