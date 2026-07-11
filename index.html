@@ -121,6 +121,35 @@ td.red{color:var(--red)}
 .kpi-value.yellow{color:var(--yellow)}
 .badge-yellow{background:rgba(255,193,7,.15);color:var(--yellow)}
 
+/* ARCA SECTIONS */
+.arca-banner{background:linear-gradient(135deg,rgba(15,52,96,.8),rgba(77,168,218,.15));border:1px solid rgba(77,168,218,.3);border-radius:10px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.arca-banner .arca-icon{font-size:1.4rem;flex-shrink:0}
+.arca-banner .arca-info{flex:1;min-width:200px}
+.arca-banner .arca-info h3{font-size:.95rem;font-weight:700;color:var(--blue);margin-bottom:2px}
+.arca-banner .arca-info p{font-size:.8rem;color:var(--text-muted)}
+.arca-kpi-row{display:flex;gap:12px;flex-wrap:wrap}
+.arca-kpi{background:rgba(0,0,0,.2);border-radius:8px;padding:8px 14px;text-align:center;min-width:120px}
+.arca-kpi .arca-kpi-val{font-size:1.1rem;font-weight:700}
+.arca-kpi .arca-kpi-lbl{font-size:.7rem;color:var(--text-muted);text-transform:uppercase}
+.venc-strip{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.venc-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;flex:1;min-width:200px;display:flex;align-items:center;gap:10px}
+.venc-item .venc-date{font-size:.95rem;font-weight:700;color:var(--yellow);white-space:nowrap}
+.venc-item .venc-detail{font-size:.82rem;color:var(--text-muted)}
+.venc-item .venc-tipo{font-size:.7rem;padding:2px 6px;border-radius:3px;background:rgba(255,193,7,.12);color:var(--yellow);font-weight:600;white-space:nowrap}
+.arca-section-divider{border:none;border-top:1px solid rgba(77,168,218,.2);margin:32px 0 8px}
+td.diff-ok{color:var(--green)}
+td.diff-warn{color:var(--yellow)}
+td.diff-bad{color:var(--red);font-weight:600}
+.ccma-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:28px}
+.ccma-header{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.ccma-header .ccma-avatar{width:48px;height:48px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:var(--blue);flex-shrink:0}
+.ccma-header .ccma-name{font-size:1rem;font-weight:600}
+.ccma-header .ccma-cuit{font-size:.82rem;color:var(--text-muted)}
+.ccma-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.ccma-stat{background:rgba(255,255,255,.03);border-radius:8px;padding:12px 16px}
+.ccma-stat .ccma-stat-val{font-size:1.1rem;font-weight:700}
+.ccma-stat .ccma-stat-lbl{font-size:.75rem;color:var(--text-muted);text-transform:uppercase}
+
 /* FOOTER */
 footer{background:var(--card);border-top:1px solid var(--border);padding:20px 32px;text-align:center;color:var(--text-muted);font-size:.8rem}
 footer p+p{margin-top:4px}
@@ -347,6 +376,82 @@ footer p+p{margin-top:4px}
         <tbody id="veps-tbody"></tbody>
       </table>
     </div>
+    <!-- ===== ARCA DATA SECTIONS ===== -->
+    <hr class="arca-section-divider">
+
+    <!-- ARCA BANNER + VENCIMIENTOS -->
+    <div class="arca-banner" id="arca-banner"></div>
+    <div class="venc-strip" id="venc-strip"></div>
+
+    <!-- SCT DEUDAS ARCA -->
+    <h2 class="section-title" style="border-left-color:var(--orange)">SCT - Deudas en ARCA (Sistema de Cuentas Tributarias)</h2>
+    <div class="table-wrap">
+      <table id="table-sct">
+        <thead>
+          <tr><th>Impuesto</th><th>Periodo</th><th>Capital</th><th>Int. Resarc.</th><th>Total</th><th>Estado</th></tr>
+        </thead>
+        <tbody id="sct-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- ARCA vs DASHBOARD COMPARACION -->
+    <h2 class="section-title" style="border-left-color:var(--yellow)">Cruce ARCA vs Dashboard - Compras e IVA Credito</h2>
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3><span class="dot" style="background:var(--yellow)"></span>Compras: Dashboard vs ARCA</h3>
+        <div class="chart-wrap"><canvas id="chart-arca-compras"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3><span class="dot" style="background:var(--orange)"></span>IVA Credito: Dashboard vs ARCA</h3>
+        <div class="chart-wrap"><canvas id="chart-arca-iva"></canvas></div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="table-comparacion">
+        <thead>
+          <tr><th>Mes</th><th>Compras Dashboard</th><th>Compras ARCA</th><th>Diferencia</th><th>%</th><th>IVA Cred. Dash.</th><th>IVA Cred. ARCA</th><th>Dif. IVA</th><th>%</th></tr>
+        </thead>
+        <tbody id="comparacion-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- COMPROBANTES EMITIDOS ARCA -->
+    <h2 class="section-title" style="border-left-color:var(--blue)">Comprobantes Emitidos 2026 (Ventas ARCA)</h2>
+    <div class="table-wrap">
+      <table id="table-emitidos">
+        <thead>
+          <tr><th>Fecha</th><th>Tipo</th><th>Pto-Num</th><th>Receptor</th><th>Neto Grav.</th><th>IVA</th><th>Exento</th><th>Total</th></tr>
+        </thead>
+        <tbody id="emitidos-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- COMPROBANTES RECIBIDOS ARCA (resumen mensual) -->
+    <h2 class="section-title" style="border-left-color:var(--green)">Comprobantes Recibidos 2026 - Resumen Mensual (Compras ARCA)</h2>
+    <div class="table-wrap">
+      <table id="table-recibidos">
+        <thead>
+          <tr><th>Mes</th><th>Cant.</th><th>Neto Gravado</th><th>IVA</th><th>Total</th></tr>
+        </thead>
+        <tbody id="recibidos-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- TOP PROVEEDORES -->
+    <h2 class="section-title" style="border-left-color:var(--blue)">Top 10 Proveedores 2026 (por monto ARCA)</h2>
+    <div class="table-wrap">
+      <table id="table-proveedores">
+        <thead>
+          <tr><th>#</th><th>Proveedor</th><th>Total Facturado</th><th>Cant. Fact.</th><th>% del Total</th></tr>
+        </thead>
+        <tbody id="proveedores-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- CCMA AUGUSTO -->
+    <h2 class="section-title" style="border-left-color:var(--blue)">CCMA - Cuenta Corriente Augusto (Personal)</h2>
+    <div class="ccma-card" id="ccma-card"></div>
+
     <!-- ALERTAS Y HALLAZGOS -->
     <h2 class="section-title" style="border-left-color:var(--red)">Alertas y Hallazgos de Auditoria</h2>
     <div id="alertas-container"></div>
@@ -482,7 +587,93 @@ const DATA = {
   sueldoSocio: [1250000.10, 2253333.39, 1933333.43, 2000000.10, 2000000.10, 4499999.40],
   comprasEst: [8536771, 11636660, 10064736, 79605327, 12721672, null],
 
-  /* === ALERTAS AUDITORIA (11 alertas - actualizado 10/07/2026) === */
+  /* === DATOS ARCA (extraidos 10/07/2026) === */
+  arca: {
+    fechaExtraccion: '10/07/2026',
+    emitidos: [
+      {fecha:'20/01/26',tipo:'B',pto:5,num:66,receptor:'SAN ISIDRO CLUB',neto:0,iva:0,exento:10000000,total:10000000},
+      {fecha:'28/01/26',tipo:'B',pto:5,num:67,receptor:'SAN ISIDRO CLUB',neto:0,iva:0,exento:15000000,total:15000000},
+      {fecha:'02/02/26',tipo:'A',pto:5,num:68,receptor:'RITAIL SRL',neto:6180000,iva:1297800,exento:0,total:7477800},
+      {fecha:'13/02/26',tipo:'A',pto:5,num:69,receptor:'BA75 S.A.S.',neto:1295435.63,iva:271941.48,exento:0,total:1567476.11},
+      {fecha:'23/02/26',tipo:'A',pto:5,num:70,receptor:'CUENCA VERONICA MARIEL',neto:3000000,iva:630000,exento:0,total:3630000},
+      {fecha:'06/03/26',tipo:'A',pto:5,num:71,receptor:'TRAMES SRL',neto:1543388.43,iva:324111.57,exento:0,total:1867500},
+      {fecha:'09/03/26',tipo:'A',pto:5,num:72,receptor:'BA75 S.A.S.',neto:2876950.45,iva:603160.98,exento:0,total:3480111.43},
+      {fecha:'27/05/26',tipo:'A',pto:5,num:73,receptor:'ASTILLERO ALPHA SRL',neto:33057851.24,iva:6942148.76,exento:0,total:40000000}
+    ],
+    recibidosMensual: [
+      {mes:'Ene',cant:22,neto:8503697,iva:1792722,total:13019183},
+      {mes:'Feb',cant:26,neto:12981669,iva:2615177,total:16833847},
+      {mes:'Mar',cant:20,neto:10195658,iva:2149114,total:13292872},
+      {mes:'Abr',cant:28,neto:104484940,iva:21923730,total:134621297},
+      {mes:'May',cant:22,neto:16496447,iva:3474928,total:25748594},
+      {mes:'Jun',cant:13,neto:5998192,iva:1266630,total:8093182},
+      {mes:'Jul',cant:7,neto:25374921,iva:5328733,total:37506817}
+    ],
+    topProveedores: [
+      {nombre:'ASTILLERO ALPHA SRL',total:105000000,cant:3},
+      {nombre:'PVC & GLASS SRL',total:24066561,cant:1},
+      {nombre:'COOP. PILARES DEL NORTE',total:21943033,cant:6},
+      {nombre:'POSANLI SRL',total:11230827,cant:2},
+      {nombre:'AMALLA CRISTIAN FEDERICO',total:8830749,cant:2},
+      {nombre:'POLACEK PABLO',total:7792070,cant:3},
+      {nombre:'HARD NORTON RENTAL SRL',total:5566000,cant:2},
+      {nombre:'PROD. QUIMICA LLANA',total:5409847,cant:7},
+      {nombre:'ANDRADE ALICIA',total:5000000,cant:1},
+      {nombre:'ABERTURAS 3 DE FEB. SRL',total:4147508,cant:3}
+    ],
+    sctDeudas: {
+      saldoTotal:997683.15, capitalVencido:0, capitalNoVencido:341890.10,
+      intResarcitorios:655793.05, intPunitorios:0,
+      items: [
+        {impuesto:'BP-Acciones/Partic.',periodo:'2024',capital:192364.89,interes:0,total:192364.89,estado:'Impago'},
+        {impuesto:'SICORE Ganancias',periodo:'202602',capital:149525.21,interes:0,total:149525.21,estado:'Impago'},
+        {impuesto:'IVA',periodo:'202504',capital:0,interes:310785.53,total:310785.53,estado:'Int.Res.'},
+        {impuesto:'IVA',periodo:'202503',capital:0,interes:142352.04,total:142352.04,estado:'Int.Res.'},
+        {impuesto:'Ganancias Ant.Cta5',periodo:'2025',capital:0,interes:63347.74,total:63347.74,estado:'Int.Res.'},
+        {impuesto:'Ganancias Ant.Cta9',periodo:'2025',capital:0,interes:25942.41,total:25942.41,estado:'Int.Res.'},
+        {impuesto:'SICORE',periodo:'202504',capital:0,interes:21531.72,total:21531.72,estado:'Int.Res.'},
+        {impuesto:'IVA',periodo:'202512',capital:0,interes:18338.06,total:18338.06,estado:'Int.Res.'},
+        {impuesto:'Ganancias Ant.Cta7',periodo:'2025',capital:0,interes:15082.80,total:15082.80,estado:'Int.Res.'}
+      ]
+    },
+    vencimientos: [
+      {impuesto:'Ganancias Soc. Anticipo 2',fecha:'15/07/2026',tipo:'PAGO'},
+      {impuesto:'SUSS (F931) Junio',fecha:'15/07/2026',tipo:'Pres. y Pago'},
+      {impuesto:'IVA Junio',fecha:'24/07/2026',tipo:'Pres. y Pago'}
+    ],
+    comparacion: {
+      compras: [
+        {mes:'Ene',dashboard:8536771,arca:8503697,diff:33074,pct:0.4,ok:true},
+        {mes:'Feb',dashboard:11636660,arca:12981669,diff:-1344009,pct:-11.6,ok:false},
+        {mes:'Mar',dashboard:10064736,arca:10195658,diff:-130922,pct:-1.3,ok:true},
+        {mes:'Abr',dashboard:79605327,arca:104484940,diff:-24879613,pct:-31.3,ok:false},
+        {mes:'May',dashboard:12721672,arca:16496447,diff:-3774775,pct:-29.7,ok:false}
+      ],
+      ivaCredito: [
+        {mes:'Ene',dashboard:1792722,arca:1792722,diff:0,pct:0,ok:true},
+        {mes:'Feb',dashboard:2443699,arca:2615177,diff:-171478,pct:-7.0,ok:false},
+        {mes:'Mar',dashboard:2113595,arca:2149114,diff:-35519,pct:-1.7,ok:true},
+        {mes:'Abr',dashboard:16717119,arca:21923730,diff:-5206611,pct:-31.1,ok:false},
+        {mes:'May',dashboard:2671551,arca:3474928,diff:-803377,pct:-30.1,ok:false}
+      ]
+    },
+    ccmaAugusto: {
+      cuit:'20-37039849-7', tipo:'MONOTRIBUTISTA | AUTONOMO',
+      saldoDeudor:705450.74,
+      mesActual:{mes:'Julio 2026',estado:'IMPAGO (vence 20/07)',
+        items:[
+          {concepto:'Monotributo (020)',importe:9082.88},
+          {concepto:'Auton/Monot (021)',importe:17177.79},
+          {concepto:'Auton/Monot OS (024)',importe:21990.11},
+          {concepto:'Autonomo (AUT)',importe:318759.14}
+        ]
+      },
+      eneJun:'Todo pagado'
+    },
+    ddjjEstado:'Todas presentadas - Sin pendientes'
+  },
+
+  /* === ALERTAS AUDITORIA (16 alertas - actualizado 10/07/2026 con datos ARCA) === */
   alertas: [
     /* --- ALTA: Balance y rentabilidad --- */
     {sev:'ALTA', titulo:'Bienes de cambio +537.7%', desc:'$10.8M a $69.2M interanual - verificar valuacion',
@@ -511,7 +702,18 @@ const DATA = {
     {sev:'MEDIA', titulo:'F931 Junio: remuneracion $4.5M (doble)', desc:'Posible SAC/aguinaldo o error - confirmar',
      explicacion:'El F931 de junio declaro remuneraciones por $4.5M, el doble del promedio mensual (~$2M). Puede ser SAC (aguinaldo), personal extra o error. ACCION: Confirmar si corresponde a SAC de junio; si es asi, esta correcto.'},
     {sev:'MEDIA', titulo:'Sueldo Augusto 2026: verificar pagos', desc:'$8M detectados via haberes Galicia vs ~$14M declarados ene-jun',
-     explicacion:'En 2026 se declararon ~$14M como sueldo socio gerente (ene-jun). Se detectaron $8M via acreditacion de haberes Galicia (mar-abr). En ene-2026 se pago $7M como dif. sueldo 2025 via ICBC. No hay otras transferencias directas ICBC a Augusto Menendez por sueldo 2026. ACCION: Cruzar con extracto bancario personal para confirmar si se recibieron las acreditaciones restantes (~$6M).'}
+     explicacion:'En 2026 se declararon ~$14M como sueldo socio gerente (ene-jun). Se detectaron $8M via acreditacion de haberes Galicia (mar-abr). En ene-2026 se pago $7M como dif. sueldo 2025 via ICBC. No hay otras transferencias directas ICBC a Augusto Menendez por sueldo 2026. ACCION: Cruzar con extracto bancario personal para confirmar si se recibieron las acreditaciones restantes (~$6M).'},
+    /* --- ARCA: Alertas de cruce con datos extraidos 10/07/2026 --- */
+    {sev:'ALTA', titulo:'SCT ARCA: Deuda $997.6K con intereses', desc:'$655K en intereses resarcitorios por pagos tardios; 2 items con capital impago',
+     explicacion:'El Sistema de Cuentas Tributarias de ARCA muestra $997,683 de saldo deudor. $655,793 son intereses resarcitorios generados por pagar impuestos fuera de termino (IVA Abr/Mar/Dic, SICORE, Anticipos Ganancias). Ademas hay 2 items con capital impago: BP Acciones 2024 ($192,365) y SICORE Feb 2026 ($149,525). ACCION: Cancelar los 2 capitales impagos URGENTE para frenar acumulacion de intereses; evaluar plan de pagos para los intereses resarcitorios.'},
+    {sev:'ALTA', titulo:'Discrepancia ARCA vs Dashboard Abril: $24.9M', desc:'Compras Dashboard $79.6M vs ARCA $104.5M - diferencia del 31%',
+     explicacion:'La mayor discrepancia entre el dashboard y ARCA se concentra en abril. El dashboard registra $79.6M en compras estimadas pero ARCA muestra $104.5M en comprobantes recibidos (neto gravado). Diferencia de $24.9M que impacta tambien en IVA credito ($5.2M de diferencia). ACCION: Revisar si hay facturas de abril no cargadas al sistema, especialmente de Astillero Alpha SRL o proveedores grandes.'},
+    {sev:'ALTA', titulo:'Astillero Alpha: operacion circular', desc:'Cliente ($40M emitido) y proveedor ($105M recibido) simultaneamente',
+     explicacion:'Astillero Alpha SRL aparece como el mayor cliente de PMD (fact.73 por $40M emitida el 27/05) y al mismo tiempo como el mayor proveedor ($105M en 3 facturas recibidas). Esta operacion circular puede ser cuestionada por ARCA en una fiscalizacion. ACCION: Documentar la naturaleza comercial real de la relacion; tener contratos y remitos que justifiquen ambas operaciones.'},
+    {sev:'MEDIA', titulo:'CCMA Augusto: $705K saldo deudor personal', desc:'Julio 2026 impago (vence 20/07) - $367K en monotributo+autonomos',
+     explicacion:'La cuenta corriente de Augusto personal (CUIT 20-37039849-7) muestra saldo deudor de $705,450. Julio 2026 aun no fue pagado (vence 20/07): Monotributo $9,083 + Autonomo $318,759 + Aportes OS $39,168. Enero a junio esta todo pagado. ACCION: Pagar antes del 20/07 para evitar intereses.'},
+    {sev:'MEDIA', titulo:'Vencimientos proximos: 3 obligaciones julio', desc:'Ganancias y SUSS 15/07, IVA 24/07 - confirmar liquidez',
+     explicacion:'Vencen en julio: Anticipo 2 Ganancias Sociedades (15/07), F931 SUSS Junio (15/07) y IVA Junio (24/07). Asegurar liquidez en cuenta corriente para cubrir las tres obligaciones. ACCION: Calcular importe exacto del anticipo y F931 para provisionar fondos.'}
   ]
 };
 
@@ -1138,11 +1340,218 @@ const renderTables = () => {
   alertDiv.innerHTML = alertHtml;
 };
 
+/* ===== RENDER ARCA ===== */
+const renderArca = () => {
+  const A = D.arca;
+  if (!A) return;
+
+  // --- ARCA BANNER ---
+  const bannerEl = document.getElementById('arca-banner');
+  const sctTotal = A.sctDeudas.saldoTotal;
+  const sctInt = A.sctDeudas.intResarcitorios;
+  const sctCap = A.sctDeudas.capitalNoVencido;
+  bannerEl.innerHTML = `
+    <span class="arca-icon">&#127963;</span>
+    <div class="arca-info">
+      <h3>Datos ARCA - Extraidos ${A.fechaExtraccion}</h3>
+      <p>Comprobantes emitidos/recibidos, SCT, CCMA y DDJJ | DDJJ: ${A.ddjjEstado}</p>
+    </div>
+    <div class="arca-kpi-row">
+      <div class="arca-kpi"><div class="arca-kpi-val red">${fmt(sctTotal)}</div><div class="arca-kpi-lbl">Deuda SCT</div></div>
+      <div class="arca-kpi"><div class="arca-kpi-val" style="color:var(--orange)">${fmt(sctInt)}</div><div class="arca-kpi-lbl">Intereses Res.</div></div>
+      <div class="arca-kpi"><div class="arca-kpi-val yellow">${fmt(sctCap)}</div><div class="arca-kpi-lbl">Capital Impago</div></div>
+      <div class="arca-kpi"><div class="arca-kpi-val green">${A.ddjjEstado.includes('Sin pendientes') ? '0' : '?'}</div><div class="arca-kpi-lbl">DDJJ Pend.</div></div>
+    </div>`;
+
+  // --- VENCIMIENTOS STRIP ---
+  const vencEl = document.getElementById('venc-strip');
+  let vencHtml = '';
+  A.vencimientos.forEach(v => {
+    vencHtml += `<div class="venc-item">
+      <span class="venc-date">${v.fecha}</span>
+      <div class="venc-detail">${v.impuesto}</div>
+      <span class="venc-tipo">${v.tipo}</span>
+    </div>`;
+  });
+  vencEl.innerHTML = vencHtml;
+
+  // --- SCT DEUDAS TABLE ---
+  const sctTb = document.getElementById('sct-tbody');
+  let sctHtml = '';
+  A.sctDeudas.items.forEach(item => {
+    const estadoCls = item.estado === 'Impago' ? 'color:var(--red);font-weight:700' : 'color:var(--orange)';
+    sctHtml += `<tr>
+      <td>${item.impuesto}</td>
+      <td>${item.periodo}</td>
+      <td class="num">${item.capital > 0 ? fmt(item.capital) : '<span class="missing">—</span>'}</td>
+      <td class="num" style="color:var(--orange)">${item.interes > 0 ? fmt(item.interes) : '<span class="missing">—</span>'}</td>
+      <td class="num" style="font-weight:600">${fmt(item.total)}</td>
+      <td style="${estadoCls}">${item.estado}</td>
+    </tr>`;
+  });
+  sctHtml += `<tr style="font-weight:700;border-top:2px solid var(--orange)">
+    <td colspan="2">TOTAL SCT</td>
+    <td class="num">${fmt(sctCap)}</td>
+    <td class="num" style="color:var(--orange)">${fmt(sctInt)}</td>
+    <td class="num red" style="font-weight:700">${fmt(sctTotal)}</td>
+    <td></td>
+  </tr>`;
+  sctTb.innerHTML = sctHtml;
+
+  // --- ARCA vs DASHBOARD COMPARISON CHARTS ---
+  const compLabels = A.comparacion.compras.map(c => c.mes);
+  const compDash = A.comparacion.compras.map(c => c.dashboard / 1000000);
+  const compArca = A.comparacion.compras.map(c => c.arca / 1000000);
+  if (window._chartArcaCompras) window._chartArcaCompras.destroy();
+  window._chartArcaCompras = new Chart(document.getElementById('chart-arca-compras'), {
+    type:'bar',
+    data:{
+      labels:compLabels,
+      datasets:[
+        {label:'Dashboard',data:compDash,backgroundColor:'rgba(77,168,218,.6)',borderRadius:4},
+        {label:'ARCA',data:compArca,backgroundColor:'rgba(255,193,7,.6)',borderRadius:4}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#e0e0e0',font:{size:11}}}},scales:{x:{ticks:{color:'#8892a4'}},y:{ticks:{color:'#8892a4',callback:v=>'$'+v+'M'}}}}
+  });
+
+  const ivaLabels = A.comparacion.ivaCredito.map(c => c.mes);
+  const ivaDash = A.comparacion.ivaCredito.map(c => c.dashboard / 1000000);
+  const ivaArca = A.comparacion.ivaCredito.map(c => c.arca / 1000000);
+  if (window._chartArcaIva) window._chartArcaIva.destroy();
+  window._chartArcaIva = new Chart(document.getElementById('chart-arca-iva'), {
+    type:'bar',
+    data:{
+      labels:ivaLabels,
+      datasets:[
+        {label:'Dashboard',data:ivaDash,backgroundColor:'rgba(77,168,218,.6)',borderRadius:4},
+        {label:'ARCA',data:ivaArca,backgroundColor:'rgba(255,140,66,.6)',borderRadius:4}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#e0e0e0',font:{size:11}}}},scales:{x:{ticks:{color:'#8892a4'}},y:{ticks:{color:'#8892a4',callback:v=>'$'+v+'M'}}}}
+  });
+
+  // --- COMPARISON TABLE ---
+  const cmpTb = document.getElementById('comparacion-tbody');
+  let cmpHtml = '';
+  for (let i = 0; i < A.comparacion.compras.length; i++) {
+    const c = A.comparacion.compras[i];
+    const iv = A.comparacion.ivaCredito[i];
+    const cDiffCls = c.ok ? 'diff-ok' : (Math.abs(c.pct) > 20 ? 'diff-bad' : 'diff-warn');
+    const iDiffCls = iv.ok ? 'diff-ok' : (Math.abs(iv.pct) > 20 ? 'diff-bad' : 'diff-warn');
+    cmpHtml += `<tr>
+      <td style="font-weight:600">${c.mes}</td>
+      <td class="num">${fmt(c.dashboard)}</td>
+      <td class="num">${fmt(c.arca)}</td>
+      <td class="num ${cDiffCls}">${fmt(c.diff)}</td>
+      <td class="num ${cDiffCls}">${c.pct > 0 ? '+' : ''}${c.pct.toFixed(1)}%</td>
+      <td class="num">${fmt(iv.dashboard)}</td>
+      <td class="num">${fmt(iv.arca)}</td>
+      <td class="num ${iDiffCls}">${fmt(iv.diff)}</td>
+      <td class="num ${iDiffCls}">${iv.pct > 0 ? '+' : ''}${iv.pct.toFixed(1)}%</td>
+    </tr>`;
+  }
+  cmpTb.innerHTML = cmpHtml;
+
+  // --- EMITIDOS TABLE ---
+  const emTb = document.getElementById('emitidos-tbody');
+  let emHtml = '';
+  let emTotalNeto = 0, emTotalIva = 0, emTotalEx = 0, emTotalTot = 0;
+  A.emitidos.forEach(e => {
+    emTotalNeto += e.neto; emTotalIva += e.iva; emTotalEx += e.exento; emTotalTot += e.total;
+    const tipoCls = e.tipo === 'A' ? 'color:var(--green)' : 'color:var(--blue)';
+    emHtml += `<tr>
+      <td>${e.fecha}</td>
+      <td style="${tipoCls};font-weight:600">Fact. ${e.tipo}</td>
+      <td>${e.pto}-${String(e.num).padStart(8,'0')}</td>
+      <td>${e.receptor}</td>
+      <td class="num">${e.neto > 0 ? fmt(e.neto) : '<span class="missing">—</span>'}</td>
+      <td class="num">${e.iva > 0 ? fmt(e.iva) : '<span class="missing">—</span>'}</td>
+      <td class="num">${e.exento > 0 ? fmt(e.exento) : '<span class="missing">—</span>'}</td>
+      <td class="num" style="font-weight:600">${fmt(e.total)}</td>
+    </tr>`;
+  });
+  emHtml += `<tr style="font-weight:700;border-top:2px solid var(--blue)">
+    <td colspan="4">TOTAL EMITIDOS (${A.emitidos.length} comprobantes)</td>
+    <td class="num">${fmt(emTotalNeto)}</td>
+    <td class="num">${fmt(emTotalIva)}</td>
+    <td class="num">${fmt(emTotalEx)}</td>
+    <td class="num green">${fmt(emTotalTot)}</td>
+  </tr>`;
+  emTb.innerHTML = emHtml;
+
+  // --- RECIBIDOS MENSUAL TABLE ---
+  const recTb = document.getElementById('recibidos-tbody');
+  let recHtml = '';
+  let recTotalCant = 0, recTotalNeto = 0, recTotalIva = 0, recTotalTot = 0;
+  A.recibidosMensual.forEach(r => {
+    recTotalCant += r.cant; recTotalNeto += r.neto; recTotalIva += r.iva; recTotalTot += r.total;
+    recHtml += `<tr>
+      <td style="font-weight:600">${r.mes}</td>
+      <td class="num">${r.cant}</td>
+      <td class="num">${fmt(r.neto)}</td>
+      <td class="num">${fmt(r.iva)}</td>
+      <td class="num" style="font-weight:600">${fmt(r.total)}</td>
+    </tr>`;
+  });
+  recHtml += `<tr style="font-weight:700;border-top:2px solid var(--green)">
+    <td>TOTAL</td>
+    <td class="num">${recTotalCant}</td>
+    <td class="num">${fmt(recTotalNeto)}</td>
+    <td class="num">${fmt(recTotalIva)}</td>
+    <td class="num green">${fmt(recTotalTot)}</td>
+  </tr>`;
+  recTb.innerHTML = recHtml;
+
+  // --- TOP PROVEEDORES TABLE ---
+  const provTb = document.getElementById('proveedores-tbody');
+  let provHtml = '';
+  const provTotal = A.topProveedores.reduce((s,p) => s + p.total, 0);
+  A.topProveedores.forEach((p, i) => {
+    const pct = (p.total / provTotal * 100).toFixed(1);
+    const barW = (p.total / A.topProveedores[0].total * 100).toFixed(0);
+    provHtml += `<tr>
+      <td style="font-weight:600;color:var(--text-muted)">${i + 1}</td>
+      <td>${p.nombre}</td>
+      <td class="num" style="font-weight:600">${fmt(p.total)}</td>
+      <td class="num">${p.cant}</td>
+      <td class="num"><div style="display:flex;align-items:center;gap:6px;justify-content:flex-end"><span>${pct}%</span><div style="width:60px;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden"><div style="width:${barW}%;height:100%;background:var(--blue);border-radius:3px"></div></div></div></td>
+    </tr>`;
+  });
+  provTb.innerHTML = provHtml;
+
+  // --- CCMA AUGUSTO ---
+  const ccmaEl = document.getElementById('ccma-card');
+  const cc = A.ccmaAugusto;
+  let ccmaItemsHtml = '';
+  cc.mesActual.items.forEach(it => {
+    ccmaItemsHtml += `<div class="ccma-stat"><div class="ccma-stat-val yellow">${fmt(it.importe)}</div><div class="ccma-stat-lbl">${it.concepto}</div></div>`;
+  });
+  ccmaEl.innerHTML = `
+    <div class="ccma-header">
+      <div class="ccma-avatar">AM</div>
+      <div>
+        <div class="ccma-name">Augusto Menendez</div>
+        <div class="ccma-cuit">CUIT ${cc.cuit} | ${cc.tipo}</div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div style="font-size:.8rem;color:var(--text-muted)">Saldo Deudor Total</div>
+        <div style="font-size:1.3rem;font-weight:700;color:var(--red)">${fmt(cc.saldoDeudor)}</div>
+      </div>
+    </div>
+    <div style="font-size:.85rem;margin-bottom:12px">
+      <span style="color:var(--yellow);font-weight:600">${cc.mesActual.mes} — ${cc.mesActual.estado}</span>
+      <span style="color:var(--text-muted);margin-left:12px">Ene-Jun 2026: <span style="color:var(--green);font-weight:600">${cc.eneJun}</span></span>
+    </div>
+    <div class="ccma-grid">${ccmaItemsHtml}</div>`;
+};
+
 /* ===== RENDER ALL ===== */
 const renderAll = () => {
   renderKPIs();
   renderCharts();
   renderTables();
+  renderArca();
 };
 
 /* ===== INIT ===== */
