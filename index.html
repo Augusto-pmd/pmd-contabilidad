@@ -386,7 +386,7 @@ footer p+p{margin-top:4px}
       <div class="kpi-card">
         <div class="kpi-label">Costo Financiero Total</div>
         <div class="kpi-value red" id="kpi-costo"></div>
-        <div class="kpi-sub"><span class="badge badge-red" id="kpi-costo-rate"></span> <span>4 operaciones de descuento</span></div>
+        <div class="kpi-sub"><span class="badge badge-red" id="kpi-costo-rate"></span> <span id="kpi-costo-ops"></span></div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Deuda Total PMD</div>
@@ -669,6 +669,10 @@ footer p+p{margin-top:4px}
       </table>
     </div>
 
+    <!-- COBERTURA DE DATOS -->
+    <h2 class="section-title" style="border-left-color:var(--green)">Cobertura de Datos — Qué está cargado y qué falta</h2>
+    <div id="cobertura-container" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px;overflow-x:auto"></div>
+
     <!-- ACCIONES PENDIENTES PMD -->
     <h2 class="section-title" style="border-left-color:var(--orange)">Acciones Pendientes — PMD SRL</h2>
     <div class="acciones-progress" id="acciones-progress"></div>
@@ -840,10 +844,11 @@ const fmtPct = (n) => n == null ? '—' : n.toFixed(2) + '%';
 const DATA = {
   months: ['Ene','Feb','Mar','Abr','May','Jun'],
   iva: {
-    debito:  [0, 2371319.50, 937525.90, 5206611.57, 7745525.50, null],
-    credito: [1792721.90, 2443698.69, 2113594.51, 16717118.71, 2671551.08, null],
-    saldo:   [1792721.90, 1865101.09, 3041169.70, 14551676.84, 9477702.42, null],
-    ventas:  [0, 11291997.62, 4464409.05, 24793388.43, 36883454.76, null],
+    /* Junio cargado desde PLANILLA COMPRAS JUNIO 2026.xlsx (11 fact., cuadra exacto con ARCA recibidos) — sin comprobantes emitidos en junio segun ARCA */
+    debito:  [0, 2371319.50, 937525.90, 5206611.57, 7745525.50, 0],
+    credito: [1792721.90, 2443698.69, 2113594.51, 16717118.71, 2671551.08, 1266629.83],
+    saldo:   [1792721.90, 1865101.09, 3041169.70, 14551676.84, 9477702.42, 10744332.25],
+    ventas:  [0, 11291997.62, 4464409.05, 24793388.43, 36883454.76, 0],
     retPercep: [11511.82, 3397.60, 49148.81, 33905.55, 17120.84, null],
     saldoLibreDisp: [11511.82, 14909.42, 64058.23, 97963.78, 115084.62, null]
   },
@@ -854,9 +859,10 @@ const DATA = {
     favor: [654974.97, 463945.24, 601643.09, 808897.63, 542088.86, null]
   },
   banks: {
-    icbc:    [null, null, -834156.18, -1267802.17, 5311749.02, null],
+    /* ICBC Ene/Feb extraidos de los extractos reales (estaban mal archivados en RESUMENES TARJETAS CORPORATIVAS); Jun del extracto 6. JUNIO 2026.pdf */
+    icbc:    [11316719.58, -478341.82, -834156.18, -1267802.17, 5311749.02, 16839732.96],
     galicia: [0, 0, 13988782.87, 13921.23, 13921.23, 11411378.56],
-    mp:      [44236.53, 56434.65, 6992.46, 19595.12, 285260.05, null]
+    mp:      [44236.53, 56434.65, 6992.46, 19595.12, 285260.05, 249547.71]
   },
   cheques: [
     { fecha:'27/03/26', bruto:20000000, interes:1349003.58, iibb:40470.11, sellos:57863.01, iva:141645.38, percIva:20235.05, costos:1609217.13, neto:18390782.87, tasa:8.05, banco:'Galicia' },
@@ -939,7 +945,7 @@ const DATA = {
       {concepto:'Honorarios Socio Gerente', mensual:2000000, pctVentas:12.9},
       {concepto:'Honorarios Terceros', mensual:10140000, pctVentas:65.5}
     ],
-    totalMensual:14289000, ventasPromedio:15486649, margen:1197649, ratio:92.3
+    totalMensual:14089000, ventasPromedio:15486649, margen:1397649, ratio:91.0
   },
 
   /* === IMPOSITIVO COMPLETO === */
@@ -947,52 +953,51 @@ const DATA = {
   autonomos: [300582, 310742, 310000, 300582, 310742, 310000],
   anticiposGan: [100386, null, 95068, 108242, 100642, 100000],
   sueldoSocio: [1250000.10, 2253333.39, 1933333.43, 2000000.10, 2000000.10, 4499999.40],
-  comprasEst: [8536771, 11636660, 10064736, 79605327, 12721672, null],
+  comprasEst: [8536771, 11636660, 10064736, 79605327, 12721672, 5998192],
 
   /* === TARJETAS DE CRÉDITO PERSONALES (ICBC Visa + MC + Santander Visa) === */
+  /* NOTA: Consumos reales = sin percepciones ni cargos bancarios. Santander usa totales de resúmenes (más precisos). */
   tarjetas: {
     periodo: 'Jun 2025 — Jul 2026',
-    totalGasto: 14302701,
-    numTransacciones: 241,
+    totalGasto: 30337439,
+    totalConImpuestos: 36418840,
     numMeses: 13,
-    promedioMensual: 1100207,
+    promedioMensual: 2333649,
     deudaActual: { icbcVisa: 1075861, icbcMc: 0, santVisa: 3253713, santUsd: 538.66, total: 4329574 },
-    fijoVsVariable: { fijo: 6038546, variable: 8264155, fijoPct: 42.2, variablePct: 57.8 },
+    impuestosTC: { icbcVisa: 760824, icbcMc: 194759, santVisa: 5125818, total: 6081401 },
+    fijoVsVariable: { fijo: 4773848, variable: 8573519, fijoPct: 35.8, variablePct: 64.2, nota: 'Solo sobre transacciones categorizadas (44% del total)' },
     byGroup: [
-      {g:'Compras',m:4492649,p:31.4},{g:'Salud',m:2308601,p:16.1},{g:'Otros',m:1755908,p:12.3},
-      {g:'Impuestos/TC',m:1357498,p:9.5},{g:'Seguros',m:960153,p:6.7},{g:'Celular',m:918956,p:6.4},
-      {g:'Transporte',m:661629,p:4.6},{g:'Electrónica',m:453333,p:3.2},{g:'Hogar',m:325378,p:2.3},
-      {g:'Gastronomía',m:318129,p:2.2},{g:'Alimentación',m:299964,p:2.1},{g:'Banco',m:232322,p:1.6},
-      {g:'Indumentaria',m:162597,p:1.1},{g:'Software',m:28420,p:0.2},{g:'Entretenimiento',m:19794,p:0.1}
+      {g:'Compras',m:4455249,p:33.4},{g:'Otros',m:2397084,p:18.0},{g:'Salud',m:2204949,p:16.5},
+      {g:'Seguros',m:960153,p:7.2},{g:'Celular',m:918956,p:6.9},{g:'Impuestos/AFIP',m:641575,p:4.8},
+      {g:'Electrónica',m:453333,p:3.4},{g:'Transporte',m:404707,p:3.0},{g:'Hogar',m:325378,p:2.4},
+      {g:'Alimentación',m:299964,p:2.2},{g:'Gastronomía',m:175999,p:1.3},{g:'Indumentaria',m:61803,p:0.5},
+      {g:'Software',m:28422,p:0.2},{g:'Entretenimiento',m:19794,p:0.1}
     ],
     byCategory: [
-      {cat:'Compras/MercadoLibre',m:2545687,p:17.8,n:9,t:'v'},
-      {cat:'Salud/Prepaga (OSDE)',m:2204949,p:15.4,n:8,t:'f'},
-      {cat:'Otros',m:1755908,p:12.3,n:28,t:'v'},
-      {cat:'Compras/MercadoPago',m:1576654,p:11.0,n:18,t:'v'},
-      {cat:'Seguros (Allianz+Sancor)',m:960153,p:6.7,n:12,t:'f'},
-      {cat:'Celular (Personal+Flow)',m:918956,p:6.4,n:15,t:'f'},
-      {cat:'Impuestos/AFIP Monotributo',m:641575,p:4.5,n:9,t:'f'},
-      {cat:'Impuestos/Percepción 30%',m:529176,p:3.7,n:9,t:'f'},
-      {cat:'Electrónica (Samsung)',m:453333,p:3.2,n:2,t:'v'},
-      {cat:'Compras Online (Santander)',m:332908,p:2.3,n:7,t:'v'},
-      {cat:'Transporte/Auto',m:325400,p:2.3,n:5,t:'v'},
-      {cat:'Gastronomía',m:244929,p:1.7,n:9,t:'v'},
-      {cat:'Banco/Comisiones TC',m:225143,p:1.6,n:12,t:'f'},
-      {cat:'Transporte/Patentes',m:223310,p:1.6,n:1,t:'f'},
-      {cat:'Hogar/Ferretería (Easy+Sodimac)',m:218232,p:1.5,n:4,t:'v'},
-      {cat:'Indumentaria',m:162597,p:1.1,n:5,t:'v'},
-      {cat:'Impuestos/IVA TC',m:108059,p:0.8,n:14,t:'f'},
-      {cat:'Hogar/Electrodomésticos',m:107146,p:0.7,n:1,t:'v'},
-      {cat:'Alimentación/Supermercado',m:199125,p:1.4,n:3,t:'v'},
-      {cat:'Alimentación/Delivery',m:100839,p:0.7,n:10,t:'v'},
-      {cat:'Deportes/Gym',m:85806,p:0.6,n:1,t:'f'},
-      {cat:'Gastronomía/Cafetería',m:73200,p:0.5,n:4,t:'v'}
+      {cat:'Compras/MercadoLibre',m:2545687,p:19.1,n:9,t:'v'},
+      {cat:'Salud/Prepaga (OSDE)',m:2204949,p:16.5,n:8,t:'f'},
+      {cat:'Otros',m:2397084,p:18.0,n:46,t:'v'},
+      {cat:'Compras/MercadoPago',m:1576654,p:11.8,n:18,t:'v'},
+      {cat:'Seguros (Allianz+Sancor)',m:960153,p:7.2,n:12,t:'f'},
+      {cat:'Celular (Personal+Flow)',m:918956,p:6.9,n:15,t:'f'},
+      {cat:'Impuestos/AFIP Monotributo',m:641575,p:4.8,n:9,t:'f'},
+      {cat:'Electrónica (Samsung)',m:453333,p:3.4,n:2,t:'v'},
+      {cat:'Compras Online (Santander)',m:332908,p:2.5,n:7,t:'v'},
+      {cat:'Transporte/Auto',m:325400,p:2.4,n:5,t:'v'},
+      {cat:'Hogar/Ferretería (Easy+Sodimac)',m:218232,p:1.6,n:4,t:'v'},
+      {cat:'Gastronomía',m:175999,p:1.3,n:15,t:'v'},
+      {cat:'Alimentación/Supermercado',m:199125,p:1.5,n:3,t:'v'},
+      {cat:'Hogar/Electrodomésticos',m:107146,p:0.8,n:1,t:'v'},
+      {cat:'Alimentación/Delivery',m:100839,p:0.8,n:10,t:'v'},
+      {cat:'Transporte/Peajes+Patentes',m:79307,p:0.6,n:20,t:'v'},
+      {cat:'Indumentaria',m:61803,p:0.5,n:3,t:'v'},
+      {cat:'Software',m:28422,p:0.2,n:4,t:'v'},
+      {cat:'Entretenimiento/Streaming',m:19794,p:0.1,n:6,t:'v'}
     ],
     byCard: [
-      {t:'ICBC Visa',m:10832068,p:75.7,n:171},
-      {t:'Visa Santander',m:2315721,p:16.2,n:47},
-      {t:'ICBC Mastercard',m:1154912,p:8.1,n:23}
+      {t:'Santander Visa',m:19306042,p:63.6},
+      {t:'ICBC Visa',m:10071244,p:33.2},
+      {t:'ICBC Mastercard',m:960153,p:3.2}
     ],
     visaSaldos: {
       meses:['Oct 25','Nov 25','Dic 25','Ene 26','Feb 26','Mar 26','Abr 26','May 26','Jun 26'],
@@ -1013,20 +1018,20 @@ const DATA = {
     topMerchants: [
       {n:'MercadoLibre/MercadoPago',m:4455249},{n:'OSDE Prepaga',m:2204949},
       {n:'Seguros (Allianz+Sancor)',m:960153},{n:'Personal+Flow Celular',m:918956},
-      {n:'AFIP Monotributo',m:641575},{n:'Hogar (Sodimac+Easy)',m:750570},
-      {n:'Percepción 30% TC',m:529176},{n:'Samsung.com',m:453333},
-      {n:'Despegar+Hoteles',m:713484},{n:'Venezia Autos',m:316400},
-      {n:'Comisiones TC ICBC',m:225143},{n:'Patentes Auto',m:223310}
+      {n:'AFIP Monotributo',m:641575},{n:'Samsung.com',m:453333},
+      {n:'Hogar (Sodimac+Easy)',m:325378},{n:'Transporte Auto',m:325400},
+      {n:'Alimentación (Super+Delivery)',m:299964},{n:'Gastronomía',m:175999},
+      {n:'Indumentaria',m:61803},{n:'Software+Streaming',m:48216}
     ],
     insights: [
-      '3 tarjetas analizadas: ICBC Visa (75.7%) + Santander Visa Black (16.2%) + ICBC MC (8.1%). 241 transacciones en 13 meses.',
-      'MercadoLibre + MercadoPago = $4.5M (31%). Principal canal de compra. Evaluar si hay gastos de la empresa mezclados.',
-      'OSDE Prepaga: ~$276K/mes (15.4% del total). Verificar si corresponde deducir en Ganancias como gasto médico.',
-      'Deuda total TC: $4.3M. Santander ($3.25M + U$S 538) es la mayor. El pago mínimo es $449K. Priorizar cancelación.',
-      'Percepciones recuperables (30%, IVA, IIBB) suman ~$1.7M. Computar como pago a cuenta en DDJJ Ganancias e IVA.',
-      'Gastos fijos 42% ($6M) vs variables 58% ($8.3M). El piso mensual es ~$465K solo en fijos (prepaga+seguros+celular+monotributo).',
-      'Santander Visa: saldo creció de $119K (Jun 25) a $4.4M (May 26), bajó a $3.25M en Jul 26. Tendencia preocupante.',
-      'Visa Francés pendiente de carga. Cuando se integre, el análisis será completo con todas las tarjetas.'
+      'Santander Visa es la tarjeta dominante: 63.6% del gasto ($19.3M) vs ICBC Visa 33.2% ($10.1M). Promedio: Santander $1.49M/mes, ICBC $1.12M/mes.',
+      'El análisis anterior era engañoso: mostraba Santander en $2.3M porque solo se habían extraído 52 de ~200 transacciones. Ahora usa totales de resúmenes.',
+      'MercadoLibre + MercadoPago = $4.5M (33% de lo categorizado). Principal canal de compra.',
+      'OSDE Prepaga: ~$276K/mes. 2do gasto más grande. Verificar si corresponde deducir en Ganancias.',
+      'Percepciones e impuestos TC: $6.1M recuperables (Perc 30%: $5.5M, IVA RG4240: $0.3M, IIBB: $0.02M). Computar en DDJJ.',
+      'Deuda total TC: $4.3M. Santander $3.25M + U$S 538 es la mayor. ICBC $1.08M casi controlada.',
+      'Santander: saldo creció de $119K (Jun 25) a $4.4M (May 26). En Jul 26 bajó a $3.25M con un pago de $4.37M.',
+      'Categorías cubren 44% del gasto total (ICBC tiene detalle completo, Santander parcial). Visa Francés pendiente.'
     ],
     tarjetasPendientes: ['Visa Francés (pendiente de carga)']
   },
@@ -1118,6 +1123,30 @@ const DATA = {
   },
 
   /* === ALERTAS AUDITORIA (16 alertas - actualizado 10/07/2026 con datos ARCA) === */
+  /* === COBERTURA DE DATOS (relevamiento documental 12/07/2026) === */
+  cobertura: {
+    actualizado: '12/07/2026',
+    meses: ['Ene','Feb','Mar','Abr','May','Jun','Jul'],
+    fuentes: [
+      {f:'Extracto ICBC (saldos)', e:['ok','ok','ok','ok','ok','ok','falta']},
+      {f:'Extracto Galicia', e:['ok','ok','ok','ok','ok','ok','falta']},
+      {f:'Mercado Pago', e:['ok','ok','ok','ok','ok','ok','falta']},
+      {f:'Libro IVA Compras (planilla)', e:['ok','ok','ok','ok','ok','ok','doc']},
+      {f:'Facturacion / IVA Ventas (ARCA)', e:['ok','ok','ok','ok','ok','ok','falta']},
+      {f:'F931 Cargas Sociales', e:['ok','ok','ok','falta','ok','ok','falta']},
+      {f:'SICORE Retenciones', e:['ok','ok','ok','ok','ok','ok','falta']},
+      {f:'Resumen Visa Corporativa', e:['falta','falta','falta','ok','ok','falta','falta']},
+      {f:'Transferencias personales (sueldo socio)', e:['falta','falta','falta','falta','falta','falta','falta']}
+    ],
+    notas: [
+      'Los PDF Ene y Feb de EXTRACTOS BANCARIOS son reportes de transferencias (sin saldos); los extractos reales estaban mal archivados en RESUMENES TARJETAS CORPORATIVAS y ya fueron cargados al dashboard.',
+      'Julio: ARCA ya registra comprobantes recibidos por $37.5M pero el mes todavia no esta incorporado al detalle mensual del dashboard.',
+      'Tarjetas personales: faltan resumenes Santander Sep-25 y Jun-26; ICBC Visa Jun-Sep-25 y Jul-26; ICBC MC fuera de Dic-25/May-26; Visa Frances completa (nunca cargada).',
+      'Fondos de inversion: hay 9 resumenes de 2025 sin integrar al dashboard; la carpeta 2026 esta vacia.',
+      'TRANSF. PERSONAL AUGUSTO vacia: es la fuente para confirmar ~$6M de sueldo socio pendiente de verificacion.'
+    ]
+  },
+
   alertas: [
     /* --- ALTA: Balance y rentabilidad --- */
     {sev:'ALTA', titulo:'Bienes de cambio +537.7%', desc:'$10.8M a $69.2M interanual - verificar valuacion',
@@ -1157,7 +1186,12 @@ const DATA = {
     {sev:'MEDIA', titulo:'CCMA Augusto: $705K saldo deudor personal', desc:'Julio 2026 impago (vence 20/07) - $367K en monotributo+autonomos', personal:true,
      explicacion:'La cuenta corriente de Augusto personal (CUIT 20-37039849-7) muestra saldo deudor de $705,450. Julio 2026 aun no fue pagado (vence 20/07): Monotributo $9,083 + Autonomo $318,759 + Aportes OS $39,168. Enero a junio esta todo pagado. ACCION: Pagar antes del 20/07 para evitar intereses.'},
     {sev:'MEDIA', titulo:'Vencimientos proximos: 3 obligaciones julio', desc:'Ganancias y SUSS 15/07, IVA 24/07 - confirmar liquidez',
-     explicacion:'Vencen en julio: Anticipo 2 Ganancias Sociedades (15/07), F931 SUSS Junio (15/07) y IVA Junio (24/07). Asegurar liquidez en cuenta corriente para cubrir las tres obligaciones. ACCION: Calcular importe exacto del anticipo y F931 para provisionar fondos.'}
+     explicacion:'Vencen en julio: Anticipo 2 Ganancias Sociedades (15/07), F931 SUSS Junio (15/07) y IVA Junio (24/07). Asegurar liquidez en cuenta corriente para cubrir las tres obligaciones. ACCION: Calcular importe exacto del anticipo y F931 para provisionar fondos.'},
+    /* --- Hallazgos del relevamiento documental 12/07/2026 --- */
+    {sev:'MEDIA', titulo:'Visa corporativa: consumos personales de Augusto', desc:'Abr $1.13M + May $0.11M en tarjeta 9086 - definir tratamiento contable',
+     explicacion:'Los resumenes de la Visa corporativa ICBC muestran consumos de la tarjeta de Augusto (term. 9086): $1.126.838 en abril (MercadoLibre, Allianz, CompraGamer, PDFE) y $113.415 en mayo. Si son gastos personales pagados por la SRL, corresponde imputarlos a cuenta corriente de socios o como parte de honorarios. ACCION: Revisar con la contadora el tratamiento de estos consumos y de los intereses de financiacion del resumen.'},
+    {sev:'MEDIA', titulo:'Documentacion mal archivada y faltante', desc:'Extractos ICBC Ene-Mar estaban como "tarjetas corporativas"; faltan resumenes corporativa Ene-Mar y Jun-Jul; TRANSF. PERSONAL AUGUSTO vacia',
+     explicacion:'Los PDF "1. enero", "2. febrero" y "3. marzo" de la carpeta RESUMENES TARJETAS CORPORATIVAS son en realidad extractos bancarios ICBC (ya se cargaron sus saldos al dashboard: Ene +$11.3M, Feb -$478K). A su vez, los PDF Ene y Feb de EXTRACTOS BANCARIOS son solo reportes de transferencias, sin saldos. Faltan los resumenes reales de la Visa corporativa de Ene-Mar y Jun-Jul (las subcarpetas estan vacias). La carpeta TRANSF. PERSONAL AUGUSTO esta vacia y es la fuente para confirmar ~$6M de sueldo socio sin verificar. ACCION: Reordenar el archivo, descargar los resumenes faltantes del home banking y cargar los comprobantes de transferencias personales.'}
   ]
 };
 
@@ -1342,10 +1376,14 @@ const renderKPIs = () => {
   const totalVentas = sumNonNull(D.iva.ventas);
   document.getElementById('kpi-ventas').textContent = fmt(totalVentas);
   const ventasMeses = D.iva.ventas.filter(v => v != null).length;
-  document.getElementById('kpi-ventas-detail').textContent = `${ventasMeses} meses declarados`;
+  const ventasExentasKpi = D.arca && D.arca.emitidos ? D.arca.emitidos.reduce((s, e) => s + (e.exento || 0), 0) : 0;
+  document.getElementById('kpi-ventas-detail').textContent = ventasExentasKpi > 0
+    ? `${ventasMeses} meses declarados · no incluye exentas ($${(ventasExentasKpi/1e6).toFixed(1)}M)`
+    : `${ventasMeses} meses declarados`;
 
   document.getElementById('kpi-costo').textContent = fmt(D.chequesTotals.costos);
   document.getElementById('kpi-costo-rate').textContent = `${D.chequesTotals.tasaPromedio}% promedio`;
+  document.getElementById('kpi-costo-ops').textContent = `${D.cheques.length} operaciones de descuento`;
 
   // Deuda Total KPI
   document.getElementById('kpi-deuda').textContent = fmt(D.deudas.total);
@@ -2422,6 +2460,23 @@ const setupSimulador = () => {
 
 /* ===== RENDER AUGUSTO TAB ===== */
 /* ===== TARJETAS DE CRÉDITO — ECONOMÍA PERSONAL (ICBC + SANTANDER) ===== */
+/* ===== COBERTURA DE DATOS ===== */
+const renderCobertura = () => {
+  const C = D.cobertura;
+  const el = document.getElementById('cobertura-container');
+  if (!C || !el) return;
+  const map = { ok:['#00c9a7','&#10003;','Cargado'], doc:['#ffc107','&#9684;','Doc. disponible sin cargar'], falta:['#e94560','&#10007;','Falta documento'], na:['#555','&mdash;',''] };
+  const cell = (e) => { const m = map[e] || map.na; return `<td style="text-align:center;font-weight:700;color:${m[0]}" title="${m[2]}">${m[1]}</td>`; };
+  let html = `<div style="font-size:.8rem;color:var(--text-muted);margin-bottom:10px">Estado al ${C.actualizado} — <span style="color:#00c9a7">&#10003; cargado</span> · <span style="color:#ffc107">&#9684; documento disponible sin cargar</span> · <span style="color:#e94560">&#10007; falta documento</span></div>`;
+  html += '<table style="min-width:600px"><thead><tr><th style="text-align:left">Fuente</th>' + C.meses.map(m=>`<th style="text-align:center">${m}</th>`).join('') + '</tr></thead><tbody>';
+  C.fuentes.forEach(fu => { html += `<tr><td>${fu.f}</td>` + fu.e.map(cell).join('') + '</tr>'; });
+  html += '</tbody></table>';
+  if (C.notas && C.notas.length) {
+    html += '<ul style="margin-top:14px;padding-left:18px">' + C.notas.map(n=>`<li style="font-size:.8rem;line-height:1.6;color:var(--text-muted);margin-bottom:4px">${n}</li>`).join('') + '</ul>';
+  }
+  el.innerHTML = html;
+};
+
 const renderTarjetas = () => {
   const T = D.tarjetas;
   if (!T) return;
@@ -2429,32 +2484,33 @@ const renderTarjetas = () => {
 
   // KPIs — updated for 3 cards
   document.getElementById('tc-kpis').innerHTML = `
-    <div class="kpi-card" style="--kpi-color:var(--blue)"><div class="kpi-label">Total Gastado (13 meses)</div><div class="kpi-value blue">${f(T.totalGasto)}</div><div class="kpi-sub">${T.numTransacciones} txns · 3 tarjetas</div></div>
+    <div class="kpi-card" style="--kpi-color:var(--blue)"><div class="kpi-label">Total Consumos Reales</div><div class="kpi-value blue">${f(T.totalGasto)}</div><div class="kpi-sub">${T.numMeses} meses · 3 tarjetas · sin percepciones</div></div>
     <div class="kpi-card" style="--kpi-color:var(--yellow)"><div class="kpi-label">Promedio Mensual</div><div class="kpi-value" style="color:var(--yellow)">${f(T.promedioMensual)}</div><div class="kpi-sub">${T.periodo}</div></div>
     <div class="kpi-card" style="--kpi-color:var(--red)"><div class="kpi-label">Deuda Total TC</div><div class="kpi-value red">${f(T.deudaActual.total)}</div><div class="kpi-sub">ICBC ${f(T.deudaActual.icbcVisa)} · Sant ${f(T.deudaActual.santVisa)}</div></div>
-    <div class="kpi-card" style="--kpi-color:var(--orange)"><div class="kpi-label">Fijo vs Variable</div><div class="kpi-value" style="color:var(--orange)">${T.fijoVsVariable.fijoPct}% / ${T.fijoVsVariable.variablePct}%</div><div class="kpi-sub"><span class="badge badge-blue">Fijo</span> <span class="badge" style="background:rgba(255,140,66,.15);color:var(--orange)">Variable</span></div></div>`;
+    <div class="kpi-card" style="--kpi-color:var(--orange)"><div class="kpi-label">Percepciones e Impuestos TC</div><div class="kpi-value" style="color:var(--orange)">${f(T.impuestosTC.total)}</div><div class="kpi-sub">Perc. 30% + IVA + IIBB · computables en DDJJ</div></div>`;
 
-  // Chart 1: Donut por rubro
+  // Chart 1: Donut por rubro (porcentajes sobre lo categorizado, no sobre el total)
   const grps = T.byGroup;
+  const catTotal = grps.reduce((s,g)=>s+g.m,0);
   const gColors = ['#4da8da','#00c9a7','#e94560','#ffc107','#ff8c42','#9b59b6','#3498db','#6c7a89','#e67e22','#1abc9c','#2ecc71','#555','#888','#c0392b','#8e44ad'];
-  new Chart(document.getElementById('tc-ch-rubros'), {
+  charts.tcRubros = new Chart(document.getElementById('tc-ch-rubros'), {
     type:'doughnut',
     data:{ labels:grps.map(g=>g.g), datasets:[{data:grps.map(g=>g.m),backgroundColor:gColors.slice(0,grps.length),borderWidth:0}]},
-    options:{ responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:10,padding:4,font:{size:9}}},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${f(ctx.parsed)} (${(ctx.parsed/T.totalGasto*100).toFixed(1)}%)`}}}}
+    options:{ responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:`Sobre lo categorizado: ${f(catTotal)} (${(catTotal/T.totalGasto*100).toFixed(0)}% del total)`,font:{size:10},color:'#8892a4'},legend:{position:'right',labels:{boxWidth:10,padding:4,font:{size:9}}},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${f(ctx.parsed)} (${(ctx.parsed/catTotal*100).toFixed(1)}%)`}}}}
   });
 
   // Chart 2: Donut por tarjeta
   const cards = T.byCard;
   const cardColors = ['#4da8da','#e94560','#ffc107'];
-  new Chart(document.getElementById('tc-ch-cards'), {
+  charts.tcCards = new Chart(document.getElementById('tc-ch-cards'), {
     type:'doughnut',
     data:{ labels:cards.map(c=>c.t), datasets:[{data:cards.map(c=>c.m),backgroundColor:cardColors,borderWidth:0}]},
-    options:{ responsive:true,maintainAspectRatio:false,cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:8,font:{size:11}}},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${f(ctx.parsed)} (${(ctx.parsed/T.totalGasto*100).toFixed(1)}%) · ${cards[ctx.dataIndex].n} txns`}}}}
+    options:{ responsive:true,maintainAspectRatio:false,cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:8,font:{size:11}}},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${f(ctx.parsed)} (${(ctx.parsed/T.totalGasto*100).toFixed(1)}%)`}}}}
   });
 
   // Chart 3: Evolución Visa ICBC (bars + line)
   const vs = T.visaSaldos;
-  new Chart(document.getElementById('tc-ch-evolucion'), {
+  charts.tcEvolucion = new Chart(document.getElementById('tc-ch-evolucion'), {
     type:'bar',
     data:{
       labels:vs.meses,
@@ -2469,7 +2525,7 @@ const renderTarjetas = () => {
 
   // Chart 4: Evolución Santander Visa (bars + line)
   const ss = T.santSaldos;
-  new Chart(document.getElementById('tc-ch-santander'), {
+  charts.tcSantander = new Chart(document.getElementById('tc-ch-santander'), {
     type:'bar',
     data:{
       labels:ss.meses,
@@ -2484,17 +2540,17 @@ const renderTarjetas = () => {
 
   // Chart 5: Top merchants horizontal bar
   const tms = T.topMerchants.sort((a,b)=>b.m-a.m);
-  new Chart(document.getElementById('tc-ch-merchants'), {
+  charts.tcMerchants = new Chart(document.getElementById('tc-ch-merchants'), {
     type:'bar',
     data:{ labels:tms.map(m=>m.n), datasets:[{data:tms.map(m=>m.m),backgroundColor:'#4da8da',borderRadius:4}]},
     options:{ indexAxis:'y',responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{callback:v=>'$'+Math.round(v/1000)+'K'}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>f(ctx.parsed.x)}}}}
   });
 
   // Chart 6: Fijo vs Variable donut
-  new Chart(document.getElementById('tc-ch-fijo'), {
+  charts.tcFijo = new Chart(document.getElementById('tc-ch-fijo'), {
     type:'doughnut',
     data:{ labels:[`Fijos — ${T.fijoVsVariable.fijoPct}%`,`Variables — ${T.fijoVsVariable.variablePct}%`], datasets:[{data:[T.fijoVsVariable.fijo,T.fijoVsVariable.variable],backgroundColor:['#4da8da','#ff8c42'],borderWidth:0}]},
-    options:{ responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:8}},tooltip:{callbacks:{label:ctx=>f(ctx.parsed)}}}}
+    options:{ responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{title:{display:true,text:T.fijoVsVariable.nota||'',font:{size:10},color:'#8892a4'},legend:{position:'bottom',labels:{boxWidth:12,padding:8}},tooltip:{callbacks:{label:ctx=>f(ctx.parsed)}}}}
   });
 
   // Category table
@@ -3230,10 +3286,12 @@ const renderAll = () => {
   renderTables();
   renderCockpit();
   renderArca();
+  renderCobertura();
   renderAcciones();
   renderResumenPMD();
   setupSimulador();
-  setupMainTabs();
+  // Si el tab Augusto ya fue renderizado, re-renderizarlo con los datos actuales
+  if (window._augustoRendered) renderAugusto();
 };
 
 /* ===== INIT ===== */
@@ -3257,6 +3315,7 @@ const initDashboard = async () => {
   }
 
   renderAll();
+  setupMainTabs(); // una sola vez: evita listeners duplicados en re-renders
 };
 
 /* ===== ON LOAD - inicio directo sin contraseña ===== */
