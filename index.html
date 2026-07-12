@@ -150,6 +150,56 @@ td.diff-bad{color:var(--red);font-weight:600}
 .ccma-stat .ccma-stat-val{font-size:1.1rem;font-weight:700}
 .ccma-stat .ccma-stat-lbl{font-size:.75rem;color:var(--text-muted);text-transform:uppercase}
 
+/* COCKPIT FISCAL */
+.cockpit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.cockpit-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden}
+.cockpit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.cockpit-card:nth-child(1)::before{background:var(--green)}
+.cockpit-card:nth-child(2)::before{background:var(--orange)}
+.cockpit-card:nth-child(3)::before{background:var(--blue)}
+.cockpit-card:nth-child(4)::before{background:var(--yellow)}
+.cockpit-card:nth-child(5)::before{background:var(--red)}
+.cockpit-card:nth-child(6)::before{background:var(--highlight)}
+.cockpit-title{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:6px}
+.cockpit-valor{font-size:1.5rem;font-weight:700;margin-bottom:4px}
+.cockpit-estado{font-size:.75rem;margin-bottom:8px}
+.cockpit-detail{font-size:.72rem;color:var(--text-muted);line-height:1.5}
+.cockpit-total{border:1px solid var(--highlight);background:rgba(77,168,218,0.05)}
+.badge-pagar{background:rgba(233,69,96,0.2);color:#e94560;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600}
+.badge-favor{background:rgba(0,201,167,0.2);color:#00c9a7;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600}
+.badge-neutro{background:rgba(255,193,7,0.2);color:#ffc107;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600}
+.sim-card{background:var(--card);border:1px solid var(--highlight);border-radius:10px;padding:20px;margin-bottom:20px}
+.sim-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.sim-input{background:var(--accent);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-size:.9rem;width:140px}
+.sim-btn{background:var(--highlight);color:#fff;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-weight:600;font-size:.8rem}
+.sim-btn:hover{opacity:.85}
+.sim-result{margin-top:12px;padding:12px;background:var(--accent);border-radius:8px;font-size:.8rem;line-height:1.6}
+@media(max-width:1024px){.cockpit-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.cockpit-grid{grid-template-columns:1fr}}
+
+/* ACCIONES PENDIENTES */
+.acciones-tabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.acciones-tab{background:var(--accent);border:1px solid var(--border);border-radius:6px 6px 0 0;padding:6px 14px;cursor:pointer;font-size:.75rem;color:var(--text-muted);transition:all .2s}
+.acciones-tab.active{background:var(--highlight);color:#fff;border-color:var(--highlight)}
+.accion-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);transition:opacity .3s}
+.accion-item.done{opacity:.5}
+.accion-check{width:20px;height:20px;border-radius:4px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-size:.75rem}
+.accion-check.auto{border-color:var(--green);color:var(--green)}
+.accion-check.manual{border-color:var(--orange);cursor:pointer}
+.accion-check.done{background:var(--green);border-color:var(--green);color:#fff}
+.accion-body{flex:1}
+.accion-title{font-size:.8rem;font-weight:600;color:var(--text);margin-bottom:2px}
+.accion-desc{font-size:.72rem;color:var(--text-muted);line-height:1.4}
+.accion-tag{display:inline-block;font-size:.65rem;padding:1px 6px;border-radius:3px;margin-right:4px}
+.tag-fiscal{background:rgba(233,69,96,0.15);color:#e94560}
+.tag-contable{background:rgba(77,168,218,0.15);color:#4da8da}
+.tag-bancario{background:rgba(0,201,167,0.15);color:#00c9a7}
+.tag-facturacion{background:rgba(255,193,7,0.15);color:#ffc107}
+.tag-urgente{background:rgba(233,69,96,0.3);color:#e94560;font-weight:700}
+.acciones-progress{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:.8rem}
+.acciones-bar{flex:1;height:8px;background:var(--accent);border-radius:4px;overflow:hidden}
+.acciones-bar-fill{height:100%;background:var(--green);border-radius:4px;transition:width .5s}
+
 /* FOOTER */
 footer{background:var(--card);border-top:1px solid var(--border);padding:20px 32px;text-align:center;color:var(--text-muted);font-size:.8rem}
 footer p+p{margin-top:4px}
@@ -265,6 +315,25 @@ footer p+p{margin-top:4px}
       </div>
     </div>
 
+    <!-- KPIs ROW 2: P&L -->
+    <div class="kpi-grid" style="margin-top:8px">
+      <div class="kpi-card">
+        <div class="kpi-label">Compras Acumuladas (ARCA)</div>
+        <div class="kpi-value yellow" id="kpi-compras"></div>
+        <div class="kpi-sub" id="kpi-compras-detail"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Ganancia Bruta Estimada</div>
+        <div class="kpi-value" id="kpi-ganancia"></div>
+        <div class="kpi-sub" id="kpi-ganancia-detail"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Impuestos Pagados 2026</div>
+        <div class="kpi-value red" id="kpi-impuestos"></div>
+        <div class="kpi-sub" id="kpi-impuestos-detail"></div>
+      </div>
+    </div>
+
     <!-- CHARTS ROW 1 -->
     <div class="charts-grid">
       <div class="chart-card">
@@ -289,6 +358,14 @@ footer p+p{margin-top:4px}
       </div>
     </div>
 
+    <!-- CHARTS ROW 2b: P&L -->
+    <div class="charts-grid">
+      <div class="chart-card" style="grid-column:1/-1">
+        <h3><span class="dot" style="background:var(--green)"></span>Ventas vs Compras vs Ganancia Bruta (mensual)</h3>
+        <div class="chart-wrap"><canvas id="chart-pnl"></canvas></div>
+      </div>
+    </div>
+
     <!-- CHARTS ROW 3 -->
     <div class="charts-grid">
       <div class="chart-card">
@@ -301,13 +378,70 @@ footer p+p{margin-top:4px}
       </div>
     </div>
 
+    <!-- COCKPIT FISCAL EN TIEMPO REAL -->
+    <h2 class="section-title" style="border-left-color:var(--highlight)">Cockpit Fiscal en Tiempo Real</h2>
+    <div class="cockpit-grid" id="cockpit-grid">
+      <div class="cockpit-card">
+        <div class="cockpit-title">IVA — Posicion Actual</div>
+        <div class="cockpit-valor" id="cock-iva-valor"></div>
+        <div class="cockpit-estado" id="cock-iva-estado"></div>
+        <div class="cockpit-detail" id="cock-iva-detail"></div>
+      </div>
+      <div class="cockpit-card">
+        <div class="cockpit-title">IIBB — Ingresos Brutos PMD</div>
+        <div class="cockpit-valor" id="cock-iibb-valor"></div>
+        <div class="cockpit-estado" id="cock-iibb-estado"></div>
+        <div class="cockpit-detail" id="cock-iibb-detail"></div>
+      </div>
+      <div class="cockpit-card">
+        <div class="cockpit-title">Ganancias Sociedades (35%)</div>
+        <div class="cockpit-valor" id="cock-gan-valor"></div>
+        <div class="cockpit-estado" id="cock-gan-estado"></div>
+        <div class="cockpit-detail" id="cock-gan-detail"></div>
+      </div>
+      <div class="cockpit-card">
+        <div class="cockpit-title">SUSS — Cargas Sociales (F931)</div>
+        <div class="cockpit-valor" id="cock-suss-valor"></div>
+        <div class="cockpit-estado" id="cock-suss-estado"></div>
+        <div class="cockpit-detail" id="cock-suss-detail"></div>
+      </div>
+      <div class="cockpit-card">
+        <div class="cockpit-title">SICORE — Retenciones</div>
+        <div class="cockpit-valor" id="cock-sicore-valor"></div>
+        <div class="cockpit-estado" id="cock-sicore-estado"></div>
+        <div class="cockpit-detail" id="cock-sicore-detail"></div>
+      </div>
+      <div class="cockpit-card cockpit-total">
+        <div class="cockpit-title">Carga Fiscal Total Mensual</div>
+        <div class="cockpit-valor" id="cock-total-valor"></div>
+        <div class="cockpit-estado" id="cock-total-estado"></div>
+        <div class="cockpit-detail" id="cock-total-detail"></div>
+      </div>
+    </div>
+
+    <!-- SIMULADOR FISCAL -->
+    <div class="sim-card">
+      <h3 style="margin:0 0 8px;font-size:.95rem;color:var(--text)">Simulador Fiscal: ¿Que pasa si...?</h3>
+      <p style="font-size:.75rem;color:var(--text-muted);margin:0 0 12px">Ingresa montos NETOS (sin IVA) para ver el impacto fiscal inmediato</p>
+      <div class="sim-row">
+        <span style="font-size:.8rem">Facturo venta:</span>
+        <input type="number" class="sim-input" id="sim-venta" value="0" placeholder="$ neto">
+        <span style="font-size:.8rem">Registro compra:</span>
+        <input type="number" class="sim-input" id="sim-compra" value="0" placeholder="$ neto">
+        <button class="sim-btn" id="sim-btn">Simular impacto</button>
+        <button class="sim-btn" id="sim-reset" style="background:var(--text-muted)">Reset</button>
+      </div>
+      <div class="sim-result" id="sim-result" style="display:none"></div>
+    </div>
+
     <!-- CHEQUES TABLE -->
-    <h2 class="section-title">Detalle Descuento de Cheques - Banco Galicia</h2>
+    <h2 class="section-title">Detalle Descuento de Cheques - Galicia + ICBC</h2>
     <div class="table-wrap">
       <table id="table-cheques">
         <thead>
           <tr>
             <th>Fecha</th>
+            <th>Banco</th>
             <th>Bruto</th>
             <th>Interes</th>
             <th>IIBB</th>
@@ -452,6 +586,12 @@ footer p+p{margin-top:4px}
     <h2 class="section-title" style="border-left-color:var(--blue)">CCMA - Cuenta Corriente Augusto (Personal)</h2>
     <div class="ccma-card" id="ccma-card"></div>
 
+    <!-- ACCIONES PENDIENTES -->
+    <h2 class="section-title" style="border-left-color:var(--orange)">Acciones Pendientes — Contabilidad al Dia</h2>
+    <div class="acciones-progress" id="acciones-progress"></div>
+    <div class="acciones-tabs" id="acciones-tabs"></div>
+    <div id="acciones-list" style="background:var(--card);border:1px solid var(--border);border-radius:0 8px 8px 8px"></div>
+
     <!-- ALERTAS Y HALLAZGOS -->
     <h2 class="section-title" style="border-left-color:var(--red)">Alertas y Hallazgos de Auditoria</h2>
     <div id="alertas-container"></div>
@@ -496,12 +636,13 @@ const DATA = {
     mp:      [44236.53, 56434.65, 6992.46, 19595.12, 285260.05, null]
   },
   cheques: [
-    { fecha:'27/03/26', bruto:20000000, interes:1349003.58, iibb:40470.11, sellos:57863.01, iva:141645.38, percIva:20235.05, costos:1609217.13, neto:18390782.87, tasa:8.05 },
-    { fecha:'07/04/26', bruto:20000000, interes:1584592.81, iibb:47537.78, sellos:54575.34, iva:166382.25, percIva:23768.89, costos:1876857.07, neto:18123142.93, tasa:9.38 },
-    { fecha:'01/06/26', bruto:25000000, interes:2029347.05, iibb:50733.68, sellos:75616.44, iva:213081.44, percIva:30440.21, costos:2399218.82, neto:22600781.18, tasa:9.60 },
-    { fecha:'25/06/26', bruto:25000000, interes:1614556.64, iibb:40363.92, sellos:69041.10, iva:169528.45, percIva:24218.35, costos:1917708.46, neto:23082291.54, tasa:7.67 }
+    { fecha:'27/03/26', bruto:20000000, interes:1349003.58, iibb:40470.11, sellos:57863.01, iva:141645.38, percIva:20235.05, costos:1609217.13, neto:18390782.87, tasa:8.05, banco:'Galicia' },
+    { fecha:'07/04/26', bruto:20000000, interes:1584592.81, iibb:47537.78, sellos:54575.34, iva:166382.25, percIva:23768.89, costos:1876857.07, neto:18123142.93, tasa:9.38, banco:'Galicia' },
+    { fecha:'01/06/26', bruto:25000000, interes:2029347.05, iibb:50733.68, sellos:75616.44, iva:213081.44, percIva:30440.21, costos:2399218.82, neto:22600781.18, tasa:9.60, banco:'Galicia' },
+    { fecha:'25/06/26', bruto:25000000, interes:1614556.64, iibb:40363.92, sellos:69041.10, iva:169528.45, percIva:24218.35, costos:1917708.46, neto:23082291.54, tasa:7.67, banco:'Galicia' },
+    { fecha:'08/05/26', bruto:6886412, interes:688641.20, iibb:0, sellos:15082.50, iva:37903.05, percIva:5414.72, costos:747041.47, neto:6139370.50, tasa:10.85, banco:'ICBC' }
   ],
-  chequesTotals: { bruto:90000000, costos:7803001.48, tasaPromedio:8.67 },
+  chequesTotals: { bruto:96886412, costos:8550042.95, tasaPromedio:8.82 },
   veps: [
     { fecha:'29/05/26', concepto:'Autonomos SUSS (04/2026)', importe:300582.32 },
     { fecha:'29/05/26', concepto:'Autonomos SUSS (05/2026)', importe:310742.00 },
@@ -570,7 +711,6 @@ const DATA = {
       {concepto:'F931 Cargas Sociales', mensual:120000, pctVentas:0.8},
       {concepto:'SICORE Retenciones', mensual:125000, pctVentas:0.8},
       {concepto:'IIBB PMD', mensual:50000, pctVentas:0.3},
-      {concepto:'IIBB Augusto', mensual:200000, pctVentas:1.3},
       {concepto:'Autonomos SUSS x2', mensual:310000, pctVentas:2.0},
       {concepto:'Anticipos Ganancias', mensual:100000, pctVentas:0.6},
       {concepto:'Visa ICBC Corp.', mensual:200000, pctVentas:1.3},
@@ -923,6 +1063,36 @@ const renderKPIs = () => {
     bar.style.width = Math.min(ratio, 100) + '%';
     bar.style.background = ratio > 90 ? 'var(--red)' : ratio > 80 ? 'var(--yellow)' : 'var(--green)';
   }
+
+  // Compras KPI (from ARCA data - the truth)
+  const arcaCompras = D.arca && D.arca.recibidosMensual ? D.arca.recibidosMensual : [];
+  const totalComprasArca = arcaCompras.reduce((s, m) => s + (m.neto || 0), 0);
+  const mesesCompras = arcaCompras.length;
+  document.getElementById('kpi-compras').textContent = fmt(totalComprasArca);
+  document.getElementById('kpi-compras-detail').textContent = `${mesesCompras} meses (fuente: ARCA Mis Comprobantes)`;
+
+  // Ganancia Bruta KPI = Ventas - Compras (solo meses con datos de ambos)
+  // Ventas includes IVA ventas + exentas from ARCA emitidos
+  const ventasExentas = D.arca && D.arca.emitidos ? D.arca.emitidos.reduce((s, e) => s + (e.exento || 0), 0) : 0;
+  const totalVentasReal = totalVentas + ventasExentas;
+  // Use first 5 months of ARCA compras to match ventas period (Ene-May)
+  const comprasComparables = arcaCompras.slice(0, 5).reduce((s, m) => s + (m.neto || 0), 0);
+  const gananciaBruta = totalVentasReal - comprasComparables;
+  const kpiGanEl = document.getElementById('kpi-ganancia');
+  kpiGanEl.textContent = fmt(gananciaBruta);
+  kpiGanEl.className = gananciaBruta >= 0 ? 'kpi-value green' : 'kpi-value red';
+  const margenPct = totalVentasReal > 0 ? (gananciaBruta / totalVentasReal * 100).toFixed(1) : 0;
+  document.getElementById('kpi-ganancia-detail').textContent = `Margen bruto: ${margenPct}% | Ventas $${(totalVentasReal/1e6).toFixed(1)}M - Compras $${(comprasComparables/1e6).toFixed(1)}M`;
+
+  // Impuestos Pagados KPI
+  const totalSicore = sumNonNull(D.sicore);
+  const totalF931 = sumNonNull(D.f931);
+  const totalIIBBpmd = sumNonNull(D.iibb.pagar);
+  const totalAutonomos = sumNonNull(D.autonomos);
+  const totalAnticGan = sumNonNull(D.anticiposGan);
+  const totalImpuestos = totalSicore + totalF931 + totalIIBBpmd + totalAutonomos + totalAnticGan;
+  document.getElementById('kpi-impuestos').textContent = fmt(totalImpuestos);
+  document.getElementById('kpi-impuestos-detail').textContent = `SICORE $${(totalSicore/1e6).toFixed(1)}M | F931 $${(totalF931/1e6).toFixed(1)}M | IIBB $${(totalIIBBpmd/1e6).toFixed(1)}M | Otros $${((totalAutonomos+totalAnticGan)/1e6).toFixed(1)}M`;
 };
 
 /* ===== RENDER CHARTS ===== */
@@ -1002,7 +1172,7 @@ const renderCharts = () => {
         { label:'SICORE', data:D.sicore.map(v=>v??0), backgroundColor:'rgba(77,168,218,0.8)', borderRadius:4 },
         { label:'F931', data:D.f931.map(v=>v??0), backgroundColor:'rgba(255,140,66,0.8)', borderRadius:4 },
         { label:'IIBB PMD', data:D.iibb.pagar.map(v=>v??0), backgroundColor:'rgba(233,69,96,0.8)', borderRadius:4 },
-        { label:'IIBB Augusto', data:D.iibbAugusto.map(v=>v??0), backgroundColor:'rgba(233,69,96,0.5)', borderRadius:4 },
+        /* IIBB Augusto removido — es persona fisica, no PMD SRL */
         { label:'Autonomos SUSS', data:D.autonomos.map(v=>v??0), backgroundColor:'rgba(108,122,137,0.8)', borderRadius:4 },
         { label:'Antic. Ganancias', data:D.anticiposGan.map(v=>v??0), backgroundColor:'rgba(0,201,167,0.6)', borderRadius:4 }
       ]
@@ -1094,6 +1264,53 @@ const renderCharts = () => {
       }
     }
   });
+
+  // Chart 7: P&L - Ventas vs Compras vs Ganancia
+  const pnlMonths = ['Ene','Feb','Mar','Abr','May'];
+  const pnlVentas = [];
+  const pnlCompras = [];
+  const pnlGanancia = [];
+  const arcaRec = D.arca && D.arca.recibidosMensual ? D.arca.recibidosMensual : [];
+  const arcaEmit = D.arca && D.arca.emitidos ? D.arca.emitidos : [];
+
+  for (let i = 0; i < 5; i++) {
+    // Ventas: IVA ventas + exentas emitidas that month
+    let ventasMes = (D.iva.ventas[i] || 0);
+    // Add exentas for this month
+    const mesNames = ['01','02','03','04','05'];
+    const mesExentas = arcaEmit.filter(e => e.fecha.includes('/' + mesNames[i] + '/')).reduce((s,e) => s + (e.exento || 0), 0);
+    ventasMes += mesExentas;
+    pnlVentas.push(ventasMes);
+
+    // Compras: ARCA neto
+    const comprasMes = arcaRec[i] ? arcaRec[i].neto : 0;
+    pnlCompras.push(comprasMes);
+
+    // Ganancia
+    pnlGanancia.push(ventasMes - comprasMes);
+  }
+
+  charts.pnl = new Chart(document.getElementById('chart-pnl'), {
+    type: 'bar',
+    data: {
+      labels: pnlMonths,
+      datasets: [
+        { label:'Ventas (neto + exentas)', data:pnlVentas, backgroundColor:'rgba(0,201,167,0.7)', borderRadius:4, order:2 },
+        { label:'Compras ARCA (neto)', data:pnlCompras, backgroundColor:'rgba(233,69,96,0.7)', borderRadius:4, order:2 },
+        { label:'Ganancia Bruta', data:pnlGanancia, type:'line', borderColor:'#ffc107', backgroundColor:'rgba(255,193,7,0.1)', tension:0.3, pointRadius:6, pointHoverRadius:8, borderWidth:3, fill:true, order:1 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ usePointStyle:true, padding:16 } },
+        tooltip:{ callbacks:{ label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+      },
+      scales:{
+        y:{ ticks:{ callback:(v) => fmtM(v) }, grid:{ color:'rgba(255,255,255,0.04)' } },
+        x:{ grid:{ display:false } }
+      }
+    }
+  });
 };
 
 /* ===== RENDER TABLES ===== */
@@ -1104,6 +1321,7 @@ const renderTables = () => {
   D.cheques.forEach(c => {
     html += `<tr>
       <td>${c.fecha}</td>
+      <td>${c.banco||'Galicia'}</td>
       <td class="num">${fmt(c.bruto)}</td>
       <td class="num red">${fmt(c.interes)}</td>
       <td class="num">${fmt(c.iibb)}</td>
@@ -1125,6 +1343,7 @@ const renderTables = () => {
   const totalNeto = D.cheques.reduce((s,c) => s + c.neto, 0);
   html += `<tr style="font-weight:700;border-top:2px solid var(--blue)">
     <td>TOTAL</td>
+    <td></td>
     <td class="num">${fmt(totalBruto)}</td>
     <td class="num red">${fmt(totalInteres)}</td>
     <td class="num">${fmt(totalIIBB)}</td>
@@ -1149,7 +1368,6 @@ const renderTables = () => {
     'SICORE': D.balance2025.deudasFiscales.sicore,
     'F931 (Cargas Soc.)': null,
     'IIBB PMD a Pagar': D.balance2025.deudasFiscales.iibb,
-    'IIBB Augusto a Pagar': null,
     'Autonomos SUSS': null,
     'Antic. Ganancias': null,
     'IIBB a Favor Contrib.': null,
@@ -1170,7 +1388,6 @@ const renderTables = () => {
     { label:'SICORE', data:D.sicore, cls:'red', bold:false },
     { label:'F931 (Cargas Soc.)', data:D.f931, cls:'red', bold:false },
     { label:'IIBB PMD a Pagar', data:D.iibb.pagar, cls:'red', bold:false },
-    { label:'IIBB Augusto a Pagar', data:D.iibbAugusto, cls:'red', bold:false },
     { label:'Autonomos SUSS', data:D.autonomos, cls:'red', bold:false },
     { label:'Antic. Ganancias', data:D.anticiposGan, cls:'red', bold:false },
     { label:'IIBB a Favor Contrib.', data:D.iibb.favor, cls:'green', bold:false },
@@ -1221,6 +1438,74 @@ const renderTables = () => {
     mhtml += `<td class="num ${r.cls}" style="font-weight:600">${showTotal ? fmt(total) : '—'}</td>`;
     mhtml += `</tr>`;
   });
+
+  // === COMPUTED P&L ROWS ===
+  // Compras ARCA row
+  const arcaRecM = D.arca && D.arca.recibidosMensual ? D.arca.recibidosMensual : [];
+  const comprasArcaData = D.months.map((_, i) => arcaRecM[i] ? arcaRecM[i].neto : null);
+  const totalComprasArcaT = comprasArcaData.reduce((s, v) => s + (v ?? 0), 0);
+  mhtml += `<tr style="font-weight:700;background:rgba(255,193,7,0.08)">`;
+  mhtml += `<td>Compras ARCA (neto)</td>`;
+  mhtml += `<td class="num missing">—</td>`;
+  comprasArcaData.forEach(v => {
+    mhtml += v != null ? `<td class="num yellow">${fmt(v)}</td>` : `<td class="num missing">—</td>`;
+  });
+  mhtml += `<td class="num yellow" style="font-weight:700">${fmt(totalComprasArcaT)}</td>`;
+  mhtml += `</tr>`;
+
+  // Total Impuestos row
+  const impuestosData = D.months.map((_, i) => {
+    const vals = [D.sicore[i], D.f931[i], D.iibb.pagar[i], D.autonomos[i], D.anticiposGan[i]];
+    const sum = vals.reduce((s, v) => s + (v ?? 0), 0);
+    return sum > 0 ? sum : null;
+  });
+  const totalImpuestosT = impuestosData.reduce((s, v) => s + (v ?? 0), 0);
+  mhtml += `<tr style="font-weight:700;background:rgba(233,69,96,0.08)">`;
+  mhtml += `<td>Total Impuestos Pagados</td>`;
+  mhtml += `<td class="num missing">—</td>`;
+  impuestosData.forEach(v => {
+    mhtml += v != null ? `<td class="num red">${fmt(v)}</td>` : `<td class="num missing">—</td>`;
+  });
+  mhtml += `<td class="num red" style="font-weight:700">${fmt(totalImpuestosT)}</td>`;
+  mhtml += `</tr>`;
+
+  // Ganancia Bruta row (Ventas - Compras ARCA)
+  const gananciaBrutaData = D.months.map((_, i) => {
+    const v = D.iva.ventas[i];
+    const c = arcaRecM[i] ? arcaRecM[i].neto : null;
+    if (v == null && c == null) return null;
+    return (v ?? 0) - (c ?? 0);
+  });
+  const totalGananciaT = gananciaBrutaData.reduce((s, v) => s + (v ?? 0), 0);
+  mhtml += `<tr style="font-weight:700;background:rgba(0,201,167,0.08)">`;
+  mhtml += `<td>Ganancia Bruta (V-C)</td>`;
+  mhtml += `<td class="num missing">—</td>`;
+  gananciaBrutaData.forEach(v => {
+    if (v == null) { mhtml += `<td class="num missing">—</td>`; }
+    else if (v < 0) { mhtml += `<td class="num red">${fmt(v)}</td>`; }
+    else { mhtml += `<td class="num green">${fmt(v)}</td>`; }
+  });
+  const ganCls = totalGananciaT >= 0 ? 'green' : 'red';
+  mhtml += `<td class="num ${ganCls}" style="font-weight:700">${fmt(totalGananciaT)}</td>`;
+  mhtml += `</tr>`;
+
+  // Ganancia Neta Estimada (Bruta - Impuestos)
+  const gananciaNeta = totalGananciaT - totalImpuestosT;
+  mhtml += `<tr style="font-weight:700;background:rgba(0,201,167,0.15)">`;
+  mhtml += `<td>Ganancia Neta Est. (V-C-Imp)</td>`;
+  mhtml += `<td class="num missing">—</td>`;
+  D.months.forEach((_, i) => {
+    const gb = gananciaBrutaData[i];
+    const imp = impuestosData[i];
+    if (gb == null && imp == null) { mhtml += `<td class="num missing">—</td>`; }
+    else {
+      const gn = (gb ?? 0) - (imp ?? 0);
+      mhtml += gn >= 0 ? `<td class="num green">${fmt(gn)}</td>` : `<td class="num red">${fmt(gn)}</td>`;
+    }
+  });
+  const gnCls = gananciaNeta >= 0 ? 'green' : 'red';
+  mhtml += `<td class="num ${gnCls}" style="font-weight:700">${fmt(gananciaNeta)}</td>`;
+  mhtml += `</tr>`;
 
   // Separator row
   mhtml += `<tr><td colspan="${D.months.length + 3}" style="border-top:2px solid var(--yellow);padding:2px"></td></tr>`;
@@ -1546,12 +1831,327 @@ const renderArca = () => {
     <div class="ccma-grid">${ccmaItemsHtml}</div>`;
 };
 
+/* ===== ACCIONES PENDIENTES ===== */
+const ACCIONES = [
+  // FACTURACION
+  { id:'fact-astillero', cat:'facturacion', titulo:'Facturar a Astillero Alpha por diseño', desc:'Honorarios profesionales por proyecto + direccion de obra (~$15.75M + IVA). Factura A de PMD.', urgente:true,
+    check: () => D.arca && D.arca.emitidos && D.arca.emitidos.some(e => e.razonSocial && e.razonSocial.toLowerCase().includes('astillero')) },
+  { id:'fact-micontainer', cat:'facturacion', titulo:'Verificar facturacion a Mi Container SRL', desc:'Confirmar que todas las facturas de servicio de construccion estan emitidas y registradas en ARCA.',
+    check: () => false },
+
+  // FISCAL
+  { id:'ddjj-iva-jul', cat:'fiscal', titulo:'Presentar DDJJ IVA Julio 2026', desc:'Vencimiento segun CUIT. Verificar posicion IVA en cockpit fiscal antes de presentar.', urgente:true,
+    check: () => { const now = new Date(); return now.getMonth() > 6; } },
+  { id:'credito-iva', cat:'fiscal', titulo:'Reclamar credito IVA no computado ($6.2M)', desc:'ARCA muestra compras con IVA no cargadas en libro IVA. Rectificar DDJJ para computar credito.', urgente:true,
+    check: () => { const arcaRec = D.arca?.recibidosMensual || []; let diff = 0; for(let i=0;i<5;i++){diff += (arcaRec[i]?.iva||0) - (D.iva.credito[i]||0);} return diff < 100000; } },
+  { id:'iibb-jul', cat:'fiscal', titulo:'Pagar anticipo IIBB julio', desc:'ARBA/AGIP — verificar saldo a favor antes de pagar.',
+    check: () => D.iibb.pagar.length > 6 && D.iibb.pagar[6] != null },
+  { id:'sicore-jul', cat:'fiscal', titulo:'Presentar SICORE julio', desc:'Retenciones del mes.',
+    check: () => D.sicore.length > 6 && D.sicore[6] != null },
+  { id:'ganancias-anticipo', cat:'fiscal', titulo:'Pagar anticipo Ganancias (cuota julio)', desc:'Verificar monto del anticipo en cockpit fiscal. 10 cuotas anuales.',
+    check: () => D.anticiposGan.length > 6 && D.anticiposGan[6] != null },
+  { id:'f931-jul', cat:'fiscal', titulo:'Presentar F931 julio (cargas sociales)', desc:'Liquidacion de sueldos UOCRA + aportes patronales.',
+    check: () => D.f931.length > 6 && D.f931[6] != null },
+  { id:'autonomos-jul', cat:'fiscal', titulo:'Pagar autonomos julio (Augusto)', desc:'Cuota mensual obligatoria como socio gerente.',
+    check: () => D.autonomos.length > 6 && D.autonomos[6] != null },
+  { id:'sct-deuda', cat:'fiscal', titulo:'Regularizar deuda SCT ARCA ($997.683)', desc:'Sistema de Cuentas Tributarias muestra saldo deudor. Evaluar plan de pagos o cancelacion.',
+    check: () => D.arca?.sctDeudas?.saldoTotal < 100000 },
+
+  // CONTABLE
+  { id:'compras-sync', cat:'contable', titulo:'Sincronizar compras ARCA vs libro IVA', desc:'Hay $30M de diferencia entre compras ARCA y las registradas. Cargar facturas faltantes.', urgente:true,
+    check: () => false },
+  { id:'icbc-cheque-reg', cat:'contable', titulo:'Registrar descuento cheque ICBC en contabilidad', desc:'Descuento de documentos del 08/05/26 por $6.9M bruto (ICBC). Ya cargado en dashboard.',
+    check: () => D.cheques.some(c => c.banco === 'ICBC') },
+  { id:'balance-cierre', cat:'contable', titulo:'Preparar pre-cierre semestral (jun 2026)', desc:'Balance de saldos, conciliaciones bancarias, provision de aguinaldo.',
+    check: () => false },
+  { id:'astillero-circular', cat:'contable', titulo:'Evaluar riesgo circular Astillero Alpha', desc:'PMD compra insumos y cobra honorarios. Documentar independencia de operaciones.', urgente:false,
+    check: () => false },
+
+  // BANCARIO
+  { id:'banco-saldos', cat:'bancario', titulo:'Actualizar saldos bancarios julio', desc:'ICBC, Galicia y Mercado Pago. Comparar con extractos del mes.',
+    check: () => D.banks.icbc.length > 6 && D.banks.icbc[6] != null },
+  { id:'prestamo-icbc', cat:'bancario', titulo:'Verificar cuota prestamo ICBC julio', desc:'Cuota mensual del prestamo de $18M. Verificar debito automatico.',
+    check: () => false },
+  { id:'veps-pendientes', cat:'bancario', titulo:'Revisar VEPs pendientes de pago', desc:'Verificar que no hay VEPs vencidos sin pagar.',
+    check: () => false },
+
+  // CCMA AUGUSTO
+  { id:'ccma-deuda', cat:'fiscal', titulo:'Regularizar CCMA Augusto ($705.450 deudor)', desc:'Cuenta corriente personal en ARCA con saldo deudor. Evaluar plan de pagos.',
+    check: () => D.arca?.ccmaAugusto?.saldoDeudor < 50000 },
+  { id:'monotributo-recat', cat:'fiscal', titulo:'Evaluar recategorizacion monotributo (julio)', desc:'Recategorizacion semestral obligatoria. Verificar facturacion ultimos 12 meses.',
+    check: () => { const now = new Date(); return now.getMonth() > 6; } },
+];
+
+const renderAcciones = () => {
+  const cats = [...new Set(ACCIONES.map(a => a.cat))];
+  const catLabels = { fiscal:'Fiscal', contable:'Contable', bancario:'Bancario', facturacion:'Facturacion' };
+  const catTags = { fiscal:'tag-fiscal', contable:'tag-contable', bancario:'tag-bancario', facturacion:'tag-facturacion' };
+
+  // Evaluate all checks
+  const results = ACCIONES.map(a => ({ ...a, done: a.check() }));
+  const totalDone = results.filter(r => r.done).length;
+  const totalAll = results.length;
+  const pct = Math.round(totalDone / totalAll * 100);
+
+  // Progress bar
+  document.getElementById('acciones-progress').innerHTML =
+    `<span><strong>${totalDone}/${totalAll}</strong> completadas (${pct}%)</span>
+     <div class="acciones-bar"><div class="acciones-bar-fill" style="width:${pct}%"></div></div>`;
+
+  // Tabs
+  const tabsEl = document.getElementById('acciones-tabs');
+  let tabsHtml = `<div class="acciones-tab active" data-cat="all">Todas (${totalAll - totalDone} pend.)</div>`;
+  cats.forEach(cat => {
+    const pending = results.filter(r => r.cat === cat && !r.done).length;
+    tabsHtml += `<div class="acciones-tab" data-cat="${cat}">${catLabels[cat]} (${pending})</div>`;
+  });
+  tabsEl.innerHTML = tabsHtml;
+
+  // Render items
+  const renderItems = (filter) => {
+    const listEl = document.getElementById('acciones-list');
+    const items = filter === 'all' ? results : results.filter(r => r.cat === filter);
+    // Sort: urgent first, then pending, then done
+    items.sort((a,b) => {
+      if (a.done !== b.done) return a.done ? 1 : -1;
+      if (a.urgente !== b.urgente) return a.urgente ? -1 : 1;
+      return 0;
+    });
+    let html = '';
+    items.forEach(item => {
+      html += `<div class="accion-item ${item.done ? 'done' : ''}">
+        <div class="accion-check ${item.done ? 'done' : 'auto'}">${item.done ? '✓' : ''}</div>
+        <div class="accion-body">
+          <div class="accion-title">
+            ${item.urgente && !item.done ? '<span class="accion-tag tag-urgente">URGENTE</span>' : ''}
+            <span class="accion-tag ${catTags[item.cat]}">${catLabels[item.cat]}</span>
+            ${item.titulo}
+          </div>
+          <div class="accion-desc">${item.desc}</div>
+        </div>
+      </div>`;
+    });
+    listEl.innerHTML = html;
+  };
+
+  renderItems('all');
+
+  // Tab click handlers
+  tabsEl.querySelectorAll('.acciones-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabsEl.querySelectorAll('.acciones-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderItems(tab.dataset.cat);
+    });
+  });
+};
+
+/* ===== RENDER COCKPIT FISCAL ===== */
+const renderCockpit = () => {
+  const f = (n) => n == null ? '—' : '$' + Math.abs(n).toLocaleString('es-AR', {minimumFractionDigits:0, maximumFractionDigits:0});
+
+  // === IVA ===
+  const ivaSaldoActual = lastNonNull(D.iva.saldo) || 0;
+  const ivaDeudaApertura = D.balance2025.deudasFiscales.iva;
+  const ivaPosReal = ivaSaldoActual - ivaDeudaApertura;
+  // Add ARCA extra credit not yet claimed
+  const arcaRec = D.arca && D.arca.recibidosMensual ? D.arca.recibidosMensual : [];
+  let ivaNoReclamado = 0;
+  for (let i = 0; i < Math.min(5, arcaRec.length); i++) {
+    const arcaIva = arcaRec[i] ? arcaRec[i].iva : 0;
+    const dashIva = D.iva.credito[i] || 0;
+    if (arcaIva > dashIva) ivaNoReclamado += (arcaIva - dashIva);
+  }
+  const ivaPosCorregida = ivaPosReal + ivaNoReclamado;
+
+  const ivaEl = document.getElementById('cock-iva-valor');
+  ivaEl.textContent = (ivaPosCorregida >= 0 ? '+' : '-') + f(ivaPosCorregida);
+  ivaEl.className = 'cockpit-valor ' + (ivaPosCorregida >= 0 ? 'green' : 'red');
+  document.getElementById('cock-iva-estado').innerHTML = ivaPosCorregida >= 0
+    ? '<span class="badge-favor">A FAVOR — No pagas IVA</span>'
+    : '<span class="badge-pagar">A PAGAR</span>';
+  document.getElementById('cock-iva-detail').innerHTML =
+    `Saldo tecnico acum: ${f(ivaSaldoActual)}<br>` +
+    `Deuda apertura (balance): -${f(ivaDeudaApertura)}<br>` +
+    `Credito ARCA no reclamado: +${f(ivaNoReclamado)}<br>` +
+    `<strong>Posicion real corregida: ${(ivaPosCorregida>=0?'+':'-')+f(ivaPosCorregida)}</strong>`;
+
+  // === IIBB ===
+  const ventasAcum = sumNonNull(D.iva.ventas);
+  const iibbAlicuota = 0.035;
+  const iibbBruto = ventasAcum * iibbAlicuota;
+  const iibbPagado = sumNonNull(D.iibb.pagar);
+  const iibbFavorAcum = lastNonNull(D.iibb.favor) || 0;
+  const iibbNeto = iibbBruto - iibbPagado - iibbFavorAcum;
+
+  const iibbEl = document.getElementById('cock-iibb-valor');
+  iibbEl.textContent = f(Math.max(0, iibbNeto));
+  iibbEl.className = 'cockpit-valor ' + (iibbNeto > 0 ? 'red' : 'green');
+  document.getElementById('cock-iibb-estado').innerHTML = iibbFavorAcum > iibbBruto
+    ? '<span class="badge-favor">Saldo a favor cubre</span>'
+    : (iibbNeto > 0 ? '<span class="badge-neutro">Con saldo a favor parcial</span>' : '<span class="badge-favor">Cubierto</span>');
+  document.getElementById('cock-iibb-detail').innerHTML =
+    `Base imponible (ventas): ${f(ventasAcum)}<br>` +
+    `Alicuota estimada: ${(iibbAlicuota*100).toFixed(1)}%<br>` +
+    `IIBB bruto: ${f(iibbBruto)}<br>` +
+    `Saldo a favor: -${f(iibbFavorAcum)}<br>` +
+    `Pagado acum: -${f(iibbPagado)}`;
+
+  // === GANANCIAS SOCIEDADES ===
+  const ventasExentas = D.arca && D.arca.emitidos ? D.arca.emitidos.reduce((s,e) => s + (e.exento||0), 0) : 0;
+  const ventasTotales = ventasAcum + ventasExentas;
+  const comprasTotales = arcaRec.slice(0,5).reduce((s,m) => s + (m.neto||0), 0);
+  const gastosAdmin = sumNonNull(D.sueldoSocio) + sumNonNull(D.f931);
+  const resultadoBruto = ventasTotales - comprasTotales - gastosAdmin;
+  // Proyeccion anual (regla de 3 simple sobre meses con datos)
+  const mesesConDatos = D.iva.ventas.filter(v => v != null).length || 1;
+  const resultadoAnual = resultadoBruto / mesesConDatos * 12;
+  const impuestoGan = Math.max(0, resultadoAnual * 0.35);
+  const anticiposPagados = sumNonNull(D.anticiposGan);
+  const ganSaldo = impuestoGan - anticiposPagados;
+  // Anticipo mensual estimado
+  const anticipoMensual = impuestoGan / 10;
+
+  const ganEl = document.getElementById('cock-gan-valor');
+  ganEl.textContent = f(anticipoMensual) + '/mes';
+  ganEl.className = 'cockpit-valor yellow';
+  document.getElementById('cock-gan-estado').innerHTML = '<span class="badge-neutro">Anticipo estimado mensual</span>';
+  document.getElementById('cock-gan-detail').innerHTML =
+    `Resultado bruto acum (${mesesConDatos}m): ${f(resultadoBruto)}<br>` +
+    `Proyeccion anual: ${f(resultadoAnual)}<br>` +
+    `Impuesto 35%: ${f(impuestoGan)}<br>` +
+    `Anticipos pagados: -${f(anticiposPagados)}<br>` +
+    `<strong>Saldo estimado anual: ${f(ganSaldo)}</strong>`;
+
+  // === SUSS F931 ===
+  const f931Vals = D.f931.filter(v => v != null);
+  const f931Promedio = f931Vals.length > 0 ? f931Vals.reduce((s,v) => s+v, 0) / f931Vals.length : 0;
+  const f931Ultimo = lastNonNull(D.f931) || 0;
+  const f931Pagado = sumNonNull(D.f931);
+
+  const sussEl = document.getElementById('cock-suss-valor');
+  sussEl.textContent = f(f931Ultimo);
+  sussEl.className = 'cockpit-valor red';
+  document.getElementById('cock-suss-estado').innerHTML = '<span class="badge-pagar">Mensual obligatorio</span>';
+  document.getElementById('cock-suss-detail').innerHTML =
+    `Ultimo F931: ${f(f931Ultimo)}<br>` +
+    `Promedio mensual: ${f(f931Promedio)}<br>` +
+    `Total pagado 2026: ${f(f931Pagado)}<br>` +
+    `Proximo vto: dia 10-15 del mes`;
+
+  // === SICORE ===
+  const sicoreVals = D.sicore.filter(v => v != null);
+  const sicorePromedio = sicoreVals.length > 0 ? sicoreVals.reduce((s,v)=>s+v,0) / sicoreVals.length : 0;
+  const sicoreUltimo = lastNonNull(D.sicore) || 0;
+  const sicorePagado = sumNonNull(D.sicore);
+
+  const sicoreEl = document.getElementById('cock-sicore-valor');
+  sicoreEl.textContent = f(sicoreUltimo);
+  sicoreEl.className = 'cockpit-valor red';
+  document.getElementById('cock-sicore-estado').innerHTML = '<span class="badge-pagar">Mensual obligatorio</span>';
+  document.getElementById('cock-sicore-detail').innerHTML =
+    `Ultima retencion: ${f(sicoreUltimo)}<br>` +
+    `Promedio mensual: ${f(sicorePromedio)}<br>` +
+    `Total pagado 2026: ${f(sicorePagado)}`;
+
+  // === TOTAL CARGA FISCAL ===
+  const iibbPmdProm = sumNonNull(D.iibb.pagar) / Math.max(1, D.iibb.pagar.filter(v=>v!=null).length);
+  const cargaMensual = f931Promedio + sicorePromedio + anticipoMensual +
+    (sumNonNull(D.autonomos) / Math.max(1, D.autonomos.filter(v=>v!=null).length)) +
+    iibbPmdProm;
+  const cargaAnual = cargaMensual * 12;
+  const pctVentas = ventasTotales > 0 ? (cargaMensual * mesesConDatos / ventasTotales * 100).toFixed(1) : 0;
+
+  const totalEl = document.getElementById('cock-total-valor');
+  totalEl.textContent = f(cargaMensual) + '/mes';
+  totalEl.className = 'cockpit-valor';
+  totalEl.style.color = 'var(--highlight)';
+  document.getElementById('cock-total-estado').innerHTML = `<span class="badge-neutro">${pctVentas}% de las ventas</span>`;
+  document.getElementById('cock-total-detail').innerHTML =
+    `F931: ~${f(f931Promedio)}/mes<br>` +
+    `SICORE: ~${f(sicorePromedio)}/mes<br>` +
+    `Antic. Ganancias: ~${f(anticipoMensual)}/mes<br>` +
+    `Autonomos: ~${f(sumNonNull(D.autonomos) / Math.max(1, D.autonomos.filter(v=>v!=null).length))}/mes<br>` +
+    `IIBB PMD: ~${f(iibbPmdProm)}/mes<br>` +
+    `<strong>Proyeccion anual: ${f(cargaAnual)}</strong>`;
+};
+
+/* ===== SIMULADOR FISCAL ===== */
+const setupSimulador = () => {
+  const btn = document.getElementById('sim-btn');
+  const reset = document.getElementById('sim-reset');
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    const ventaNeto = parseFloat(document.getElementById('sim-venta').value) || 0;
+    const compraNeto = parseFloat(document.getElementById('sim-compra').value) || 0;
+    const resultDiv = document.getElementById('sim-result');
+    resultDiv.style.display = 'block';
+
+    const ivaDebito = ventaNeto * 0.21;
+    const ivaCredito = compraNeto * 0.21;
+    const ivaNeto = ivaDebito - ivaCredito;
+    const ivaSaldoActual = (lastNonNull(D.iva.saldo) || 0) - D.balance2025.deudasFiscales.iva;
+    const ivaNuevo = ivaSaldoActual - ivaNeto;
+
+    const iibbImpacto = ventaNeto * 0.035;
+    const ganImpacto = (ventaNeto - compraNeto) * 0.35;
+
+    const esVenta = ventaNeto > 0;
+    const esCompra = compraNeto > 0;
+
+    let html = '<strong>Impacto fiscal de la operacion:</strong><br><br>';
+
+    if (esVenta) {
+      html += `<span style="color:var(--green)">Venta $${ventaNeto.toLocaleString('es-AR')}</span> genera:<br>`;
+      html += `&nbsp;&nbsp;IVA Debito: +$${ivaDebito.toLocaleString('es-AR',{maximumFractionDigits:0})}<br>`;
+      html += `&nbsp;&nbsp;IIBB (3.5%): +$${iibbImpacto.toLocaleString('es-AR',{maximumFractionDigits:0})}<br>`;
+      html += `&nbsp;&nbsp;Base Ganancias: +$${ventaNeto.toLocaleString('es-AR')}<br><br>`;
+    }
+    if (esCompra) {
+      html += `<span style="color:var(--red)">Compra $${compraNeto.toLocaleString('es-AR')}</span> genera:<br>`;
+      html += `&nbsp;&nbsp;IVA Credito: +$${ivaCredito.toLocaleString('es-AR',{maximumFractionDigits:0})}<br>`;
+      html += `&nbsp;&nbsp;Reduce base Ganancias: -$${compraNeto.toLocaleString('es-AR')}<br><br>`;
+    }
+
+    html += `<strong>Resultado neto:</strong><br>`;
+    html += `&nbsp;&nbsp;IVA: ${ivaNeto >= 0 ? 'Consume' : 'Genera'} $${Math.abs(ivaNeto).toLocaleString('es-AR',{maximumFractionDigits:0})} de ${ivaNeto >= 0 ? 'credito' : 'credito adicional'}<br>`;
+    html += `&nbsp;&nbsp;Posicion IVA nueva: <strong style="color:${ivaNuevo>=0?'var(--green)':'var(--red)'}">${ivaNuevo>=0?'+':''}$${ivaNuevo.toLocaleString('es-AR',{maximumFractionDigits:0})}</strong><br>`;
+
+    if (esVenta) {
+      html += `&nbsp;&nbsp;IIBB adicional: <span style="color:var(--red)">$${iibbImpacto.toLocaleString('es-AR',{maximumFractionDigits:0})}</span><br>`;
+    }
+    html += `&nbsp;&nbsp;Impacto Ganancias (35%): <span style="color:${ganImpacto>0?'var(--red)':'var(--green)'}">$${ganImpacto.toLocaleString('es-AR',{maximumFractionDigits:0})}</span><br>`;
+
+    const totalFiscal = Math.max(0, ivaNeto) + (esVenta ? iibbImpacto : 0) + Math.max(0, ganImpacto);
+    html += `<br><strong style="font-size:.9rem">Costo fiscal total de la operacion: <span style="color:var(--red)">$${totalFiscal.toLocaleString('es-AR',{maximumFractionDigits:0})}</span></strong>`;
+
+    // Strategic advice
+    if (ivaNuevo >= 0 && esVenta) {
+      html += `<br><br><span style="color:var(--green)">✓ Tenes saldo IVA a favor suficiente. La venta no genera pago de IVA adicional.</span>`;
+    } else if (ivaNuevo < 0 && esVenta) {
+      html += `<br><br><span style="color:var(--red)">⚠ Esta venta consumiria todo el credito IVA. Necesitas registrar compras primero para generar credito.</span>`;
+    }
+
+    resultDiv.innerHTML = html;
+  });
+
+  reset.addEventListener('click', () => {
+    document.getElementById('sim-venta').value = '0';
+    document.getElementById('sim-compra').value = '0';
+    document.getElementById('sim-result').style.display = 'none';
+  });
+};
+
 /* ===== RENDER ALL ===== */
 const renderAll = () => {
   renderKPIs();
   renderCharts();
   renderTables();
+  renderCockpit();
   renderArca();
+  renderAcciones();
+  setupSimulador();
 };
 
 /* ===== INIT ===== */
