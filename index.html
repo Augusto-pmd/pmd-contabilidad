@@ -200,6 +200,33 @@ td.diff-bad{color:var(--red);font-weight:600}
 .acciones-bar{flex:1;height:8px;background:var(--accent);border-radius:4px;overflow:hidden}
 .acciones-bar-fill{height:100%;background:var(--green);border-radius:4px;transition:width .5s}
 
+/* MAIN TABS — PMD vs Augusto */
+.main-tabs{display:flex;gap:0;background:var(--card);border-bottom:2px solid var(--border);padding:0 32px;position:sticky;top:60px;z-index:90}
+.main-tab{padding:14px 28px;font-size:.95rem;font-weight:600;color:var(--text-muted);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;user-select:none;display:flex;align-items:center;gap:8px}
+.main-tab:hover{color:var(--text);background:rgba(255,255,255,.03)}
+.main-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.main-tab .tab-icon{font-size:1.1rem}
+.main-tab .tab-badge{font-size:.7rem;background:var(--accent);color:var(--text-muted);padding:2px 8px;border-radius:10px}
+.main-tab.active .tab-badge{background:rgba(77,168,218,0.15);color:var(--blue)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* AUGUSTO PERSONAL TAB */
+.augusto-header{background:linear-gradient(135deg,rgba(77,168,218,0.08),rgba(0,201,167,0.05));border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.augusto-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--green));display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:#fff;flex-shrink:0}
+.augusto-info h2{margin:0;font-size:1.15rem;font-weight:700}
+.augusto-info p{margin:4px 0 0;font-size:.82rem;color:var(--text-muted)}
+.augusto-stats{margin-left:auto;display:flex;gap:24px}
+.augusto-stat{text-align:center}
+.augusto-stat .val{font-size:1.2rem;font-weight:700}
+.augusto-stat .lbl{font-size:.72rem;color:var(--text-muted);text-transform:uppercase}
+.personal-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:20px}
+.personal-card h3{margin:0 0 16px;font-size:.95rem;font-weight:600;display:flex;align-items:center;gap:8px}
+.personal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.personal-item{background:rgba(255,255,255,.03);border-radius:8px;padding:14px 16px}
+.personal-item .p-val{font-size:1.1rem;font-weight:700}
+.personal-item .p-lbl{font-size:.73rem;color:var(--text-muted);text-transform:uppercase;margin-top:2px}
+
 /* FOOTER */
 footer{background:var(--card);border-top:1px solid var(--border);padding:20px 32px;text-align:center;color:var(--text-muted);font-size:.8rem}
 footer p+p{margin-top:4px}
@@ -272,7 +299,22 @@ footer p+p{margin-top:4px}
     </div>
   </header>
 
+  <!-- MAIN TAB NAVIGATION -->
+  <div class="main-tabs" id="main-tabs">
+    <div class="main-tab active" data-tab="pmd">
+      <span class="tab-icon">&#127959;</span> PMD Arquitectura SRL
+      <span class="tab-badge">Sociedad</span>
+    </div>
+    <div class="main-tab" data-tab="augusto">
+      <span class="tab-icon">&#128100;</span> Augusto Menendez
+      <span class="tab-badge">Personal</span>
+    </div>
+  </div>
+
   <main>
+    <!-- ========== TAB: PMD SRL ========== -->
+    <div class="tab-content active" id="tab-pmd">
+
     <!-- BALANCE APERTURA INFO -->
     <div style="background:var(--accent);border:1px solid var(--border);border-radius:8px;padding:12px 20px;margin-bottom:16px;font-size:.82rem;color:var(--text-muted);display:flex;align-items:center;gap:8px">
       <span style="color:var(--yellow)">&#9888;</span>
@@ -582,19 +624,87 @@ footer p+p{margin-top:4px}
       </table>
     </div>
 
-    <!-- CCMA AUGUSTO -->
-    <h2 class="section-title" style="border-left-color:var(--blue)">CCMA - Cuenta Corriente Augusto (Personal)</h2>
-    <div class="ccma-card" id="ccma-card"></div>
-
-    <!-- ACCIONES PENDIENTES -->
-    <h2 class="section-title" style="border-left-color:var(--orange)">Acciones Pendientes — Contabilidad al Dia</h2>
+    <!-- ACCIONES PENDIENTES PMD -->
+    <h2 class="section-title" style="border-left-color:var(--orange)">Acciones Pendientes — PMD SRL</h2>
     <div class="acciones-progress" id="acciones-progress"></div>
     <div class="acciones-tabs" id="acciones-tabs"></div>
     <div id="acciones-list" style="background:var(--card);border:1px solid var(--border);border-radius:0 8px 8px 8px"></div>
 
-    <!-- ALERTAS Y HALLAZGOS -->
-    <h2 class="section-title" style="border-left-color:var(--red)">Alertas y Hallazgos de Auditoria</h2>
+    <!-- ALERTAS Y HALLAZGOS PMD -->
+    <h2 class="section-title" style="border-left-color:var(--red)">Alertas y Hallazgos de Auditoria — PMD SRL</h2>
     <div id="alertas-container"></div>
+
+    </div><!-- END tab-pmd -->
+
+    <!-- ========== TAB: AUGUSTO PERSONAL ========== -->
+    <div class="tab-content" id="tab-augusto">
+
+      <!-- AUGUSTO HEADER -->
+      <div class="augusto-header">
+        <div class="augusto-avatar">AM</div>
+        <div class="augusto-info">
+          <h2>Augusto Menendez</h2>
+          <p>CUIT 20-37039849-7 | Monotributista | Autonomo | Socio Gerente PMD + Mi Container SRL</p>
+        </div>
+        <div class="augusto-stats">
+          <div class="augusto-stat">
+            <div class="val red" id="aug-deuda-val">—</div>
+            <div class="lbl">Saldo Deudor ARCA</div>
+          </div>
+          <div class="augusto-stat">
+            <div class="val yellow" id="aug-monotributo-val">—</div>
+            <div class="lbl">Estado Julio</div>
+          </div>
+          <div class="augusto-stat">
+            <div class="val green" id="aug-sueldo-val">—</div>
+            <div class="lbl">Sueldo Acum. 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CCMA CARD -->
+      <div class="personal-card">
+        <h3><span style="color:var(--blue)">&#9673;</span> CCMA — Cuenta Corriente Monotributista / Autonomo</h3>
+        <div id="aug-ccma-card"></div>
+      </div>
+
+      <!-- AUTONOMOS + IIBB PERSONAL -->
+      <div class="personal-card">
+        <h3><span style="color:var(--orange)">&#9673;</span> Obligaciones Mensuales Personales 2026</h3>
+        <div class="table-wrap">
+          <table id="table-augusto-obligaciones">
+            <thead>
+              <tr><th>Concepto</th><th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th><th>May</th><th>Jun</th><th>Total</th></tr>
+            </thead>
+            <tbody id="aug-oblig-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SUELDO SOCIO GERENTE (de PMD) -->
+      <div class="personal-card">
+        <h3><span style="color:var(--green)">&#9673;</span> Sueldo como Socio Gerente (cobrado de PMD SRL)</h3>
+        <div class="table-wrap">
+          <table id="table-augusto-sueldo">
+            <thead>
+              <tr><th>Mes</th><th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th><th>May</th><th>Jun</th><th>Total</th></tr>
+            </thead>
+            <tbody id="aug-sueldo-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ACCIONES PERSONALES -->
+      <h2 class="section-title" style="border-left-color:var(--blue)">Acciones Pendientes — Personal</h2>
+      <div class="acciones-progress" id="acciones-progress-aug"></div>
+      <div id="acciones-list-aug" style="background:var(--card);border:1px solid var(--border);border-radius:8px"></div>
+
+      <!-- ALERTAS PERSONALES -->
+      <h2 class="section-title" style="border-left-color:var(--red)">Alertas Personales</h2>
+      <div id="alertas-container-aug"></div>
+
+    </div><!-- END tab-augusto -->
+
   </main>
 
   <footer>
@@ -711,13 +821,12 @@ const DATA = {
       {concepto:'F931 Cargas Sociales', mensual:120000, pctVentas:0.8},
       {concepto:'SICORE Retenciones', mensual:125000, pctVentas:0.8},
       {concepto:'IIBB PMD', mensual:50000, pctVentas:0.3},
-      {concepto:'Autonomos SUSS x2', mensual:310000, pctVentas:2.0},
       {concepto:'Anticipos Ganancias', mensual:100000, pctVentas:0.6},
       {concepto:'Visa ICBC Corp.', mensual:200000, pctVentas:1.3},
-      {concepto:'Sueldo Augusto', mensual:2000000, pctVentas:12.9},
+      {concepto:'Honorarios Socio Gerente', mensual:2000000, pctVentas:12.9},
       {concepto:'Honorarios Terceros', mensual:10140000, pctVentas:65.5}
     ],
-    totalMensual:14599000, ventasPromedio:15486649, margen:887649, ratio:94.3
+    totalMensual:14289000, ventasPromedio:15486649, margen:1197649, ratio:92.3
   },
 
   /* === IMPOSITIVO COMPLETO === */
@@ -841,7 +950,7 @@ const DATA = {
      explicacion:'En abril hubo un credito fiscal inusualmente alto de $16.7M. Puede ser factura de compra grande (materiales, subcontrato) o error de imputacion. ACCION: Verificar que el credito este respaldado por factura valida; ARCA puede observarlo.'},
     {sev:'MEDIA', titulo:'F931 Junio: remuneracion $4.5M (doble)', desc:'Posible SAC/aguinaldo o error - confirmar',
      explicacion:'El F931 de junio declaro remuneraciones por $4.5M, el doble del promedio mensual (~$2M). Puede ser SAC (aguinaldo), personal extra o error. ACCION: Confirmar si corresponde a SAC de junio; si es asi, esta correcto.'},
-    {sev:'MEDIA', titulo:'Sueldo Augusto 2026: verificar pagos', desc:'$8M detectados via haberes Galicia vs ~$14M declarados ene-jun',
+    {sev:'MEDIA', titulo:'Sueldo Augusto 2026: verificar pagos', desc:'$8M detectados via haberes Galicia vs ~$14M declarados ene-jun', personal:true,
      explicacion:'En 2026 se declararon ~$14M como sueldo socio gerente (ene-jun). Se detectaron $8M via acreditacion de haberes Galicia (mar-abr). En ene-2026 se pago $7M como dif. sueldo 2025 via ICBC. No hay otras transferencias directas ICBC a Augusto Menendez por sueldo 2026. ACCION: Cruzar con extracto bancario personal para confirmar si se recibieron las acreditaciones restantes (~$6M).'},
     /* --- ARCA: Alertas de cruce con datos extraidos 10/07/2026 --- */
     {sev:'ALTA', titulo:'SCT ARCA: Deuda $997.6K con intereses', desc:'$655K en intereses resarcitorios por pagos tardios; 2 items con capital impago',
@@ -850,7 +959,7 @@ const DATA = {
      explicacion:'La mayor discrepancia entre el dashboard y ARCA se concentra en abril. El dashboard registra $79.6M en compras estimadas pero ARCA muestra $104.5M en comprobantes recibidos (neto gravado). Diferencia de $24.9M que impacta tambien en IVA credito ($5.2M de diferencia). ACCION: Revisar si hay facturas de abril no cargadas al sistema, especialmente de Astillero Alpha SRL o proveedores grandes.'},
     {sev:'ALTA', titulo:'Astillero Alpha: operacion circular', desc:'Cliente ($40M emitido) y proveedor ($105M recibido) simultaneamente',
      explicacion:'Astillero Alpha SRL aparece como el mayor cliente de PMD (fact.73 por $40M emitida el 27/05) y al mismo tiempo como el mayor proveedor ($105M en 3 facturas recibidas). Esta operacion circular puede ser cuestionada por ARCA en una fiscalizacion. ACCION: Documentar la naturaleza comercial real de la relacion; tener contratos y remitos que justifiquen ambas operaciones.'},
-    {sev:'MEDIA', titulo:'CCMA Augusto: $705K saldo deudor personal', desc:'Julio 2026 impago (vence 20/07) - $367K en monotributo+autonomos',
+    {sev:'MEDIA', titulo:'CCMA Augusto: $705K saldo deudor personal', desc:'Julio 2026 impago (vence 20/07) - $367K en monotributo+autonomos', personal:true,
      explicacion:'La cuenta corriente de Augusto personal (CUIT 20-37039849-7) muestra saldo deudor de $705,450. Julio 2026 aun no fue pagado (vence 20/07): Monotributo $9,083 + Autonomo $318,759 + Aportes OS $39,168. Enero a junio esta todo pagado. ACCION: Pagar antes del 20/07 para evitar intereses.'},
     {sev:'MEDIA', titulo:'Vencimientos proximos: 3 obligaciones julio', desc:'Ganancias y SUSS 15/07, IVA 24/07 - confirmar liquidez',
      explicacion:'Vencen en julio: Anticipo 2 Ganancias Sociedades (15/07), F931 SUSS Junio (15/07) y IVA Junio (24/07). Asegurar liquidez en cuenta corriente para cubrir las tres obligaciones. ACCION: Calcular importe exacto del anticipo y F931 para provisionar fondos.'}
@@ -1088,11 +1197,10 @@ const renderKPIs = () => {
   const totalSicore = sumNonNull(D.sicore);
   const totalF931 = sumNonNull(D.f931);
   const totalIIBBpmd = sumNonNull(D.iibb.pagar);
-  const totalAutonomos = sumNonNull(D.autonomos);
   const totalAnticGan = sumNonNull(D.anticiposGan);
-  const totalImpuestos = totalSicore + totalF931 + totalIIBBpmd + totalAutonomos + totalAnticGan;
+  const totalImpuestos = totalSicore + totalF931 + totalIIBBpmd + totalAnticGan;
   document.getElementById('kpi-impuestos').textContent = fmt(totalImpuestos);
-  document.getElementById('kpi-impuestos-detail').textContent = `SICORE $${(totalSicore/1e6).toFixed(1)}M | F931 $${(totalF931/1e6).toFixed(1)}M | IIBB $${(totalIIBBpmd/1e6).toFixed(1)}M | Otros $${((totalAutonomos+totalAnticGan)/1e6).toFixed(1)}M`;
+  document.getElementById('kpi-impuestos-detail').textContent = `SICORE $${(totalSicore/1e6).toFixed(1)}M | F931 $${(totalF931/1e6).toFixed(1)}M | IIBB $${(totalIIBBpmd/1e6).toFixed(1)}M | Antic.Gan $${(totalAnticGan/1e6).toFixed(1)}M`;
 };
 
 /* ===== RENDER CHARTS ===== */
@@ -1172,8 +1280,7 @@ const renderCharts = () => {
         { label:'SICORE', data:D.sicore.map(v=>v??0), backgroundColor:'rgba(77,168,218,0.8)', borderRadius:4 },
         { label:'F931', data:D.f931.map(v=>v??0), backgroundColor:'rgba(255,140,66,0.8)', borderRadius:4 },
         { label:'IIBB PMD', data:D.iibb.pagar.map(v=>v??0), backgroundColor:'rgba(233,69,96,0.8)', borderRadius:4 },
-        /* IIBB Augusto removido — es persona fisica, no PMD SRL */
-        { label:'Autonomos SUSS', data:D.autonomos.map(v=>v??0), backgroundColor:'rgba(108,122,137,0.8)', borderRadius:4 },
+        /* IIBB Augusto y Autonomos removidos — son obligaciones personales, no de PMD SRL */
         { label:'Antic. Ganancias', data:D.anticiposGan.map(v=>v??0), backgroundColor:'rgba(0,201,167,0.6)', borderRadius:4 }
       ]
     },
@@ -1388,7 +1495,7 @@ const renderTables = () => {
     { label:'SICORE', data:D.sicore, cls:'red', bold:false },
     { label:'F931 (Cargas Soc.)', data:D.f931, cls:'red', bold:false },
     { label:'IIBB PMD a Pagar', data:D.iibb.pagar, cls:'red', bold:false },
-    { label:'Autonomos SUSS', data:D.autonomos, cls:'red', bold:false },
+    /* Autonomos SUSS removido — obligacion personal, no de PMD SRL */
     { label:'Antic. Ganancias', data:D.anticiposGan, cls:'red', bold:false },
     { label:'IIBB a Favor Contrib.', data:D.iibb.favor, cls:'green', bold:false },
     { label:'Compras Estimadas', data:D.comprasEst, cls:'', bold:false },
@@ -1455,7 +1562,7 @@ const renderTables = () => {
 
   // Total Impuestos row
   const impuestosData = D.months.map((_, i) => {
-    const vals = [D.sicore[i], D.f931[i], D.iibb.pagar[i], D.autonomos[i], D.anticiposGan[i]];
+    const vals = [D.sicore[i], D.f931[i], D.iibb.pagar[i], D.anticiposGan[i]];
     const sum = vals.reduce((s, v) => s + (v ?? 0), 0);
     return sum > 0 ? sum : null;
   });
@@ -1607,10 +1714,10 @@ const renderTables = () => {
   </tr>`;
   ctb2.innerHTML = compHtml;
 
-  // Alertas y Hallazgos
+  // Alertas y Hallazgos — solo PMD (filtrar personal)
   const alertDiv = document.getElementById('alertas-container');
   let alertHtml = '';
-  D.alertas.forEach((a,i) => {
+  D.alertas.filter(a => !a.personal).forEach((a,i) => {
     const sevCls = a.sev === 'ALTA' ? 'sev-alta' : 'sev-media';
     alertHtml += `<div class="alert-item" onclick="this.classList.toggle('expanded')">
       <span class="sev ${sevCls}">${a.sev}</span>
@@ -1805,30 +1912,7 @@ const renderArca = () => {
   });
   provTb.innerHTML = provHtml;
 
-  // --- CCMA AUGUSTO ---
-  const ccmaEl = document.getElementById('ccma-card');
-  const cc = A.ccmaAugusto;
-  let ccmaItemsHtml = '';
-  cc.mesActual.items.forEach(it => {
-    ccmaItemsHtml += `<div class="ccma-stat"><div class="ccma-stat-val yellow">${fmt(it.importe)}</div><div class="ccma-stat-lbl">${it.concepto}</div></div>`;
-  });
-  ccmaEl.innerHTML = `
-    <div class="ccma-header">
-      <div class="ccma-avatar">AM</div>
-      <div>
-        <div class="ccma-name">Augusto Menendez</div>
-        <div class="ccma-cuit">CUIT ${cc.cuit} | ${cc.tipo}</div>
-      </div>
-      <div style="margin-left:auto;text-align:right">
-        <div style="font-size:.8rem;color:var(--text-muted)">Saldo Deudor Total</div>
-        <div style="font-size:1.3rem;font-weight:700;color:var(--red)">${fmt(cc.saldoDeudor)}</div>
-      </div>
-    </div>
-    <div style="font-size:.85rem;margin-bottom:12px">
-      <span style="color:var(--yellow);font-weight:600">${cc.mesActual.mes} — ${cc.mesActual.estado}</span>
-      <span style="color:var(--text-muted);margin-left:12px">Ene-Jun 2026: <span style="color:var(--green);font-weight:600">${cc.eneJun}</span></span>
-    </div>
-    <div class="ccma-grid">${ccmaItemsHtml}</div>`;
+  // --- CCMA AUGUSTO REMOVIDO — Dashboard exclusivo PMD SRL ---
 };
 
 /* ===== ACCIONES PENDIENTES ===== */
@@ -1836,7 +1920,7 @@ const ACCIONES = [
   // FACTURACION
   { id:'fact-astillero', cat:'facturacion', titulo:'Facturar a Astillero Alpha por diseño', desc:'Honorarios profesionales por proyecto + direccion de obra (~$15.75M + IVA). Factura A de PMD.', urgente:true,
     check: () => D.arca && D.arca.emitidos && D.arca.emitidos.some(e => e.razonSocial && e.razonSocial.toLowerCase().includes('astillero')) },
-  { id:'fact-micontainer', cat:'facturacion', titulo:'Verificar facturacion a Mi Container SRL', desc:'Confirmar que todas las facturas de servicio de construccion estan emitidas y registradas en ARCA.',
+  { id:'fact-clientes', cat:'facturacion', titulo:'Verificar facturacion a clientes pendientes', desc:'Confirmar que todas las facturas de servicios de construccion a clientes activos estan emitidas y registradas en ARCA.',
     check: () => false },
 
   // FISCAL
@@ -1852,7 +1936,7 @@ const ACCIONES = [
     check: () => D.anticiposGan.length > 6 && D.anticiposGan[6] != null },
   { id:'f931-jul', cat:'fiscal', titulo:'Presentar F931 julio (cargas sociales)', desc:'Liquidacion de sueldos UOCRA + aportes patronales.',
     check: () => D.f931.length > 6 && D.f931[6] != null },
-  { id:'autonomos-jul', cat:'fiscal', titulo:'Pagar autonomos julio (Augusto)', desc:'Cuota mensual obligatoria como socio gerente.',
+  { id:'autonomos-jul', cat:'fiscal', titulo:'Pagar autonomos julio (Augusto)', desc:'Cuota mensual obligatoria como socio gerente.', personal:true,
     check: () => D.autonomos.length > 6 && D.autonomos[6] != null },
   { id:'sct-deuda', cat:'fiscal', titulo:'Regularizar deuda SCT ARCA ($997.683)', desc:'Sistema de Cuentas Tributarias muestra saldo deudor. Evaluar plan de pagos o cancelacion.',
     check: () => D.arca?.sctDeudas?.saldoTotal < 100000 },
@@ -1875,20 +1959,21 @@ const ACCIONES = [
   { id:'veps-pendientes', cat:'bancario', titulo:'Revisar VEPs pendientes de pago', desc:'Verificar que no hay VEPs vencidos sin pagar.',
     check: () => false },
 
-  // CCMA AUGUSTO
-  { id:'ccma-deuda', cat:'fiscal', titulo:'Regularizar CCMA Augusto ($705.450 deudor)', desc:'Cuenta corriente personal en ARCA con saldo deudor. Evaluar plan de pagos.',
+  // PERSONAL AUGUSTO
+  { id:'ccma-deuda', cat:'fiscal', titulo:'Regularizar CCMA Augusto ($705.450 deudor)', desc:'Cuenta corriente personal en ARCA con saldo deudor. Evaluar plan de pagos.', personal:true,
     check: () => D.arca?.ccmaAugusto?.saldoDeudor < 50000 },
-  { id:'monotributo-recat', cat:'fiscal', titulo:'Evaluar recategorizacion monotributo (julio)', desc:'Recategorizacion semestral obligatoria. Verificar facturacion ultimos 12 meses.',
+  { id:'monotributo-recat', cat:'fiscal', titulo:'Evaluar recategorizacion monotributo (julio)', desc:'Recategorizacion semestral obligatoria. Verificar facturacion ultimos 12 meses.', personal:true,
     check: () => { const now = new Date(); return now.getMonth() > 6; } },
 ];
 
 const renderAcciones = () => {
-  const cats = [...new Set(ACCIONES.map(a => a.cat))];
   const catLabels = { fiscal:'Fiscal', contable:'Contable', bancario:'Bancario', facturacion:'Facturacion' };
   const catTags = { fiscal:'tag-fiscal', contable:'tag-contable', bancario:'tag-bancario', facturacion:'tag-facturacion' };
 
-  // Evaluate all checks
-  const results = ACCIONES.map(a => ({ ...a, done: a.check() }));
+  // Evaluate all checks — filter PMD only (no personal)
+  const allResults = ACCIONES.map(a => ({ ...a, done: a.check() }));
+  const results = allResults.filter(r => !r.personal);
+  const cats = [...new Set(results.map(a => a.cat))];
   const totalDone = results.filter(r => r.done).length;
   const totalAll = results.length;
   const pct = Math.round(totalDone / totalAll * 100);
@@ -2056,9 +2141,7 @@ const renderCockpit = () => {
 
   // === TOTAL CARGA FISCAL ===
   const iibbPmdProm = sumNonNull(D.iibb.pagar) / Math.max(1, D.iibb.pagar.filter(v=>v!=null).length);
-  const cargaMensual = f931Promedio + sicorePromedio + anticipoMensual +
-    (sumNonNull(D.autonomos) / Math.max(1, D.autonomos.filter(v=>v!=null).length)) +
-    iibbPmdProm;
+  const cargaMensual = f931Promedio + sicorePromedio + anticipoMensual + iibbPmdProm;
   const cargaAnual = cargaMensual * 12;
   const pctVentas = ventasTotales > 0 ? (cargaMensual * mesesConDatos / ventasTotales * 100).toFixed(1) : 0;
 
@@ -2071,7 +2154,6 @@ const renderCockpit = () => {
     `F931: ~${f(f931Promedio)}/mes<br>` +
     `SICORE: ~${f(sicorePromedio)}/mes<br>` +
     `Antic. Ganancias: ~${f(anticipoMensual)}/mes<br>` +
-    `Autonomos: ~${f(sumNonNull(D.autonomos) / Math.max(1, D.autonomos.filter(v=>v!=null).length))}/mes<br>` +
     `IIBB PMD: ~${f(iibbPmdProm)}/mes<br>` +
     `<strong>Proyeccion anual: ${f(cargaAnual)}</strong>`;
 };
@@ -2143,6 +2225,154 @@ const setupSimulador = () => {
   });
 };
 
+/* ===== RENDER AUGUSTO TAB ===== */
+const renderAugusto = () => {
+  const A = D.arca;
+  const cc = A?.ccmaAugusto;
+  const f = (v) => '$' + Math.round(v).toLocaleString('es-AR');
+
+  // Header stats
+  if (cc) {
+    document.getElementById('aug-deuda-val').textContent = f(cc.saldoDeudor);
+    document.getElementById('aug-monotributo-val').textContent = cc.mesActual.estado.split(' ')[0];
+  }
+  const totalSueldo = D.sueldoSocio.reduce((s,v) => s + (v ?? 0), 0);
+  document.getElementById('aug-sueldo-val').textContent = f(totalSueldo);
+
+  // CCMA Card
+  if (cc) {
+    const ccEl = document.getElementById('aug-ccma-card');
+    let itemsHtml = '';
+    cc.mesActual.items.forEach(it => {
+      itemsHtml += `<div class="personal-item"><div class="p-val yellow">${f(it.importe)}</div><div class="p-lbl">${it.concepto}</div></div>`;
+    });
+    ccEl.innerHTML = `
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+        <div>
+          <span style="font-size:.85rem;color:var(--yellow);font-weight:600">${cc.mesActual.mes} — ${cc.mesActual.estado}</span>
+          <span style="color:var(--text-muted);margin-left:12px;font-size:.82rem">Ene-Jun 2026: <span style="color:var(--green);font-weight:600">${cc.eneJun}</span></span>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div style="font-size:.78rem;color:var(--text-muted)">Saldo Deudor Total</div>
+          <div style="font-size:1.3rem;font-weight:700;color:var(--red)">${f(cc.saldoDeudor)}</div>
+        </div>
+      </div>
+      <div class="personal-grid">${itemsHtml}</div>`;
+  }
+
+  // Obligaciones mensuales (autonomos + IIBB)
+  const obTb = document.getElementById('aug-oblig-tbody');
+  const auton = D.autonomos || [];
+  const iibbA = D.iibbAugusto || [];
+  let obHtml = '<tr><td>Autonomos SUSS</td>';
+  let totalAut = 0;
+  for (let i = 0; i < 6; i++) {
+    const v = auton[i];
+    totalAut += v ?? 0;
+    obHtml += v != null ? `<td class="num">${f(v)}</td>` : `<td class="num missing">—</td>`;
+  }
+  obHtml += `<td class="num" style="font-weight:700">${f(totalAut)}</td></tr>`;
+
+  obHtml += '<tr><td>IIBB Augusto</td>';
+  let totalIIBB = 0;
+  for (let i = 0; i < 6; i++) {
+    const v = iibbA[i];
+    totalIIBB += v ?? 0;
+    obHtml += v != null && v > 0 ? `<td class="num">${f(v)}</td>` : `<td class="num missing">—</td>`;
+  }
+  obHtml += `<td class="num" style="font-weight:700">${f(totalIIBB)}</td></tr>`;
+
+  obHtml += `<tr style="font-weight:700;background:rgba(233,69,96,.06)"><td>Total Obligaciones</td>`;
+  for (let i = 0; i < 6; i++) {
+    const v = (auton[i] ?? 0) + (iibbA[i] ?? 0);
+    obHtml += v > 0 ? `<td class="num red">${f(v)}</td>` : `<td class="num missing">—</td>`;
+  }
+  obHtml += `<td class="num red">${f(totalAut + totalIIBB)}</td></tr>`;
+  obTb.innerHTML = obHtml;
+
+  // Sueldo socio gerente
+  const sTb = document.getElementById('aug-sueldo-tbody');
+  let sHtml = '<tr><td>Monto</td>';
+  let totalS = 0;
+  D.sueldoSocio.forEach(v => {
+    totalS += v ?? 0;
+    sHtml += v != null ? `<td class="num green">${f(v)}</td>` : `<td class="num missing">—</td>`;
+  });
+  sHtml += `<td class="num green" style="font-weight:700">${f(totalS)}</td></tr>`;
+  sTb.innerHTML = sHtml;
+
+  // Acciones personales
+  const catLabels = { fiscal:'Fiscal', contable:'Contable', bancario:'Bancario', facturacion:'Facturacion' };
+  const catTags = { fiscal:'tag-fiscal', contable:'tag-contable', bancario:'tag-bancario', facturacion:'tag-facturacion' };
+  const personalActions = ACCIONES.filter(a => a.personal).map(a => ({ ...a, done: a.check() }));
+  const paDone = personalActions.filter(r => r.done).length;
+  const paAll = personalActions.length;
+  const paPct = paAll > 0 ? Math.round(paDone / paAll * 100) : 0;
+
+  document.getElementById('acciones-progress-aug').innerHTML =
+    `<span><strong>${paDone}/${paAll}</strong> completadas (${paPct}%)</span>
+     <div class="acciones-bar"><div class="acciones-bar-fill" style="width:${paPct}%"></div></div>`;
+
+  let paHtml = '';
+  personalActions.forEach(item => {
+    paHtml += `<div class="accion-item ${item.done ? 'done' : ''}">
+      <div class="accion-check ${item.done ? 'done' : 'auto'}">${item.done ? '✓' : ''}</div>
+      <div class="accion-body">
+        <div class="accion-title">
+          ${item.urgente && !item.done ? '<span class="accion-tag tag-urgente">URGENTE</span>' : ''}
+          <span class="accion-tag ${catTags[item.cat] || 'tag-fiscal'}">${catLabels[item.cat] || item.cat}</span>
+          ${item.titulo}
+        </div>
+        <div class="accion-desc">${item.desc}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('acciones-list-aug').innerHTML = paHtml || '<div style="padding:16px;color:var(--text-muted);font-size:.85rem">No hay acciones personales pendientes</div>';
+
+  // Alertas personales
+  const augAlertDiv = document.getElementById('alertas-container-aug');
+  let augAlertHtml = '';
+  D.alertas.filter(a => a.personal).forEach(a => {
+    const sevCls = a.sev === 'ALTA' ? 'sev-alta' : 'sev-media';
+    augAlertHtml += `<div class="alert-item" onclick="this.classList.toggle('expanded')">
+      <span class="sev ${sevCls}">${a.sev}</span>
+      <div class="alert-text">
+        <div class="alert-title">${a.titulo}</div>
+        <div class="alert-desc">${a.desc}</div>
+        ${a.explicacion ? `<div class="alert-explain">${a.explicacion}</div>` : ''}
+      </div>
+      <span class="expand-icon">&#9654;</span>
+    </div>`;
+  });
+  augAlertDiv.innerHTML = augAlertHtml || '<div style="padding:16px;color:var(--text-muted);font-size:.85rem">Sin alertas personales activas</div>';
+};
+
+/* ===== TAB SWITCHING ===== */
+const setupMainTabs = () => {
+  const tabs = document.querySelectorAll('.main-tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+
+      // Switch active tab
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      // Switch content
+      contents.forEach(c => c.classList.remove('active'));
+      document.getElementById('tab-' + target).classList.add('active');
+
+      // Render Augusto tab on first view
+      if (target === 'augusto' && !window._augustoRendered) {
+        renderAugusto();
+        window._augustoRendered = true;
+      }
+    });
+  });
+};
+
 /* ===== RENDER ALL ===== */
 const renderAll = () => {
   renderKPIs();
@@ -2152,6 +2382,7 @@ const renderAll = () => {
   renderArca();
   renderAcciones();
   setupSimulador();
+  setupMainTabs();
 };
 
 /* ===== INIT ===== */
