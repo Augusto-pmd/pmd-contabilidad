@@ -227,6 +227,51 @@ td.diff-bad{color:var(--red);font-weight:600}
 .personal-item .p-val{font-size:1.1rem;font-weight:700}
 .personal-item .p-lbl{font-size:.73rem;color:var(--text-muted);text-transform:uppercase;margin-top:2px}
 
+/* RESUMEN CONTADOR */
+.resumen-section{background:linear-gradient(135deg,rgba(15,52,96,.4),rgba(233,69,96,.05));border:2px solid rgba(233,69,96,.3);border-radius:14px;padding:28px;margin-top:36px}
+.resumen-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.resumen-header .resumen-icon{font-size:2rem}
+.resumen-header h2{font-size:1.2rem;font-weight:700;margin:0}
+.resumen-header p{font-size:.8rem;color:var(--text-muted);margin:4px 0 0}
+.resumen-header .resumen-badge{margin-left:auto;background:rgba(233,69,96,.2);color:var(--red);padding:4px 12px;border-radius:6px;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.resumen-block{background:rgba(0,0,0,.15);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.resumen-block h3{font-size:.92rem;font-weight:700;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+.resumen-block h3 .block-icon{font-size:1.1rem}
+.resumen-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.resumen-item{background:rgba(255,255,255,.03);border-radius:8px;padding:12px 16px;border-left:3px solid var(--border)}
+.resumen-item.credito{border-left-color:var(--green)}
+.resumen-item.deuda{border-left-color:var(--red)}
+.resumen-item.neutro{border-left-color:var(--yellow)}
+.resumen-item.info{border-left-color:var(--blue)}
+.resumen-item .ri-label{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.3px}
+.resumen-item .ri-value{font-size:1.15rem;font-weight:700;margin:4px 0 2px}
+.resumen-item .ri-note{font-size:.72rem;color:var(--text-muted);line-height:1.4}
+.checklist-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.checklist-item:last-child{border-bottom:none}
+.checklist-box{width:18px;height:18px;border:2px solid var(--text-muted);border-radius:3px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:transparent}
+.checklist-box.auto-check{border-color:var(--green);color:var(--green)}
+.checklist-box.warn{border-color:var(--yellow);color:var(--yellow)}
+.checklist-box.fail{border-color:var(--red);color:var(--red)}
+.checklist-text{flex:1}
+.checklist-text .cl-title{font-size:.82rem;font-weight:600}
+.checklist-text .cl-detail{font-size:.72rem;color:var(--text-muted);margin-top:2px;line-height:1.4}
+.checklist-text .cl-status{font-size:.7rem;font-weight:600;margin-top:3px}
+.cl-status.ok{color:var(--green)}
+.cl-status.pending{color:var(--yellow)}
+.cl-status.alert{color:var(--red)}
+.obs-item{padding:10px 14px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:8px;font-size:.82rem;line-height:1.5;border-left:3px solid var(--yellow)}
+.obs-item strong{color:var(--text)}
+.obs-item.obs-critical{border-left-color:var(--red);background:rgba(233,69,96,.05)}
+.obs-item.obs-positive{border-left-color:var(--green);background:rgba(0,201,167,.05)}
+.resumen-totals{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)}
+.resumen-total-card{text-align:center;padding:16px;border-radius:10px}
+.resumen-total-card.positive{background:rgba(0,201,167,.08);border:1px solid rgba(0,201,167,.2)}
+.resumen-total-card.negative{background:rgba(233,69,96,.08);border:1px solid rgba(233,69,96,.2)}
+.resumen-total-card.neutral{background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.2)}
+.resumen-total-card .rt-value{font-size:1.4rem;font-weight:700}
+.resumen-total-card .rt-label{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;margin-top:4px}
+@media(max-width:768px){.resumen-totals{grid-template-columns:1fr}.resumen-grid{grid-template-columns:1fr}}
+
 /* FOOTER */
 footer{background:var(--card);border-top:1px solid var(--border);padding:20px 32px;text-align:center;color:var(--text-muted);font-size:.8rem}
 footer p+p{margin-top:4px}
@@ -634,6 +679,9 @@ footer p+p{margin-top:4px}
     <h2 class="section-title" style="border-left-color:var(--red)">Alertas y Hallazgos de Auditoria — PMD SRL</h2>
     <div id="alertas-container"></div>
 
+    <!-- RESUMEN PARA EL CONTADOR — PMD SRL -->
+    <div class="resumen-section" id="resumen-pmd"></div>
+
     </div><!-- END tab-pmd -->
 
     <!-- ========== TAB: AUGUSTO PERSONAL ========== -->
@@ -702,6 +750,9 @@ footer p+p{margin-top:4px}
       <!-- ALERTAS PERSONALES -->
       <h2 class="section-title" style="border-left-color:var(--red)">Alertas Personales</h2>
       <div id="alertas-container-aug"></div>
+
+      <!-- RESUMEN PARA EL CONTADOR — AUGUSTO PERSONAL -->
+      <div class="resumen-section" id="resumen-augusto"></div>
 
     </div><!-- END tab-augusto -->
 
@@ -2345,6 +2396,558 @@ const renderAugusto = () => {
     </div>`;
   });
   augAlertDiv.innerHTML = augAlertHtml || '<div style="padding:16px;color:var(--text-muted);font-size:.85rem">Sin alertas personales activas</div>';
+
+  // Render resumen para contador (personal)
+  renderResumenAugusto();
+};
+
+/* ===== RESUMEN PARA EL CONTADOR — PMD SRL ===== */
+const renderResumenPMD = () => {
+  const f = (n) => n == null ? '—' : '$' + Math.round(n).toLocaleString('es-AR');
+  const A = D.arca || {};
+
+  // ---- Calcular datos ----
+  // IVA position
+  const ivaSaldoAcum = lastNonNull(D.iva.saldo) || 0;
+  const ivaDeudaApert = D.balance2025.deudasFiscales.iva;
+  const ivaPosReal = ivaSaldoAcum - ivaDeudaApert;
+  // IVA no reclamado (ARCA vs Dashboard)
+  const arcaRec = A.recibidosMensual || [];
+  let ivaNoReclamado = 0;
+  for (let i = 0; i < Math.min(5, arcaRec.length); i++) {
+    const arcaIva = arcaRec[i] ? arcaRec[i].iva : 0;
+    const dashIva = D.iva.credito[i] || 0;
+    if (arcaIva > dashIva) ivaNoReclamado += (arcaIva - dashIva);
+  }
+  // IIBB saldo a favor
+  const iibbFavorAcum = lastNonNull(D.iibb.favor) || 0;
+  // Retenciones/Percepciones saldo libre disponibilidad
+  const retPercepSaldo = lastNonNull(D.iva.saldoLibreDisp) || 0;
+  // Percepciones IVA de cheques descontados
+  const percIvaCheques = D.cheques.reduce((s,c) => s + (c.percIva || 0), 0);
+  // SCT deuda
+  const sctDeuda = A.sctDeudas ? A.sctDeudas.saldoTotal : 0;
+  const sctIntereses = A.sctDeudas ? A.sctDeudas.items.reduce((s,i) => s + (i.interes||0), 0) : 0;
+  const sctCapital = sctDeuda - sctIntereses;
+  // Deudas totales
+  const deudaFinanciera = D.deudas.financiera.total;
+  const deudaFiscal = D.deudas.fiscal.total;
+  const deudaComercial = D.deudas.comercial.total;
+  // Ventas y proyección
+  const ventasAcum = sumNonNull(D.iva.ventas);
+  const ventasExentas = A.emitidos ? A.emitidos.reduce((s,e) => s + (e.exento||0), 0) : 0;
+  const ventasTotales = ventasAcum + ventasExentas;
+  // Compras ARCA
+  const comprasArca = arcaRec.reduce((s,m) => s + (m ? m.neto : 0), 0);
+  // Saldos bancarios
+  const bankICBC = lastNonNull(D.banks.icbc) || 0;
+  const bankGalicia = lastNonNull(D.banks.galicia) || 0;
+  const bankMP = lastNonNull(D.banks.mp) || 0;
+  const bankTotal = bankICBC + bankGalicia + bankMP;
+  // Total creditos recuperables
+  const totalCreditos = Math.max(0, ivaPosReal) + ivaNoReclamado + iibbFavorAcum + retPercepSaldo + percIvaCheques;
+
+  // ---- Construir HTML ----
+  let html = '';
+
+  // HEADER
+  html += `<div class="resumen-header">
+    <span class="resumen-icon">&#128209;</span>
+    <div>
+      <h2>Resumen Informativo y Requisitos para el Contador</h2>
+      <p>PMD ARQUITECTURA S.R.L. — CUIT 33-71639054-9 — Ejercicio 2026 (ene-jun)</p>
+    </div>
+    <span class="resumen-badge">&#128270; Doble Control</span>
+  </div>`;
+
+  // TOTALES RESUMEN EJECUTIVO
+  html += `<div class="resumen-totals">
+    <div class="resumen-total-card ${totalCreditos > 0 ? 'positive' : 'neutral'}">
+      <div class="rt-value green">${f(totalCreditos)}</div>
+      <div class="rt-label">Creditos Recuperables</div>
+    </div>
+    <div class="resumen-total-card negative">
+      <div class="rt-value red">${f(D.deudas.total)}</div>
+      <div class="rt-label">Deuda Total PMD</div>
+    </div>
+    <div class="resumen-total-card ${bankTotal > 0 ? 'positive' : 'negative'}">
+      <div class="rt-value ${bankTotal > 0 ? 'green' : 'red'}">${f(bankTotal)}</div>
+      <div class="rt-label">Saldo Bancario Actual</div>
+    </div>
+  </div>`;
+
+  // BLOCK 1: CREDITOS RECUPERABLES / DEVOLUCIONES
+  html += `<div class="resumen-block" style="margin-top:20px">
+    <h3><span class="block-icon">&#128176;</span> Creditos Recuperables y Pedidos de Devolucion</h3>
+    <p style="font-size:.78rem;color:var(--text-muted);margin:-8px 0 14px">Montos que se pueden reclamar ante ARCA/ARBA. <strong style="color:var(--yellow)">CONSULTAR AL CONTADOR si corresponde solicitar devolucion formal.</strong></p>
+    <div class="resumen-grid">
+      <div class="resumen-item credito">
+        <div class="ri-label">IVA Saldo Tecnico a Favor</div>
+        <div class="ri-value green">${ivaPosReal >= 0 ? f(ivaPosReal) : '<span style="color:var(--red)">' + f(ivaPosReal) + '</span>'}</div>
+        <div class="ri-note">Credito acumulado ${f(ivaSaldoAcum)} menos deuda apertura ${f(ivaDeudaApert)}. ${ivaPosReal > 0 ? 'Se puede solicitar devolucion o compensar con otros impuestos (RG 2224/07).' : 'La deuda de apertura absorbe el credito acumulado.'}</div>
+      </div>
+      <div class="resumen-item credito">
+        <div class="ri-label">IVA Credito ARCA No Computado</div>
+        <div class="ri-value green">${f(ivaNoReclamado)}</div>
+        <div class="ri-note">Diferencia entre IVA credito en ARCA y el registrado en libro IVA. Facturas de compras no cargadas. ACCION: rectificar DDJJ para computar.</div>
+      </div>
+      <div class="resumen-item credito">
+        <div class="ri-label">IIBB Saldo a Favor (ARBA)</div>
+        <div class="ri-value green">${f(iibbFavorAcum)}</div>
+        <div class="ri-note">Saldo a favor acumulado en ARBA por retenciones y percepciones sufridas. Se puede solicitar devolucion o compensar contra futuras obligaciones.</div>
+      </div>
+      <div class="resumen-item credito">
+        <div class="ri-label">Ret/Percep IVA — Libre Disponibilidad</div>
+        <div class="ri-value green">${f(retPercepSaldo)}</div>
+        <div class="ri-note">Saldo de retenciones y percepciones de IVA a libre disponibilidad. Computables en futura DDJJ IVA o solicitar devolucion (RG 2000/06).</div>
+      </div>
+      <div class="resumen-item credito">
+        <div class="ri-label">Percepciones IVA Cheques Descontados</div>
+        <div class="ri-value green">${f(percIvaCheques)}</div>
+        <div class="ri-note">Percepciones de IVA cobradas en ${D.cheques.length} operaciones de descuento de cheques (Galicia + ICBC). Computables como credito fiscal.</div>
+      </div>
+      <div class="resumen-item credito" style="background:rgba(0,201,167,.06)">
+        <div class="ri-label">TOTAL CREDITOS RECUPERABLES</div>
+        <div class="ri-value green" style="font-size:1.3rem">${f(totalCreditos)}</div>
+        <div class="ri-note"><strong>CONSULTAR CONTADOR:</strong> Evaluar conveniencia de solicitar devolucion formal ante ARCA (puede activar fiscalizacion) vs compensar con obligaciones futuras.</div>
+      </div>
+    </div>
+  </div>`;
+
+  // BLOCK 2: DEUDAS PENDIENTES
+  html += `<div class="resumen-block">
+    <h3><span class="block-icon">&#9888;</span> Deudas Pendientes — Estado Completo</h3>
+    <div class="resumen-grid">
+      <div class="resumen-item deuda">
+        <div class="ri-label">SCT ARCA — Deuda Tributaria</div>
+        <div class="ri-value red">${f(sctDeuda)}</div>
+        <div class="ri-note">Capital: ${f(sctCapital)} + Intereses resarcitorios: ${f(sctIntereses)}. URGENTE: los intereses siguen corriendo. Evaluar plan de pagos.</div>
+      </div>
+      <div class="resumen-item deuda">
+        <div class="ri-label">IVA — Deuda Apertura Balance</div>
+        <div class="ri-value red">${f(ivaDeudaApert)}</div>
+        <div class="ri-note">Deuda de IVA arrastrada del balance certificado al 31/12/2025. Absorbe el credito fiscal acumulado en 2026.</div>
+      </div>
+      <div class="resumen-item deuda">
+        <div class="ri-label">Planes de Pago ARCA</div>
+        <div class="ri-value red">${f(D.balance2025.deudasFiscales.planesArca)}</div>
+        <div class="ri-note">Saldo de planes de pago activos con ARCA. Verificar estado y cuotas al dia.</div>
+      </div>
+      <div class="resumen-item deuda">
+        <div class="ri-label">Prestamo ICBC (Op. ${D.prestamoIcbc.operacion})</div>
+        <div class="ri-value red">${f(D.prestamoIcbc.saldoActual)}</div>
+        <div class="ri-note">${D.prestamoIcbc.cuotas - D.prestamoIcbc.pagadas} cuotas restantes de ~${f(D.prestamoIcbc.cuotaActual)}/mes. TNA ${D.prestamoIcbc.tasaAnual}%. Vto final: ${D.prestamoIcbc.vto}.</div>
+      </div>
+      <div class="resumen-item deuda">
+        <div class="ri-label">Visa ICBC Corporativa</div>
+        <div class="ri-value red">${f(D.deudas.financiera.visaIcbc)}</div>
+        <div class="ri-note">Saldo de tarjeta corporativa. Verificar cierre mensual y fecha de vencimiento.</div>
+      </div>
+      <div class="resumen-item deuda">
+        <div class="ri-label">Proveedores</div>
+        <div class="ri-value red">${f(D.balance2025.otrosPasivos.proveedores)}</div>
+        <div class="ri-note">Deuda comercial con proveedores segun balance 2025. Verificar antiguedad y conciliar.</div>
+      </div>
+      <div class="resumen-item deuda">
+        <div class="ri-label">Deudas Laborales (UOCRA)</div>
+        <div class="ri-value red">${f(D.balance2025.otrosPasivos.deudasLaborales)}</div>
+        <div class="ri-note">Provision de sueldos, SAC, vacaciones, cargas sociales pendientes.</div>
+      </div>
+      <div class="resumen-item deuda" style="background:rgba(233,69,96,.06)">
+        <div class="ri-label">"Otras deudas" sin identificar</div>
+        <div class="ri-value red">${f(D.balance2025.otrosPasivos.otrasDeudas)}</div>
+        <div class="ri-note"><strong>CRITICO:</strong> $25M sin documentar en el balance 2025. CONSULTAR CONTADOR: desglosar origen (prestamos entre socios, anticipos clientes, etc). Riesgo fiscal alto.</div>
+      </div>
+    </div>
+  </div>`;
+
+  // BLOCK 3: CHECKLIST AUDITORIA DOBLE CONTROL
+  // Build check items programmatically
+  const checks = [];
+
+  // IVA Libro vs ARCA
+  const comprasDiff = arcaRec.reduce((s,m,i) => s + Math.abs((m?m.neto:0) - (D.comprasEst[i]||0)), 0);
+  checks.push({
+    title: 'Libro IVA Compras sincronizado con ARCA',
+    detail: `Diferencia total compras: ${f(comprasDiff)}. ${comprasDiff > 1000000 ? 'DISCREPANCIA SIGNIFICATIVA — facturas sin cargar.' : 'Diferencia menor, verificar.'}`,
+    status: comprasDiff < 500000 ? 'ok' : (comprasDiff < 5000000 ? 'warn' : 'fail'),
+    statusText: comprasDiff < 500000 ? 'OK — diferencia minima' : (comprasDiff < 5000000 ? 'REVISAR — diferencia moderada' : 'CRITICO — $' + (comprasDiff/1e6).toFixed(1) + 'M sin sincronizar')
+  });
+
+  // IVA Ventas vs ARCA
+  const ventasArcaTotal = A.emitidos ? A.emitidos.reduce((s,e) => s + e.total, 0) : 0;
+  checks.push({
+    title: 'Libro IVA Ventas sincronizado con ARCA',
+    detail: `Total emitidos ARCA: ${f(ventasArcaTotal)}. Cruzar con libro IVA ventas registrado en sistema contable.`,
+    status: 'warn',
+    statusText: 'PENDIENTE — verificar con contabilidad'
+  });
+
+  // Conciliaciones bancarias
+  [{name:'ICBC',val:bankICBC}, {name:'Galicia',val:bankGalicia}, {name:'Mercado Pago',val:bankMP}].forEach(b => {
+    checks.push({
+      title: `Conciliacion bancaria ${b.name}`,
+      detail: `Saldo segun dashboard: ${f(b.val)}. Cruzar con extracto bancario del ultimo dia habil.`,
+      status: b.val != null ? 'warn' : 'fail',
+      statusText: b.val != null ? 'PENDIENTE — cruzar con extracto' : 'SIN DATOS — solicitar extracto'
+    });
+  });
+
+  // F931
+  const f931Presentados = D.f931.filter(v => v != null).length;
+  checks.push({
+    title: 'F931 Cargas Sociales presentados (ene-jun)',
+    detail: `${f931Presentados}/6 periodos con datos. Total pagado: ${f(sumNonNull(D.f931))}. Confirmar presentacion y pago de todos los periodos.`,
+    status: f931Presentados >= 5 ? 'ok' : 'warn',
+    statusText: f931Presentados >= 5 ? `OK — ${f931Presentados} periodos registrados` : `REVISAR — solo ${f931Presentados} periodos`
+  });
+
+  // SICORE
+  const sicorePresentados = D.sicore.filter(v => v != null).length;
+  checks.push({
+    title: 'SICORE Retenciones presentados (ene-jun)',
+    detail: `${sicorePresentados}/6 periodos con datos. Total: ${f(sumNonNull(D.sicore))}.`,
+    status: sicorePresentados >= 6 ? 'ok' : 'warn',
+    statusText: sicorePresentados >= 6 ? `OK — ${sicorePresentados} periodos` : `REVISAR — solo ${sicorePresentados} periodos`
+  });
+
+  // IIBB
+  checks.push({
+    title: 'IIBB ARBA presentados y saldo a favor verificado',
+    detail: `Saldo a favor acumulado: ${f(iibbFavorAcum)}. Pago unico registrado (mayo): ${f(D.iibb.pagar[4])}. Verificar si hay periodos sin declarar.`,
+    status: 'warn',
+    statusText: 'PENDIENTE — verificar declaraciones con ARBA'
+  });
+
+  // Anticipos Ganancias
+  const antPagados = D.anticiposGan.filter(v => v != null).length;
+  checks.push({
+    title: 'Anticipos Ganancias Sociedades al dia',
+    detail: `${antPagados}/6 periodos con datos. Total pagado: ${f(sumNonNull(D.anticiposGan))}. 10 cuotas anuales segun RG ARCA.`,
+    status: antPagados >= 4 ? 'ok' : 'warn',
+    statusText: antPagados >= 4 ? `OK — ${antPagados} anticipos registrados` : `REVISAR — solo ${antPagados} anticipos`
+  });
+
+  // VEPs
+  checks.push({
+    title: 'VEPs emitidos verificados contra pagos',
+    detail: `${D.veps.length} VEPs registrados por ${f(D.vepsTotal)}. Cruzar con movimientos bancarios para confirmar debito efectivo.`,
+    status: 'warn',
+    statusText: 'PENDIENTE — confirmar debito bancario de cada VEP'
+  });
+
+  // Bienes de cambio
+  checks.push({
+    title: 'Bienes de cambio: valuacion correcta',
+    detail: `$${(D.balance2025.bienesCambio/1e6).toFixed(1)}M en balance 2025 (+537% interanual). Verificar obras en proceso, materiales en deposito, obras terminadas no facturadas.`,
+    status: 'fail',
+    statusText: 'CRITICO — salto anomalo requiere explicacion del contador'
+  });
+
+  // Honorarios socios
+  checks.push({
+    title: 'Honorarios socios gerentes aprobados por asamblea',
+    detail: `Honorarios declarados en 2026: ${f(sumNonNull(D.sueldoSocio))}. Debe existir acta de asamblea aprobando la asignacion (art. 261 LSC). ARCA puede impugnar si no hay acta.`,
+    status: 'warn',
+    statusText: 'PENDIENTE — verificar acta de asamblea'
+  });
+
+  // Astillero Alpha
+  checks.push({
+    title: 'Relacion comercial Astillero Alpha documentada',
+    detail: 'Astillero Alpha es cliente ($40M emitido) y proveedor ($105M recibido) simultaneamente. Operacion circular — tener contratos y remitos que justifiquen ambas operaciones ante ARCA.',
+    status: 'fail',
+    statusText: 'ALERTA — riesgo fiscal por operacion circular sin documentar'
+  });
+
+  // Otras deudas
+  checks.push({
+    title: '"Otras deudas" $25M del balance — identificar origen',
+    detail: 'Balance 2025 contiene $25M en "Otras deudas" sin desglose. ARCA puede presumir ingresos omitidos. Necesita documentacion (mutuo, anticipo, prestamo societario, etc).',
+    status: 'fail',
+    statusText: 'CRITICO — riesgo fiscal alto sin documentacion'
+  });
+
+  // Pre-cierre semestral
+  checks.push({
+    title: 'Pre-cierre semestral jun-2026 preparado',
+    detail: 'Balance de saldos, provision de SAC, conciliaciones bancarias, provision de vacaciones, devengamiento de intereses prestamo ICBC.',
+    status: 'warn',
+    statusText: 'PENDIENTE — preparar con contador'
+  });
+
+  // DDJJ ARCA estado
+  checks.push({
+    title: 'DDJJ presentadas sin pendientes en ARCA',
+    detail: `Estado segun ARCA: "${A.ddjjEstado || 'Sin datos'}". Verificar que no haya intimaciones o requerimientos.`,
+    status: A.ddjjEstado && A.ddjjEstado.includes('Sin pendientes') ? 'ok' : 'warn',
+    statusText: A.ddjjEstado && A.ddjjEstado.includes('Sin pendientes') ? 'OK — todas presentadas' : 'VERIFICAR'
+  });
+
+  html += `<div class="resumen-block">
+    <h3><span class="block-icon">&#9989;</span> Checklist de Auditoria — Doble Control</h3>
+    <p style="font-size:.78rem;color:var(--text-muted);margin:-8px 0 14px">Este checklist lo completamos nosotros primero, luego el contador debe verificar cada punto. <strong style="color:var(--yellow)">Ambos deben firmar conformidad.</strong></p>`;
+
+  checks.forEach(c => {
+    const boxCls = c.status === 'ok' ? 'auto-check' : (c.status === 'warn' ? 'warn' : 'fail');
+    const boxIcon = c.status === 'ok' ? '&#10003;' : (c.status === 'warn' ? '?' : '&#10007;');
+    const stCls = c.status === 'ok' ? 'ok' : (c.status === 'warn' ? 'pending' : 'alert');
+    html += `<div class="checklist-item">
+      <div class="checklist-box ${boxCls}">${boxIcon}</div>
+      <div class="checklist-text">
+        <div class="cl-title">${c.title}</div>
+        <div class="cl-detail">${c.detail}</div>
+        <div class="cl-status ${stCls}">${c.statusText}</div>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  // BLOCK 4: OBSERVACIONES PARA EL CONTADOR
+  html += `<div class="resumen-block">
+    <h3><span class="block-icon">&#128221;</span> Observaciones y Recomendaciones para el Contador</h3>`;
+
+  const obs = [];
+  // Critical obs
+  if (comprasDiff > 5000000) obs.push({type:'obs-critical', text:`<strong>PRIORITARIO:</strong> Hay ${f(comprasDiff)} en compras registradas en ARCA que no figuran en el libro IVA del dashboard. Esto implica credito fiscal no computado por ${f(ivaNoReclamado)}. Rectificar DDJJ IVA de los meses afectados para recuperar el credito.`});
+  if (sctDeuda > 0) obs.push({type:'obs-critical', text:`<strong>SCT ARCA:</strong> La cuenta corriente tributaria muestra deuda de ${f(sctDeuda)}. Los intereses resarcitorios (${f(sctIntereses)}) siguen devengandose diariamente. Evaluar: (a) cancelacion inmediata, (b) plan de facilidades permanente (RG 5321/23), o (c) moratoria si hay vigente.`});
+  obs.push({type:'obs-critical', text:`<strong>CONSULTAR DEVOLUCION IVA:</strong> PMD tiene saldo tecnico a favor de IVA por ${f(Math.max(0,ivaPosReal))} + credito no computado ${f(ivaNoReclamado)}. Evaluar si conviene solicitar devolucion anticipada (exportadores de servicios, RG 2000) o compensar via Sistema de Cuentas Tributarias. Tener en cuenta que el pedido de devolucion puede triggear una fiscalizacion de ARCA.`});
+  obs.push({type:'obs-critical', text:`<strong>CONSULTAR DEVOLUCION IIBB:</strong> Saldo a favor ARBA de ${f(iibbFavorAcum)}. Verificar si es por retenciones bancarias excesivas (regimen general) y evaluar: (a) solicitar devolucion, (b) solicitar certificado de no retencion/reduccion de alicuota, (c) compensar con periodos futuros.`});
+
+  // Warn obs
+  obs.push({type:'', text:`<strong>F931 Junio doble:</strong> La remuneracion de junio fue $4.5M (doble del promedio ~$2M). Si corresponde al SAC (aguinaldo), esta correcto pero documentar. Si es error, rectificar antes de que ARCA lo impugne.`});
+  obs.push({type:'', text:`<strong>Prestamo ICBC:</strong> Evaluar cancelacion anticipada parcial si hay excedente de caja. El interes es del 36% TNA — cualquier pago extra ahorra intereses significativos. Tambien evaluar refinanciacion si las tasas de mercado bajaron.`});
+  obs.push({type:'', text:`<strong>Facturacion 2026 vs 2025:</strong> Al ritmo actual, PMD cierra con ~$186M vs $379M del 2025. Si hay obras en ejecucion no facturadas, facturar para generar debito fiscal y compensar el saldo a favor de IVA. Consultar si hay certificaciones de obra pendientes de emitir.`});
+  obs.push({type:'', text:`<strong>Compromisos mensuales:</strong> Los compromisos fijos (${f(D.compromisos.totalMensual)}/mes) representan el ${D.compromisos.ratio}% de las ventas promedio. Margen disponible de solo ${f(D.compromisos.margen)}/mes. Cualquier caida en facturacion genera deficit.`});
+
+  // Positive obs
+  obs.push({type:'obs-positive', text:`<strong>DDJJ al dia:</strong> Segun ARCA, todas las declaraciones juradas estan presentadas sin pendientes. Mantener este status para evitar intimaciones.`});
+  if (bankTotal > 5000000) obs.push({type:'obs-positive', text:`<strong>Liquidez actual:</strong> Saldo bancario total de ${f(bankTotal)} disponible. Aprovechar para cancelar deudas con intereses altos (SCT ARCA primero, luego evaluar cancelacion parcial prestamo ICBC).`});
+
+  obs.forEach(o => {
+    html += `<div class="obs-item ${o.type}">${o.text}</div>`;
+  });
+
+  html += `<div style="margin-top:16px;padding:14px;background:rgba(77,168,218,.08);border:1px solid rgba(77,168,218,.2);border-radius:8px;font-size:.8rem;text-align:center">
+    <strong style="color:var(--blue)">&#128272; PROTOCOLO DOBLE CONTROL:</strong> Este resumen fue generado automaticamente en base a datos de ARCA, bancos y sistema contable.
+    El contador debe verificar cada punto, firmar conformidad, y agregar sus observaciones. Cualquier discrepancia debe documentarse por escrito.
+  </div>`;
+  html += `</div>`;
+
+  document.getElementById('resumen-pmd').innerHTML = html;
+};
+
+/* ===== RESUMEN PARA EL CONTADOR — AUGUSTO PERSONAL ===== */
+const renderResumenAugusto = () => {
+  const f = (v) => '$' + Math.round(v).toLocaleString('es-AR');
+  const cc = D.arca?.ccmaAugusto;
+
+  // Datos
+  const totalAutonomos = (D.autonomos || []).reduce((s,v) => s + (v??0), 0);
+  const totalIIBB = (D.iibbAugusto || []).reduce((s,v) => s + (v??0), 0);
+  const totalSueldo = D.sueldoSocio.reduce((s,v) => s + (v??0), 0);
+  const ccmaDeuda = cc ? cc.saldoDeudor : 0;
+  const julioItems = cc ? cc.mesActual.items : [];
+  const julioTotal = julioItems.reduce((s,it) => s + it.importe, 0);
+  const autonomosPagados = (D.autonomos || []).filter(v => v != null).length;
+  const iibbAugPagados = (D.iibbAugusto || []).filter(v => v != null && v > 0).length;
+  // Creditos personales potenciales
+  // Si Augusto tiene doble aporte jubilatorio (monotributo + relacion de dependencia), puede tener exceso
+  const aporteMonotAnual = 9083 * 12; // cuota monotributo aprox mensual
+  const aporteAutonAnual = 318759 * 12; // autonomo aprox mensual
+
+  let html = '';
+
+  // HEADER
+  html += `<div class="resumen-header">
+    <span class="resumen-icon">&#128209;</span>
+    <div>
+      <h2>Resumen Informativo y Requisitos para el Contador</h2>
+      <p>AUGUSTO MENENDEZ — CUIT 20-37039849-7 — Persona Fisica — Ejercicio 2026</p>
+    </div>
+    <span class="resumen-badge">&#128270; Doble Control</span>
+  </div>`;
+
+  // TOTALES
+  html += `<div class="resumen-totals">
+    <div class="resumen-total-card ${ccmaDeuda > 0 ? 'negative' : 'positive'}">
+      <div class="rt-value ${ccmaDeuda > 0 ? 'red' : 'green'}">${f(ccmaDeuda)}</div>
+      <div class="rt-label">Deuda CCMA ARCA</div>
+    </div>
+    <div class="resumen-total-card neutral">
+      <div class="rt-value yellow">${f(totalAutonomos + totalIIBB)}</div>
+      <div class="rt-label">Obligaciones Pagadas 2026</div>
+    </div>
+    <div class="resumen-total-card positive">
+      <div class="rt-value green">${f(totalSueldo)}</div>
+      <div class="rt-label">Sueldo Cobrado 2026</div>
+    </div>
+  </div>`;
+
+  // BLOCK 1: CREDITOS / DEVOLUCIONES PERSONALES
+  html += `<div class="resumen-block" style="margin-top:20px">
+    <h3><span class="block-icon">&#128176;</span> Creditos Recuperables y Consultas Personales</h3>
+    <div class="resumen-grid">
+      <div class="resumen-item credito">
+        <div class="ri-label">Doble Aporte Jubilatorio</div>
+        <div class="ri-value" style="color:var(--yellow)">CONSULTAR</div>
+        <div class="ri-note">Augusto aporta como autonomo (SUSS ~${f(318759)}/mes) Y como empleado en relacion de dependencia (Mi Container SRL). Si hay doble aporte jubilatorio, se puede solicitar devolucion del excedente ante ANSES/ARCA. <strong>CONSULTAR AL CONTADOR.</strong></div>
+      </div>
+      <div class="resumen-item credito">
+        <div class="ri-label">Retenciones 4ta Categoria (F649)</div>
+        <div class="ri-value" style="color:var(--yellow)">CONSULTAR</div>
+        <div class="ri-note">Mi Container SRL debe entregar el F.649 (certificado de remuneraciones) con las retenciones de Ganancias sufridas por Augusto. Estas retenciones se computan como pago a cuenta en la DDJJ anual de Ganancias persona fisica.</div>
+      </div>
+      <div class="resumen-item credito">
+        <div class="ri-label">Saldo a Favor Ganancias PF</div>
+        <div class="ri-value" style="color:var(--yellow)">CONSULTAR</div>
+        <div class="ri-note">Si las retenciones de 4ta categoria + anticipos pagados superan el impuesto determinado, Augusto tiene saldo a favor. Solicitar devolucion o compensar con otras obligaciones (RG 1658).</div>
+      </div>
+      <div class="resumen-item neutro">
+        <div class="ri-label">Aportes Monotributo como Credito</div>
+        <div class="ri-value" style="color:var(--text-muted)">INFORMATIVO</div>
+        <div class="ri-note">Los aportes jubilatorios del monotributo (componente previsional) se computan como anos de servicio. No son recuperables pero si computables. Verificar que se esten acreditando correctamente en ANSES.</div>
+      </div>
+    </div>
+  </div>`;
+
+  // BLOCK 2: DEUDAS PERSONALES
+  html += `<div class="resumen-block">
+    <h3><span class="block-icon">&#9888;</span> Deudas Personales Pendientes</h3>
+    <div class="resumen-grid">
+      <div class="resumen-item deuda">
+        <div class="ri-label">CCMA — Saldo Deudor Total</div>
+        <div class="ri-value red">${f(ccmaDeuda)}</div>
+        <div class="ri-note">Cuenta corriente de monotributista/autonomo en ARCA. Incluye periodos impagos e intereses. Evaluar plan de pagos si no se puede cancelar de contado.</div>
+      </div>
+      <div class="resumen-item deuda">
+        <div class="ri-label">Julio 2026 — IMPAGO</div>
+        <div class="ri-value red">${f(julioTotal)}</div>
+        <div class="ri-note">Vence 20/07/2026. Incluye: ${julioItems.map(it => it.concepto + ' ' + f(it.importe)).join(', ')}. Pagar antes del vencimiento para evitar intereses.</div>
+      </div>
+      <div class="resumen-item neutro">
+        <div class="ri-label">Bienes Personales 2025</div>
+        <div class="ri-value" style="color:var(--yellow)">VERIFICAR</div>
+        <div class="ri-note">DDJJ Bienes Personales vence jun/jul 2026. Declarar: participacion en PMD SRL (patrimonio neto ${f(D.balance2025.patrimonioNeto)}), participacion en Mi Container SRL, inmuebles, fideicomiso Naudir N°308, cuentas bancarias, automotores.</div>
+      </div>
+      <div class="resumen-item neutro">
+        <div class="ri-label">Ganancias Persona Fisica 2025</div>
+        <div class="ri-value" style="color:var(--yellow)">VERIFICAR</div>
+        <div class="ri-note">DDJJ anual Ganancias PF vence jun/jul 2026. Incluir: sueldo (F.649 Mi Container), honorarios socio gerente (PMD + Mi Container), facturacion monotributo. Descontar retenciones 4ta cat + anticipos pagados.</div>
+      </div>
+    </div>
+  </div>`;
+
+  // BLOCK 3: CHECKLIST PERSONAL
+  const checksAug = [];
+
+  checksAug.push({
+    title: 'CCMA al dia — cuotas monotributo + autonomos',
+    detail: `Ene-Jun: ${cc?.eneJun || 'Sin datos'}. Julio: ${cc?.mesActual.estado || 'Sin datos'}. Total autonomos pagados: ${f(totalAutonomos)} en ${autonomosPagados} periodos.`,
+    status: cc?.eneJun === 'Todo pagado' ? 'ok' : 'fail',
+    statusText: cc?.eneJun === 'Todo pagado' ? 'OK — ene-jun al dia, julio pendiente' : 'REVISAR — verificar pagos'
+  });
+
+  checksAug.push({
+    title: 'Recategorizacion monotributo julio 2026 evaluada',
+    detail: 'Recategorizacion semestral obligatoria (enero y julio). Evaluar facturacion monotributo ultimos 12 meses. Si supera tope de categoria actual, recategorizar antes del 31/07.',
+    status: 'warn',
+    statusText: 'PENDIENTE — evaluar antes del 31/07'
+  });
+
+  checksAug.push({
+    title: 'F.649 recibido de Mi Container SRL',
+    detail: 'Certificado de remuneraciones y retenciones de Ganancias 4ta categoria. Necesario para la DDJJ anual de Ganancias persona fisica.',
+    status: 'warn',
+    statusText: 'PENDIENTE — solicitar a Mi Container'
+  });
+
+  checksAug.push({
+    title: 'Sueldo 2026 verificado vs declarado',
+    detail: `Declarado como sueldo socio gerente PMD: ${f(totalSueldo)}. Detectado via banco: ~$8M (acreditacion haberes Galicia mar-abr) + $7M (dif sueldo 2025 via ICBC ene). Diferencia de ~$6M a verificar.`,
+    status: 'warn',
+    statusText: 'PENDIENTE — cruzar con extracto bancario personal'
+  });
+
+  checksAug.push({
+    title: 'Facturacion monotributo dentro del tope de categoria',
+    detail: 'Verificar que la facturacion acumulada de los ultimos 12 meses no supere el tope de la categoria actual. Si supera, hay riesgo de exclusion de oficio.',
+    status: 'warn',
+    statusText: 'PENDIENTE — verificar facturacion en ARCA'
+  });
+
+  checksAug.push({
+    title: 'Bienes Personales DDJJ 2025 presentada',
+    detail: `Declarar participaciones societarias (PMD PN: ${f(D.balance2025.patrimonioNeto)}), Mi Container, Naudir N°308, inmuebles, cuentas bancarias al 31/12/2025.`,
+    status: 'warn',
+    statusText: 'PENDIENTE — verificar presentacion'
+  });
+
+  checksAug.push({
+    title: 'Ganancias persona fisica DDJJ 2025 presentada',
+    detail: 'Declarar ingresos de todas las fuentes: relacion de dependencia (Mi Container), honorarios socio gerente (PMD + Mi Container), monotributo (no grava pero se informa).',
+    status: 'warn',
+    statusText: 'PENDIENTE — verificar presentacion'
+  });
+
+  checksAug.push({
+    title: 'Actividad monotributo diferenciada de PMD y Mi Container',
+    detail: 'La actividad facturada por monotributo debe ser diferente a la actividad de PMD SRL y Mi Container SRL. ARCA puede impugnar si hay superposicion de actividades.',
+    status: 'warn',
+    statusText: 'CONSULTAR — verificar actividad declarada'
+  });
+
+  checksAug.push({
+    title: 'Fideicomiso Naudir N°308 declarado en BP e informado',
+    detail: 'Si el fideicomiso distribuyo ganancias, declararlas en Ganancias PF. La participacion debe estar valuada en Bienes Personales.',
+    status: 'warn',
+    statusText: 'PENDIENTE — verificar estado del fideicomiso'
+  });
+
+  html += `<div class="resumen-block">
+    <h3><span class="block-icon">&#9989;</span> Checklist de Auditoria Personal — Doble Control</h3>
+    <p style="font-size:.78rem;color:var(--text-muted);margin:-8px 0 14px">Verificaciones obligatorias para Augusto como persona fisica. <strong style="color:var(--yellow)">El contador debe confirmar cada item.</strong></p>`;
+
+  checksAug.forEach(c => {
+    const boxCls = c.status === 'ok' ? 'auto-check' : (c.status === 'warn' ? 'warn' : 'fail');
+    const boxIcon = c.status === 'ok' ? '&#10003;' : (c.status === 'warn' ? '?' : '&#10007;');
+    const stCls = c.status === 'ok' ? 'ok' : (c.status === 'warn' ? 'pending' : 'alert');
+    html += `<div class="checklist-item">
+      <div class="checklist-box ${boxCls}">${c.status === 'ok' ? boxIcon : boxIcon}</div>
+      <div class="checklist-text">
+        <div class="cl-title">${c.title}</div>
+        <div class="cl-detail">${c.detail}</div>
+        <div class="cl-status ${stCls}">${c.statusText}</div>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  // BLOCK 4: OBSERVACIONES PERSONALES
+  html += `<div class="resumen-block">
+    <h3><span class="block-icon">&#128221;</span> Observaciones y Recomendaciones Personales</h3>`;
+
+  const obsAug = [];
+
+  obsAug.push({type:'obs-critical', text:`<strong>PAGAR JULIO ANTES DEL 20/07:</strong> Cuota monotributo + autonomos de julio (${f(julioTotal)}) vence el 20/07/2026. Pagar para evitar intereses y mantener el estado "al dia" en CCMA.`});
+  obsAug.push({type:'obs-critical', text:`<strong>CONSULTAR DOBLE APORTE JUBILATORIO:</strong> Augusto aporta ~${f(318759)}/mes como autonomo (SUSS) y ademas le descuentan 11% jubilatorio del sueldo en Mi Container SRL. Si hay excedente sobre el tope de aporte, se puede pedir devolucion a ARCA. El contador debe calcularlo.`});
+  obsAug.push({type:'obs-critical', text:`<strong>CONSULTAR DEVOLUCIONES 4TA CATEGORIA:</strong> Si las retenciones de Ganancias que Mi Container le practica a Augusto exceden el impuesto determinado, hay saldo a favor. Pedir al contador que calcule la posicion fiscal neta de Ganancias PF y evaluar si corresponde solicitar devolucion.`});
+  obsAug.push({type:'', text:`<strong>CCMA saldo deudor:</strong> Los ${f(ccmaDeuda)} de saldo deudor incluyen intereses por pagos fuera de termino. Evaluar con el contador si conviene plan de pagos o cancelacion directa. Los intereses siguen corriendo.`});
+  obsAug.push({type:'', text:`<strong>Recategorizacion monotributo:</strong> Julio es mes de recategorizacion obligatoria. Si la facturacion de los ultimos 12 meses cambio la categoria, hay que recategorizar antes del 31/07. No hacerlo genera multa automatica de ARCA.`});
+  obsAug.push({type:'', text:`<strong>Cuenta corriente socios PMD:</strong> Los anticipos de sueldo/honorarios de Augusto deben estar documentados como "anticipo a cuenta de honorarios" en la contabilidad de PMD. Sin documentacion, ARCA puede recaracterizarlos como dividendos (7% retencion) o ingresos omitidos.`});
+  obsAug.push({type:'obs-positive', text:`<strong>Ene-Jun al dia:</strong> Segun CCMA de ARCA, los periodos enero a junio 2026 estan todos pagados. Mantener este comportamiento de pago.`});
+
+  obsAug.forEach(o => {
+    html += `<div class="obs-item ${o.type}">${o.text}</div>`;
+  });
+
+  html += `<div style="margin-top:16px;padding:14px;background:rgba(77,168,218,.08);border:1px solid rgba(77,168,218,.2);border-radius:8px;font-size:.8rem;text-align:center">
+    <strong style="color:var(--blue)">&#128272; PROTOCOLO DOBLE CONTROL:</strong> Este resumen fue generado automaticamente.
+    El contador debe verificar cada punto con la documentacion respaldatoria (F.649, CCMA, DDJJ presentadas, extractos bancarios personales). Firmar conformidad.
+  </div>`;
+  html += `</div>`;
+
+  document.getElementById('resumen-augusto').innerHTML = html;
 };
 
 /* ===== TAB SWITCHING ===== */
@@ -2381,6 +2984,7 @@ const renderAll = () => {
   renderCockpit();
   renderArca();
   renderAcciones();
+  renderResumenPMD();
   setupSimulador();
   setupMainTabs();
 };
