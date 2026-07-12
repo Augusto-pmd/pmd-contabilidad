@@ -742,6 +742,60 @@ footer p+p{margin-top:4px}
         </div>
       </div>
 
+      <!-- ========== TARJETAS DE CRÉDITO — ECONOMÍA PERSONAL ========== -->
+      <h2 class="section-title" style="border-left-color:var(--orange)">Tarjetas de Crédito — Análisis de Consumo Personal</h2>
+
+      <!-- TC KPIs -->
+      <div class="kpi-grid" id="tc-kpis" style="grid-template-columns:repeat(4,1fr)"></div>
+
+      <!-- TC Charts row 1: donut + fijo/var -->
+      <div class="charts-grid" id="tc-charts-row1">
+        <div class="chart-card">
+          <h3><span class="dot" style="background:var(--orange)"></span> Distribución por Rubro</h3>
+          <div class="chart-wrap"><canvas id="tc-ch-rubros"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3><span class="dot" style="background:var(--blue)"></span> Gastos Fijos vs Variables</h3>
+          <div class="chart-wrap"><canvas id="tc-ch-fijo"></canvas></div>
+        </div>
+      </div>
+
+      <!-- TC Charts row 2: monthly evolution full width -->
+      <div class="charts-grid" style="grid-template-columns:1fr">
+        <div class="chart-card">
+          <h3><span class="dot" style="background:var(--yellow)"></span> Evolución Mensual — Consumos, Pagos y Saldo (Visa ICBC)</h3>
+          <div class="chart-wrap"><canvas id="tc-ch-evolucion"></canvas></div>
+        </div>
+      </div>
+
+      <!-- TC Charts row 3: top merchants + monthly stacked -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3><span class="dot" style="background:var(--green)"></span> Top 10 Comercios / Rubros</h3>
+          <div class="chart-wrap"><canvas id="tc-ch-merchants"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3><span class="dot" style="background:var(--red)"></span> Gasto Mensual por Grupo</h3>
+          <div class="chart-wrap"><canvas id="tc-ch-mensual"></canvas></div>
+        </div>
+      </div>
+
+      <!-- TC Category table -->
+      <div class="personal-card">
+        <h3><span style="color:var(--orange)">&#9673;</span> Desglose por Categoría (todas las tarjetas)</h3>
+        <div class="table-wrap">
+          <table id="tc-cat-table">
+            <thead>
+              <tr><th>Categoría</th><th>Tipo</th><th>Monto</th><th>%</th><th>Txns</th><th>Barra</th></tr>
+            </thead>
+            <tbody id="tc-cat-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TC Insights -->
+      <div class="personal-card" id="tc-insights"></div>
+
       <!-- ACCIONES PERSONALES -->
       <h2 class="section-title" style="border-left-color:var(--blue)">Acciones Pendientes — Personal</h2>
       <div class="acciones-progress" id="acciones-progress-aug"></div>
@@ -886,6 +940,81 @@ const DATA = {
   anticiposGan: [100386, null, 95068, 108242, 100642, 100000],
   sueldoSocio: [1250000.10, 2253333.39, 1933333.43, 2000000.10, 2000000.10, 4499999.40],
   comprasEst: [8536771, 11636660, 10064736, 79605327, 12721672, null],
+
+  /* === TARJETAS DE CRÉDITO PERSONALES (ICBC Visa + MC) === */
+  tarjetas: {
+    periodo: 'Oct 2025 — Jun 2026',
+    totalGasto: 11986980,
+    numTransacciones: 194,
+    numMeses: 9,
+    promedioMensual: 1498373,
+    deudaActual: { visa: 1075861, mc: 225225, total: 1301086 },
+    fijoVsVariable: { fijo: 5729410, variable: 6257570, fijoPct: 47.8, variablePct: 52.2 },
+    byGroup: [
+      {g:'Compras',m:4433236,p:37.0},{g:'Salud',m:2208113,p:18.4},{g:'Impuestos/TC',m:1364835,p:11.4},
+      {g:'Seguros',m:960153,p:8.0},{g:'Celular',m:918956,p:7.7},{g:'Viajes',m:713484,p:6.0},
+      {g:'Hogar',m:639806,p:5.3},{g:'Banco',m:232322,p:1.9},{g:'Alimentación',m:204809,p:1.7},
+      {g:'Gastronomía',m:176000,p:1.5},{g:'Transporte',m:87072,p:0.7},{g:'Software',m:28400,p:0.2},
+      {g:'Entretenimiento',m:19794,p:0.2}
+    ],
+    byCategory: [
+      {cat:'Compras/MercadoLibre',m:2545687,p:21.2,n:9,t:'v'},
+      {cat:'Salud/Prepaga (OSDE)',m:2204949,p:18.4,n:8,t:'f'},
+      {cat:'Compras/MercadoPago',m:1576654,p:13.2,n:18,t:'v'},
+      {cat:'Seguros (Allianz+Sancor)',m:960153,p:8.0,n:12,t:'f'},
+      {cat:'Celular (Personal+Flow)',m:918956,p:7.7,n:15,t:'f'},
+      {cat:'Impuestos/AFIP Monotributo',m:641575,p:5.4,n:9,t:'f'},
+      {cat:'Hogar/Ferretería (Sodimac)',m:532660,p:4.4,n:1,t:'v'},
+      {cat:'Impuestos/Percepción 30%',m:529176,p:4.4,n:9,t:'f'},
+      {cat:'Viajes/Hospedaje',m:384077,p:3.2,n:2,t:'v'},
+      {cat:'Viajes/Vuelos (Despegar)',m:329407,p:2.7,n:1,t:'v'},
+      {cat:'Compras/Marketplace',m:310895,p:2.6,n:2,t:'v'},
+      {cat:'Banco/Comisiones TC',m:225143,p:1.9,n:12,t:'f'},
+      {cat:'Impuestos/IVA TC',m:108059,p:0.9,n:14,t:'f'},
+      {cat:'Hogar/Electrodomésticos',m:107146,p:0.9,n:1,t:'v'},
+      {cat:'Alimentación',m:204809,p:1.7,n:12,t:'v'},
+      {cat:'Gastronomía',m:176000,p:1.5,n:13,t:'v'},
+      {cat:'Transporte/Peajes',m:83772,p:0.7,n:27,t:'v'},
+      {cat:'Impuestos/Percepciones TC',m:78689,p:0.7,n:10,t:'f'},
+      {cat:'Software/Seguridad',m:28400,p:0.2,n:1,t:'f'},
+      {cat:'Entretenimiento/Streaming',m:19794,p:0.2,n:6,t:'f'},
+      {cat:'Banco/Intereses',m:7179,p:0.1,n:3,t:'f'},
+      {cat:'Impuestos/IIBB',m:7337,p:0.1,n:8,t:'f'}
+    ],
+    visaSaldos: {
+      meses:['Oct 25','Nov 25','Dic 25','Ene 26','Feb 26','Mar 26','Abr 26','May 26','Jun 26'],
+      saldos:[989752,423128,2987741,1518844,1899928,3108518,2489256,1763100,1075861],
+      pagos:[598019,1200000,423128,2700000,900000,111194,1788978,2489256,1800000],
+      consumos:[965710,937252,2595621,1341406,1136111,1189702,920548,1749397,1084511]
+    },
+    mcSaldos: {
+      meses:['Dic 25','Ene 26','Feb 26','Mar 26','Abr 26','May 26'],
+      saldos:[89426,158178,220965,137817,227232,225225]
+    },
+    byMonth: [
+      {mes:'Oct 25',total:1616867},{mes:'Nov 25',total:2396999},{mes:'Dic 25',total:1343937},
+      {mes:'Ene 26',total:1003341},{mes:'Feb 26',total:1131453},{mes:'Mar 26',total:1165070},
+      {mes:'Abr 26',total:1989738},{mes:'May 26',total:1339574}
+    ],
+    topMerchants: [
+      {n:'MercadoLibre/MercadoPago',m:4122341},{n:'OSDE Prepaga',m:2204949},
+      {n:'Seguros (Allianz+Sancor)',m:960153},{n:'Personal+Flow Celular',m:918956},
+      {n:'AFIP Monotributo',m:641575},{n:'Hogar (Sodimac+Electro)',m:639806},
+      {n:'Percepción 30% TC',m:529176},{n:'Despegar+Hoteles',m:713484},
+      {n:'Comisiones TC ICBC',m:225143},{n:'Alimentación',m:204809}
+    ],
+    insights: [
+      'MercadoLibre + MercadoPago = 34.4% de tu consumo total. Tus principales canales de compra.',
+      'OSDE Prepaga: ~$276K/mes (18.4% del total). 2do gasto más grande. Evaluar si el plan actual se justifica.',
+      'Seguros (Allianz + Sancor): $960K en 9 meses (~$107K/mes). Revisar cobertura y comparar.',
+      'Celular Personal: ~$102K/mes. Es alto para un plan personal. Confirmar si incluye línea corporativa.',
+      'Impuestos/Percepciones en TC: $1.3M (IVA, IIBB, 30%). Estas percepciones son recuperables en la DDJJ.',
+      'Tu deuda de TC bajó 64% (de $3.1M en Mar a $1.08M en Jun). Buen comportamiento de pago.',
+      'Gastos variables (52%) vs fijos (48%). Hay margen de optimización en las compras discrecionales.',
+      'Gastronomía: ~$22K/mes — Havanna, Freddo, restaurantes. Bajo impacto pero patrón frecuente.'
+    ],
+    tarjetasPendientes: ['Visa Francés (pendiente de carga)', 'Santander Río (carpeta vacía)']
+  },
 
   /* === DATOS ARCA (extraidos 10/07/2026) === */
   arca: {
@@ -2277,6 +2406,95 @@ const setupSimulador = () => {
 };
 
 /* ===== RENDER AUGUSTO TAB ===== */
+/* ===== TARJETAS DE CRÉDITO — ECONOMÍA PERSONAL ===== */
+const renderTarjetas = () => {
+  const T = D.tarjetas;
+  if (!T) return;
+  const f = (v) => '$' + Math.round(v).toLocaleString('es-AR');
+
+  // KPIs
+  document.getElementById('tc-kpis').innerHTML = `
+    <div class="kpi-card" style="--kpi-color:var(--blue)"><div class="kpi-label">Total Gastado (9 meses)</div><div class="kpi-value blue">${f(T.totalGasto)}</div><div class="kpi-sub">${T.numTransacciones} transacciones</div></div>
+    <div class="kpi-card" style="--kpi-color:var(--yellow)"><div class="kpi-label">Promedio Mensual</div><div class="kpi-value" style="color:var(--yellow)">${f(T.promedioMensual)}</div><div class="kpi-sub">~${T.numMeses} meses de datos</div></div>
+    <div class="kpi-card" style="--kpi-color:var(--red)"><div class="kpi-label">Deuda Actual TC</div><div class="kpi-value red">${f(T.deudaActual.total)}</div><div class="kpi-sub">Visa ${f(T.deudaActual.visa)} + MC ${f(T.deudaActual.mc)}</div></div>
+    <div class="kpi-card" style="--kpi-color:var(--orange)"><div class="kpi-label">Fijo vs Variable</div><div class="kpi-value" style="color:var(--orange)">${T.fijoVsVariable.fijoPct}% / ${T.fijoVsVariable.variablePct}%</div><div class="kpi-sub"><span class="badge badge-blue">Fijo</span> <span class="badge" style="background:rgba(255,140,66,.15);color:var(--orange)">Variable</span></div></div>`;
+
+  // Chart 1: Donut por rubro
+  const grps = T.byGroup;
+  const gColors = ['#4da8da','#00c9a7','#e94560','#ffc107','#ff8c42','#9b59b6','#3498db','#6c7a89','#e67e22','#1abc9c','#2ecc71','#555','#888'];
+  new Chart(document.getElementById('tc-ch-rubros'), {
+    type:'doughnut',
+    data:{ labels:grps.map(g=>g.g), datasets:[{data:grps.map(g=>g.m),backgroundColor:gColors.slice(0,grps.length),borderWidth:0}]},
+    options:{ responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:10,padding:5,font:{size:10}}},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${f(ctx.parsed)} (${(ctx.parsed/T.totalGasto*100).toFixed(1)}%)`}}}}
+  });
+
+  // Chart 2: Fijo vs Variable donut
+  new Chart(document.getElementById('tc-ch-fijo'), {
+    type:'doughnut',
+    data:{ labels:[`Fijos — ${T.fijoVsVariable.fijoPct}%`,`Variables — ${T.fijoVsVariable.variablePct}%`], datasets:[{data:[T.fijoVsVariable.fijo,T.fijoVsVariable.variable],backgroundColor:['#4da8da','#ff8c42'],borderWidth:0}]},
+    options:{ responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:8}},tooltip:{callbacks:{label:ctx=>f(ctx.parsed)}}}}
+  });
+
+  // Chart 3: Evolución Visa (bars + line)
+  const vs = T.visaSaldos;
+  new Chart(document.getElementById('tc-ch-evolucion'), {
+    type:'bar',
+    data:{
+      labels:vs.meses,
+      datasets:[
+        {label:'Consumos',data:vs.consumos,backgroundColor:'rgba(233,69,96,0.7)',order:2},
+        {label:'Pagos',data:vs.pagos,backgroundColor:'rgba(0,201,167,0.7)',order:2},
+        {label:'Saldo',data:vs.saldos,type:'line',borderColor:'#ffc107',pointBackgroundColor:'#ffc107',fill:false,tension:.3,order:1}
+      ]
+    },
+    options:{ responsive:true,maintainAspectRatio:false,scales:{y:{ticks:{callback:v=>'$'+(v/1000000).toFixed(1)+'M'}}},plugins:{legend:{position:'top',labels:{boxWidth:10,padding:6}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+f(ctx.parsed.y)}}}}
+  });
+
+  // Chart 4: Top merchants horizontal bar
+  const tms = T.topMerchants.sort((a,b)=>b.m-a.m);
+  new Chart(document.getElementById('tc-ch-merchants'), {
+    type:'bar',
+    data:{ labels:tms.map(m=>m.n), datasets:[{data:tms.map(m=>m.m),backgroundColor:'#4da8da',borderRadius:4}]},
+    options:{ indexAxis:'y',responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{callback:v=>'$'+Math.round(v/1000)+'K'}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>f(ctx.parsed.x)}}}}
+  });
+
+  // Chart 5: Monthly stacked by group
+  const mLabels = T.byMonth.map(m=>m.mes.replace('20',''));
+  new Chart(document.getElementById('tc-ch-mensual'), {
+    type:'bar',
+    data:{
+      labels:mLabels,
+      datasets:[
+        {label:'Total',data:T.byMonth.map(m=>m.total),backgroundColor:'#4da8da',borderRadius:4}
+      ]
+    },
+    options:{ responsive:true,maintainAspectRatio:false,scales:{y:{ticks:{callback:v=>'$'+(v/1000000).toFixed(1)+'M'}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>f(ctx.parsed.y)}}}}
+  });
+
+  // Category table
+  const catTb = document.getElementById('tc-cat-tbody');
+  const maxM = T.byCategory[0].m;
+  let catHtml = '';
+  T.byCategory.forEach(c => {
+    const w = Math.max(2, (c.m/maxM)*120);
+    const color = c.t==='f' ? '#4da8da' : '#ff8c42';
+    const badge = c.t==='f' ? '<span class="badge badge-blue">Fijo</span>' : '<span class="badge" style="background:rgba(255,140,66,.15);color:var(--orange)">Variable</span>';
+    catHtml += `<tr><td>${c.cat}</td><td>${badge}</td><td class="num" style="font-weight:600">${f(c.m)}</td><td class="num">${c.p.toFixed(1)}%</td><td class="num" style="color:var(--text-muted)">${c.n}</td><td><div style="height:14px;border-radius:3px;background:${color};width:${w}px;min-width:2px"></div></td></tr>`;
+  });
+  catTb.innerHTML = catHtml;
+
+  // Insights
+  let insHtml = '<h3 style="color:var(--green);font-size:.95rem;margin-bottom:12px"><span style="color:var(--green)">&#9673;</span> Insights y Recomendaciones</h3><ul style="list-style:none;padding:0">';
+  T.insights.forEach(ins => {
+    insHtml += `<li style="font-size:.85rem;line-height:1.7;margin-bottom:6px;padding-left:18px;position:relative"><span style="position:absolute;left:0;color:var(--yellow)">&#9679;</span>${ins}</li>`;
+  });
+  if (T.tarjetasPendientes && T.tarjetasPendientes.length > 0) {
+    insHtml += `<li style="font-size:.85rem;line-height:1.7;margin-top:12px;padding-left:18px;position:relative;color:var(--text-muted)"><span style="position:absolute;left:0;color:var(--orange)">&#9679;</span><strong>Pendientes de integrar:</strong> ${T.tarjetasPendientes.join(', ')}</li>`;
+  }
+  insHtml += '</ul>';
+  document.getElementById('tc-insights').innerHTML = insHtml;
+};
+
 const renderAugusto = () => {
   const A = D.arca;
   const cc = A?.ccmaAugusto;
@@ -2396,6 +2614,9 @@ const renderAugusto = () => {
     </div>`;
   });
   augAlertDiv.innerHTML = augAlertHtml || '<div style="padding:16px;color:var(--text-muted);font-size:.85rem">Sin alertas personales activas</div>';
+
+  // Render tarjetas de crédito
+  renderTarjetas();
 
   // Render resumen para contador (personal)
   renderResumenAugusto();
