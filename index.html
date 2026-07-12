@@ -746,6 +746,12 @@ footer p+p{margin-top:4px}
         </div>
       </div>
 
+      <!-- APORTES DE SOCIO A PMD (verificados 12/07/2026 con resumenes Santander personales) -->
+      <div class="personal-card">
+        <h3><span style="color:var(--yellow)">&#9673;</span> Aportes de Augusto a PMD SRL (cuenta corriente de socio)</h3>
+        <div id="aportes-socio-container"></div>
+      </div>
+
       <!-- ========== TARJETAS DE CRÉDITO — ECONOMÍA PERSONAL ========== -->
       <h2 class="section-title" style="border-left-color:var(--orange)">Tarjetas de Crédito — Análisis Combinado (ICBC + Santander)</h2>
 
@@ -1123,6 +1129,29 @@ const DATA = {
   },
 
   /* === ALERTAS AUDITORIA (16 alertas - actualizado 10/07/2026 con datos ARCA) === */
+  /* === APORTES DE SOCIO (verificados 12/07/2026 contra resumenes Santander personales de Augusto y extractos ICBC PMD) === */
+  aportesSocio: {
+    confirmados: [
+      {fecha:'11/09/25', tipo:'Transferencia Santander personal → ICBC PMD', monto:5000000, fuente:'Resumen Santander 02/10/25 + pendiente cruzar extracto ICBC 2025'},
+      {fecha:'22/09/25', tipo:'Transferencia Santander personal → ICBC PMD', monto:1600000, fuente:'Resumen Santander 02/10/25'},
+      {fecha:'23/10/25', tipo:'Transferencia Santander personal → ICBC PMD', monto:5000000, fuente:'Resumen Santander 30/10/25'},
+      {fecha:'11/02/26', tipo:'Deposito efectivo por cajero en ICBC PMD (5 depositos)', monto:6980000, fuente:'Extracto ICBC feb-26 (DEP.EFVO.TJ) — confirmado por Augusto'},
+      {fecha:'13/02/26', tipo:'Deposito efectivo por cajero en ICBC PMD', monto:700000, fuente:'Extracto ICBC feb-26'},
+      {fecha:'18/02/26', tipo:'Deposito efectivo por cajero en ICBC PMD', monto:2300000, fuente:'Extracto ICBC feb-26'}
+    ],
+    totalConfirmado: 21580000,
+    pendientes: [
+      {fecha:'16/01/26', monto:13114887.08, nota:'TRANSF E/BCOS recibida en ICBC PMD sin identificar — NO salio de la cuenta Santander personal de Augusto. Confirmar origen (¿ICBC personal? ¿Mi Container? ¿cliente?).'},
+      {fecha:'Jul/Ago/Dic 2025', monto:null, nota:'Sin resumen Santander personal de esos meses — puede haber aportes adicionales.'}
+    ],
+    sueldosAcreditados: {
+      y2025: [{f:'19/03/25',m:2000000},{f:'22/04/25',m:1000000},{f:'12/09/25',m:1000000},{f:'07/11/25',m:2000000}],
+      y2026: [{f:'31/01/26',m:7000000,nota:'dif. sueldo 2025'},{f:'31/03/26',m:2000000},{f:'06/04/26',m:2000000},{f:'08/04/26',m:4000000}],
+      notaVerificacion: 'Sueldo 2026 declarado ene-jun: $13.94M. Acreditado en Santander personal: $8M (mar-abr). Feb, May y Jun no registran acreditacion en esa cuenta: confirmar si se cobraron por otra via o quedan como deuda de PMD con el socio.'
+    },
+    tratamiento: 'A definir con la contadora: (a) prestamo de socio (pasivo), compensable contra cta. cte. deudora del socio (ej. consumos personales en Visa corporativa) o contra sueldos impagos; (b) aporte irrevocable a cuenta de futura suscripcion (patrimonio neto, requiere acta); (c) integracion de capital. Impacta: mapa de deudas, "Otras deudas $25M" del balance y la posicion neta socio-sociedad.'
+  },
+
   /* === COBERTURA DE DATOS (relevamiento documental 12/07/2026) === */
   cobertura: {
     actualizado: '12/07/2026',
@@ -1136,15 +1165,15 @@ const DATA = {
       {f:'F931 Cargas Sociales', e:['ok','ok','ok','falta','ok','ok','falta']},
       {f:'SICORE Retenciones', e:['ok','ok','ok','ok','ok','ok','falta']},
       {f:'Resumen Visa Corporativa', e:['falta','falta','falta','ok','ok','falta','falta']},
-      {f:'Transferencias personales (sueldo socio)', e:['falta','falta','falta','falta','falta','falta','falta']}
+      {f:'Resumenes Santander personal (aportes/sueldos)', e:['ok','ok','ok','ok','ok','ok','falta']}
     ],
     notas: [
       'Los PDF Ene y Feb de EXTRACTOS BANCARIOS son reportes de transferencias (sin saldos); los extractos reales estaban mal archivados en RESUMENES TARJETAS CORPORATIVAS y ya fueron cargados al dashboard.',
       'Julio: ARCA ya registra comprobantes recibidos por $37.5M pero el mes todavia no esta incorporado al detalle mensual del dashboard.',
       'Tarjetas personales: faltan resumenes Santander Sep-25 y Jun-26; ICBC Visa Jun-Sep-25 y Jul-26; ICBC MC fuera de Dic-25/May-26; Visa Frances completa (nunca cargada).',
       'Fondos de inversion: hay 9 resumenes de 2025 sin integrar al dashboard; la carpeta 2026 esta vacia.',
-      'TRANSF. PERSONAL AUGUSTO vacia: es la fuente para confirmar ~$6M de sueldo socio pendiente de verificacion.',
-      'APORTES DE AUGUSTO A PMD: buscados en todos los extractos disponibles — solo se hallo $2.982 (MP 01/2025). Para encontrarlos hacen falta: extractos Galicia (no hay ninguno), reporte ICBC de transferencias RECIBIDAS (los archivados son solo salientes) y extractos personales de Augusto. Credito sin identificar candidato: $13.114.887 del 16/01/2026 en ICBC.'
+      'APORTES DE AUGUSTO A PMD: confirmados $21.58M (ver seccion en tab personal). Recibidos 15 resumenes Santander personales (ene-25 a jun-26); faltan Jul/Ago/Dic 2025. Sueldo 2026: acreditados $8M de $13.94M declarados — Feb/May/Jun sin acreditacion en Santander personal.',
+      'Sigue sin identificar el credito de $13.114.887 del 16/01/2026 en ICBC PMD (no salio del Santander personal de Augusto). Extractos Galicia siguen faltando; los "extractos" ICBC 2025 archivados son reportes de salidas (pedir extractos reales 2025 para cruzar los aportes de Sep/Oct).'
     ]
   },
 
@@ -1192,7 +1221,7 @@ const DATA = {
     {sev:'MEDIA', titulo:'Visa corporativa: consumos personales de Augusto', desc:'Abr $1.13M + May $0.11M en tarjeta 9086 - definir tratamiento contable',
      explicacion:'Los resumenes de la Visa corporativa ICBC muestran consumos de la tarjeta de Augusto (term. 9086): $1.126.838 en abril (MercadoLibre, Allianz, CompraGamer, PDFE) y $113.415 en mayo. Si son gastos personales pagados por la SRL, corresponde imputarlos a cuenta corriente de socios o como parte de honorarios. ACCION: Revisar con la contadora el tratamiento de estos consumos y de los intereses de financiacion del resumen.'},
     {sev:'ALTA', titulo:'Posibles aportes de capital de Augusto sin documentar', desc:'Augusto declara haber transferido fondos personales a PMD; con los extractos disponibles solo se detecto $2.982 (MP, ene-25)',
-     explicacion:'Augusto transfirio dinero personal a PMD desde su cuenta Santander (a formalizar como aporte de capital o prestamo de socio). Cruzados TODOS los creditos de los extractos ICBC 2026 contra facturas emitidas, cheques descontados, prestamo y movimientos Galicia, quedan SIN EXPLICAR: (1) 16/01/2026 TRANSF E/BCOS canal LINK $13.114.887,08 — compatible con transferencia desde Santander personal, no coincide con ninguna factura; (2) depositos EN EFECTIVO por cajero (DEP.EFVO.TJ) de febrero 2026: $6.98M el 11/02 (5 depositos), $700K el 13/02 y $2.3M el 18/02 = $9.98M. CANDIDATOS TOTALES 2026: ~$23.1M. Para 2025 NO SE PUEDE VERIFICAR del lado PMD: los 13 PDF archivados como "extractos" (incluido el "EXTRACTO PARA CONTADORA DIC 2025") son reportes de transferencias SALIENTES — no muestran entradas. Si se confirman aportes, cambia fuerte la contabilidad: pasivo con socio o aporte de capital, y puede explicar parte de "Otras deudas $25M" del balance. ACCION: (1) Movimientos de la cuenta Santander personal de Augusto 2025-2026 para matchear fecha y monto; (2) extractos ICBC REALES de 2025 (los archivados no sirven para esto); (3) extractos Galicia; (4) definir tratamiento con la contadora (aporte irrevocable vs prestamo de socio).'},
+     explicacion:'VERIFICADO 12/07/2026 cruzando los resumenes de la cuenta Santander personal de Augusto contra los extractos ICBC de PMD. Aportes CONFIRMADOS por $21.58M: transferencias Santander personal → PMD del 11/09/25 ($5M), 22/09/25 ($1.6M) y 23/10/25 ($5M), mas depositos en efectivo por cajero en ICBC PMD de febrero 2026 ($6.98M el 11/02, $700K el 13/02, $2.3M el 18/02 — confirmados por Augusto como propios). PENDIENTE: la TRANSF E/BCOS de $13.114.887 del 16/01/26 recibida en ICBC NO salio de su Santander personal — identificar origen; y faltan los resumenes personales de Jul/Ago/Dic 2025 (puede haber mas aportes). Ver detalle completo en la seccion "Aportes de Augusto a PMD" del tab personal. IMPACTO: PMD tiene una deuda con el socio (o aporte) de al menos $21.58M que hoy no esta reflejada en el mapa de deudas ni en el balance; puede compensar la cta. cte. deudora del socio (consumos Visa corporativa) y los sueldos declarados no acreditados. ACCION: definir con la contadora el caracter (prestamo de socio / aporte irrevocable / integracion) y registrar los 6 movimientos con sus comprobantes.'},
     {sev:'MEDIA', titulo:'Documentacion mal archivada y faltante', desc:'Extractos ICBC Ene-Mar estaban como "tarjetas corporativas"; faltan resumenes corporativa Ene-Mar y Jun-Jul; TRANSF. PERSONAL AUGUSTO vacia',
      explicacion:'Los PDF "1. enero", "2. febrero" y "3. marzo" de la carpeta RESUMENES TARJETAS CORPORATIVAS son en realidad extractos bancarios ICBC (ya se cargaron sus saldos al dashboard: Ene +$11.3M, Feb -$478K). A su vez, los PDF Ene y Feb de EXTRACTOS BANCARIOS son solo reportes de transferencias, sin saldos. Faltan los resumenes reales de la Visa corporativa de Ene-Mar y Jun-Jul (las subcarpetas estan vacias). La carpeta TRANSF. PERSONAL AUGUSTO esta vacia y es la fuente para confirmar ~$6M de sueldo socio sin verificar. ACCION: Reordenar el archivo, descargar los resumenes faltantes del home banking y cargar los comprobantes de transferencias personales.'}
   ]
@@ -2463,6 +2492,27 @@ const setupSimulador = () => {
 
 /* ===== RENDER AUGUSTO TAB ===== */
 /* ===== TARJETAS DE CRÉDITO — ECONOMÍA PERSONAL (ICBC + SANTANDER) ===== */
+/* ===== APORTES DE SOCIO ===== */
+const renderAportesSocio = () => {
+  const A = D.aportesSocio;
+  const el = document.getElementById('aportes-socio-container');
+  if (!A || !el) return;
+  const f = (v) => '$' + Math.round(v).toLocaleString('es-AR');
+  let h = `<div style="font-size:.85rem;color:var(--text-muted);margin-bottom:10px">Verificado 12/07/2026 cruzando resúmenes Santander personales contra extractos ICBC de PMD.</div>`;
+  h += '<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Tipo</th><th class="num">Monto</th><th>Respaldo</th></tr></thead><tbody>';
+  A.confirmados.forEach(a => { h += `<tr><td>${a.fecha}</td><td>${a.tipo}</td><td class="num" style="font-weight:600;color:var(--green)">${f(a.monto)}</td><td style="font-size:.75rem;color:var(--text-muted)">${a.fuente}</td></tr>`; });
+  h += `<tr><td colspan="2" style="font-weight:700">TOTAL CONFIRMADO</td><td class="num" style="font-weight:700;color:var(--green)">${f(A.totalConfirmado)}</td><td></td></tr>`;
+  h += '</tbody></table></div>';
+  h += '<h4 style="margin:14px 0 6px;font-size:.85rem;color:var(--orange)">Pendientes de identificar</h4><ul style="padding-left:18px">';
+  A.pendientes.forEach(p => { h += `<li style="font-size:.8rem;line-height:1.6;color:var(--text-muted);margin-bottom:4px"><strong>${p.fecha}${p.monto?' — '+f(p.monto):''}:</strong> ${p.nota}</li>`; });
+  h += '</ul>';
+  h += `<h4 style="margin:14px 0 6px;font-size:.85rem;color:var(--blue)">Sueldos PMD → Augusto acreditados en Santander personal</h4>
+    <div style="font-size:.8rem;line-height:1.7">2025: ${A.sueldosAcreditados.y2025.map(s=>`${s.f} ${f(s.m)}`).join(' · ')}<br>2026: ${A.sueldosAcreditados.y2026.map(s=>`${s.f} ${f(s.m)}${s.nota?' ('+s.nota+')':''}`).join(' · ')}</div>
+    <div style="font-size:.8rem;color:var(--yellow);margin-top:8px">${A.sueldosAcreditados.notaVerificacion}</div>
+    <div style="font-size:.8rem;color:var(--text-muted);margin-top:10px;border-top:1px solid var(--border);padding-top:8px"><strong>Tratamiento contable:</strong> ${A.tratamiento}</div>`;
+  el.innerHTML = h;
+};
+
 /* ===== COBERTURA DE DATOS ===== */
 const renderCobertura = () => {
   const C = D.cobertura;
@@ -2702,6 +2752,9 @@ const renderAugusto = () => {
 
   // Render tarjetas de crédito
   renderTarjetas();
+
+  // Render aportes de socio
+  renderAportesSocio();
 
   // Render resumen para contador (personal)
   renderResumenAugusto();
