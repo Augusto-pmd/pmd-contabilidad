@@ -465,6 +465,17 @@ footer p+p{margin-top:4px}
       </div>
     </div>
 
+    <!-- COMPARACION INTERANUAL (BALANCES 2019-2025) -->
+    <h2 class="section-title" style="border-left-color:var(--blue)">Comparación Interanual — Balances 2019-2025</h2>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">
+      <div class="chart-wrap" style="height:340px"><canvas id="chart-interanual"></canvas></div>
+      <div class="table-wrap" style="margin-top:14px"><table id="table-interanual" style="min-width:700px">
+        <thead><tr id="interanual-head"></tr></thead>
+        <tbody id="interanual-tbody"></tbody>
+      </table></div>
+      <div id="interanual-notas" style="font-size:.78rem;color:var(--text-muted);margin-top:8px"></div>
+    </div>
+
     <!-- COCKPIT FISCAL EN TIEMPO REAL -->
     <h2 class="section-title" style="border-left-color:var(--highlight)">Cockpit Fiscal en Tiempo Real</h2>
     <div class="cockpit-grid" id="cockpit-grid">
@@ -668,6 +679,10 @@ footer p+p{margin-top:4px}
         <tbody id="proveedores-tbody"></tbody>
       </table>
     </div>
+
+    <!-- CONCILIACION INTEGRAL -->
+    <h2 class="section-title" style="border-left-color:var(--red)">Conciliación Integral — Caja / Facturación / Pagos</h2>
+    <div id="conciliacion-container" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px;overflow-x:auto"></div>
 
     <!-- COBERTURA DE DATOS -->
     <h2 class="section-title" style="border-left-color:var(--green)">Cobertura de Datos — Qué está cargado y qué falta</h2>
@@ -1129,6 +1144,71 @@ const DATA = {
   },
 
   /* === ALERTAS AUDITORIA (16 alertas - actualizado 10/07/2026 con datos ARCA) === */
+  /* === COMPARACION INTERANUAL — Balances formales 2019-2024 (PMD_Auditoria_Integral) + Balance certificado 2025 === */
+  interanual: {
+    anios: [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    activo:    [1019277, 3384716, 5409925, 30032625, 13179581, 64596850, 128649218],
+    pasivo:    [863694, 4019511, 5025365, 26009018, 7679285, 26123873, 63091180],
+    pn:        [155582, -634795, 384560, 4023607, 5500296, 38472977, 65558038],
+    resultado: [109433, -821347, 1342720, 2265689, 1732503, 27357062, 17370631],
+    comprasIVA:[3628295, 5335591, 10764636, 4099072, 12102558, 48004569, 183885123],
+    ventas:    [null, null, null, null, null, null, 379061839],
+    notas: [
+      'Fuente 2019-2024: PMD_Auditoria_Integral_2019_2026.xlsx (balances formales). 2025: balance certificado (Dr. Garcia Rodriguez).',
+      'Activo y Pasivo 2025 estimados por componentes del balance (bienes de uso + bienes de cambio + otros creditos + caja; pasivo = activo - PN).',
+      'ALERTA DE CALIDAD: la caja del balance 2025 ($127.280) coincide al centavo con la columna 2024 del xlsx de auditoria — revisar cual de las dos fuentes tiene el año corrido.',
+      'Compras IVA 2019-2025 segun planillas (2019, 2020 y 2022 parciales). Ventas solo disponibles para 2025 ($379.1M); los balances anteriores no las discriminan en el xlsx.'
+    ]
+  },
+
+  /* === CONCILIACION INTEGRAL (13/07/2026 — mayor ICBC reconstruido de extractos, cruce ARCA/IVA/bancos) === */
+  conciliacion: {
+    fecha: '13/07/2026',
+    bancosOk: 'ICBC cierra al peso los 6 meses (SI + creditos - debitos = SF verificado por extracto). Mercado Pago cierra (jun: $285.260 → $249.548). Galicia NO se puede conciliar: no hay extractos.',
+    cobradoVsFacturado: {
+      facturado: 83022888,
+      transferenciasClientes: 76809568,
+      chequesDescontados: 96886412,
+      creditoSinIdentificar: 13114887,
+      totalCobrado: 186810867,
+      gap: 103787979,
+      nota: 'Las 6 facturas cobradas por transferencia matchean al centavo (SIC, BA75, Cuenca, Trames, Astillero). Los $96.9M de cheques descontados NO matchean con ninguna factura 2026. Aun asumiendo cobro total de los creditos 2025 del balance ($39.6M), quedan MAS DE $60M cobrados sin factura emitida. Riesgo ARCA alto: los bancos informan acreditaciones y ARCA las cruza contra facturacion. Explica ademas el ratio anomalo IIBB (base 5% de ventas). PENDIENTE: detalle de libradores de cada cheque descontado (home banking Galicia/ICBC) para mapear cliente/obra y regularizar facturacion.'
+    },
+    galiciaImplicito: {
+      filas: [
+        {mes:'Mar', entradas:18390783, salidas:2390000, esperado:16000783, real:13988783, sinDoc:2012000},
+        {mes:'Abr', entradas:18123143, salidas:6000000, esperado:26111926, real:13921, sinDoc:26098005},
+        {mes:'May', entradas:0, salidas:0, esperado:13921, real:13921, sinDoc:0},
+        {mes:'Jun', entradas:45683073, salidas:32400000, esperado:13297073, real:11411379, sinDoc:1885694}
+      ],
+      totalSinDoc: 29995699,
+      nota: 'Reconstruccion implicita (sin extractos Galicia): entradas = netos de cheques descontados acreditados; salidas conocidas = transferencias propias a ICBC (MTITU) + MOENA $1M (comprobante LR4HCba233). El resto salio sin respaldo contable. PENDIENTE: extractos Galicia Mar-Jun 2026.'
+    },
+    pagosVsCompras: {
+      comprasArca: 211608975,
+      pagosIdentificados: 143700000,
+      deudaInicialProveedores: 15685643,
+      deudaImplicita: 83594618,
+      desglosePagos: 'DEBIN proveedores $15.4M + transf. Connection $43.4M + cheques emitidos $41.3M + otros ICBC $11.7M + Galicia s/doc ~$30M + MP ~$2M',
+      nota: 'El mapa de deudas muestra proveedores por $15.7M (dato balance 2025, desactualizado). La deuda comercial implicita al 30/06 es ~$83.6M. Gran parte: Astillero Alpha ($105M comprado vs $40M vendido) — la compensacion de la operacion circular no esta documentada. PENDIENTE: cuenta corriente por proveedor, empezando por Astillero.'
+    },
+    cxcPendiente: [ {cliente:'RITAIL SRL', factura:'A 5-68 (02/02/26)', monto:7477800, nota:'No aparece cobrada en ICBC ni MP — confirmar si entro por Galicia, cheque, o esta impaga.'} ],
+    checklist: [
+      'Extractos Galicia Mar-Jun 2026 → explicar ~$30M de salidas (LO MAS URGENTE)',
+      'Detalle de libradores de cheques descontados → resolver >$60M cobrados sin facturar',
+      'Factura A de MOENA SA ($1M, comprobante ya obtenido)',
+      'Origen del credito $13.114.887 del 16/01/26 en ICBC',
+      'Cobro de Ritail $7.48M (fc 68): ¿Galicia, cheque o impago?',
+      'Extractos ICBC reales 2025 (los archivados son reportes de salidas)',
+      'Resumenes Santander personales Jul/Ago/Dic 2025 (aportes adicionales)',
+      'F931 abril + regularizar SCT ($997K)',
+      'Formalizar posicion socio ~$26.3M con actas y registracion',
+      'Resumenes de tarjetas personales + Visa Frances (analisis impuestos/costos financieros)',
+      'Fondos de inversion: 9 resumenes 2025 sin integrar — ¿rescates? impacta caja',
+      'Registro de caja fisica en efectivo (hoy inexistente; hubo $9.98M depositados en efectivo)'
+    ]
+  },
+
   /* === APORTES DE SOCIO (verificados 12/07/2026 contra resumenes Santander personales de Augusto y extractos ICBC PMD) === */
   aportesSocio: {
     confirmados: [
@@ -1149,7 +1229,8 @@ const DATA = {
       y2026: [{f:'31/01/26',m:7000000,nota:'dif. sueldo 2025'},{f:'31/03/26',m:2000000},{f:'06/04/26',m:2000000},{f:'08/04/26',m:4000000}],
       notaVerificacion: 'Sueldo 2026 declarado ene-jun: $13.94M. Acreditado en Santander personal: $8M (mar-abr). Feb, May y Jun no registran acreditacion en esa cuenta: confirmar si se cobraron por otra via o quedan como deuda de PMD con el socio.'
     },
-    tratamiento: 'A definir con la contadora: (a) prestamo de socio (pasivo), compensable contra cta. cte. deudora del socio (ej. consumos personales en Visa corporativa) o contra sueldos impagos; (b) aporte irrevocable a cuenta de futura suscripcion (patrimonio neto, requiere acta); (c) integracion de capital. Impacta: mapa de deudas, "Otras deudas $25M" del balance y la posicion neta socio-sociedad.'
+    tratamiento: 'A definir con la contadora: (a) prestamo de socio (pasivo), compensable contra cta. cte. deudora del socio (ej. consumos personales en Visa corporativa) o contra sueldos impagos; (b) aporte irrevocable a cuenta de futura suscripcion (patrimonio neto, requiere acta); (c) integracion de capital. Impacta: mapa de deudas, "Otras deudas $25M" del balance y la posicion neta socio-sociedad.',
+    posicionNeta: { aFavorAugusto: 26276415, detalle: 'Aportes confirmados $21.580.000 + sueldos declarados no acreditados (feb/may/jun) $5.936.667 − consumos personales Visa corporativa $1.240.252 = $26.276.415 a favor de Augusto. Sin registrar en la contabilidad. Sube a ~$39.4M si el credito de $13.1M del 16/01 resulta ser aporte suyo.' }
   },
 
   /* === COBERTURA DE DATOS (relevamiento documental 12/07/2026) === */
@@ -1173,7 +1254,8 @@ const DATA = {
       'Tarjetas personales: faltan resumenes Santander Sep-25 y Jun-26; ICBC Visa Jun-Sep-25 y Jul-26; ICBC MC fuera de Dic-25/May-26; Visa Frances completa (nunca cargada).',
       'Fondos de inversion: hay 9 resumenes de 2025 sin integrar al dashboard; la carpeta 2026 esta vacia.',
       'APORTES DE AUGUSTO A PMD: confirmados $21.58M (ver seccion en tab personal). Recibidos 15 resumenes Santander personales (ene-25 a jun-26); faltan Jul/Ago/Dic 2025. Sueldo 2026: acreditados $8M de $13.94M declarados — Feb/May/Jun sin acreditacion en Santander personal.',
-      'Sigue sin identificar el credito de $13.114.887 del 16/01/2026 en ICBC PMD (no salio del Santander personal de Augusto). Extractos Galicia siguen faltando; los "extractos" ICBC 2025 archivados son reportes de salidas (pedir extractos reales 2025 para cruzar los aportes de Sep/Oct).'
+      'Sigue sin identificar el credito de $13.114.887 del 16/01/2026 en ICBC PMD (no salio del Santander personal de Augusto). Extractos Galicia siguen faltando; los "extractos" ICBC 2025 archivados son reportes de salidas (pedir extractos reales 2025 para cruzar los aportes de Sep/Oct).',
+      'PAGO MOENA SA $1M (17/04/26, concesionaria): confirmado con comprobante Galicia op. LR4HCba233 (CUIT destino 30-71160212-3). Sin factura: no esta en libro IVA ni ARCA. Reclamar factura A y archivar extracto Galicia abril.'
     ]
   },
 
@@ -1217,11 +1299,20 @@ const DATA = {
      explicacion:'La cuenta corriente de Augusto personal (CUIT 20-37039849-7) muestra saldo deudor de $705,450. Julio 2026 aun no fue pagado (vence 20/07): Monotributo $9,083 + Autonomo $318,759 + Aportes OS $39,168. Enero a junio esta todo pagado. ACCION: Pagar antes del 20/07 para evitar intereses.'},
     {sev:'MEDIA', titulo:'Vencimientos proximos: 3 obligaciones julio', desc:'Ganancias y SUSS 15/07, IVA 24/07 - confirmar liquidez',
      explicacion:'Vencen en julio: Anticipo 2 Ganancias Sociedades (15/07), F931 SUSS Junio (15/07) y IVA Junio (24/07). Asegurar liquidez en cuenta corriente para cubrir las tres obligaciones. ACCION: Calcular importe exacto del anticipo y F931 para provisionar fondos.'},
+    /* --- Hallazgos de la conciliacion integral 13/07/2026 --- */
+    {sev:'ALTA', titulo:'Cobrado sin facturar: >$60M', desc:'Entraron $186.8M vs $83M facturados; $96.9M en cheques descontados sin factura 2026 asociada',
+     explicacion:'Conciliacion integral 13/07: las cobranzas identificadas en bancos suman ~$186.8M en el semestre (transferencias de clientes $76.8M que matchean facturas al centavo + cheques descontados $96.9M brutos + credito sin identificar $13.1M) contra $83M facturados en ARCA. Aun asumiendo que TODOS los creditos por cobrar del balance 2025 ($39.6M) se cobraron en cheques este semestre, quedan mas de $60M cobrados sin factura emitida. Riesgo ARCA alto (cruce de acreditaciones bancarias vs facturacion) y explica el ratio anomalo de IIBB. ACCION: obtener el detalle de libradores de cada cheque descontado, mapear a que obra/cliente corresponde y regularizar la facturacion. Ver seccion Conciliacion Integral.'},
+    {sev:'ALTA', titulo:'Galicia: ~$30M de salidas sin documentar', desc:'Reconstruccion implicita Mar-Jun: Abr $26.1M + Mar $2M + Jun $1.9M sin respaldo',
+     explicacion:'No hay UN SOLO extracto de Galicia archivado. Reconstruyendo la cuenta con los netos de cheques descontados (entradas), las transferencias propias a ICBC y el pago a MOENA, faltan explicar ~$30M de salidas: Mar $2.0M, Abr $26.1M, Jun $1.9M. Es el agujero de caja mas grande del sistema. ACCION: bajar extractos Galicia Mar-Jun del home banking y categorizar cada salida. Ver seccion Conciliacion Integral.'},
+    {sev:'ALTA', titulo:'Deuda a proveedores implicita ~$83.6M (mapa muestra $15.7M)', desc:'Compras $211.6M vs pagos identificados ~$143.7M; Astillero $105M sin cta cte documentada',
+     explicacion:'El mapa de deudas usa el dato del balance 2025 ($15.7M proveedores). Con compras ARCA ene-jun de $211.6M y pagos identificables de ~$143.7M, la deuda comercial implicita al 30/06 ronda $83.6M. Gran parte es Astillero Alpha ($105M comprado vs $40M vendido): la compensacion de la operacion circular no esta documentada. ACCION: cuenta corriente por proveedor (Astillero primero) y actualizar el mapa de deudas.'},
     /* --- Hallazgos del relevamiento documental 12/07/2026 --- */
     {sev:'MEDIA', titulo:'Visa corporativa: consumos personales de Augusto', desc:'Abr $1.13M + May $0.11M en tarjeta 9086 - definir tratamiento contable',
      explicacion:'Los resumenes de la Visa corporativa ICBC muestran consumos de la tarjeta de Augusto (term. 9086): $1.126.838 en abril (MercadoLibre, Allianz, CompraGamer, PDFE) y $113.415 en mayo. Si son gastos personales pagados por la SRL, corresponde imputarlos a cuenta corriente de socios o como parte de honorarios. ACCION: Revisar con la contadora el tratamiento de estos consumos y de los intereses de financiacion del resumen.'},
     {sev:'ALTA', titulo:'Posibles aportes de capital de Augusto sin documentar', desc:'Augusto declara haber transferido fondos personales a PMD; con los extractos disponibles solo se detecto $2.982 (MP, ene-25)',
      explicacion:'VERIFICADO 12/07/2026 cruzando los resumenes de la cuenta Santander personal de Augusto contra los extractos ICBC de PMD. Aportes CONFIRMADOS por $21.58M: transferencias Santander personal → PMD del 11/09/25 ($5M), 22/09/25 ($1.6M) y 23/10/25 ($5M), mas depositos en efectivo por cajero en ICBC PMD de febrero 2026 ($6.98M el 11/02, $700K el 13/02, $2.3M el 18/02 — confirmados por Augusto como propios). PENDIENTE: la TRANSF E/BCOS de $13.114.887 del 16/01/26 recibida en ICBC NO salio de su Santander personal — identificar origen; y faltan los resumenes personales de Jul/Ago/Dic 2025 (puede haber mas aportes). Ver detalle completo en la seccion "Aportes de Augusto a PMD" del tab personal. IMPACTO: PMD tiene una deuda con el socio (o aporte) de al menos $21.58M que hoy no esta reflejada en el mapa de deudas ni en el balance; puede compensar la cta. cte. deudora del socio (consumos Visa corporativa) y los sueldos declarados no acreditados. ACCION: definir con la contadora el caracter (prestamo de socio / aporte irrevocable / integracion) y registrar los 6 movimientos con sus comprobantes.'},
+    {sev:'ALTA', titulo:'Pago a MOENA SA $1M sin factura y sin registrar', desc:'17/04/26 - pago a concesionaria no reflejado en ningun registro contable',
+     explicacion:'CONFIRMADO CON COMPROBANTE (12/07/2026): transferencia Galicia op. LR4HCba233 del 17/04/2026 por $1.000.000 de PMD Arquitectura SRL a MOENA SA (CUIT 30-71160212-3, cuenta destino en Banco Santander), motivo "Varios / Proveedores". NO figura en el libro IVA compras ni en ARCA (MOENA no emitio factura) y no hay extracto Galicia archivado que la respalde en la contabilidad. CONSECUENCIAS: egresos de abril subvaluados en $1M; sin factura no hay IVA credito (~$173K si es gravado) ni deduccion en Ganancias; salida sin respaldo fiscal ante una fiscalizacion. ACCION: (1) Reclamar a MOENA SA (CUIT 30-71160212-3) la factura A o recibo/seña firmada — con el comprobante de transferencia en mano el reclamo es directo; (2) archivar el extracto Galicia de abril; (3) definir imputacion con la contadora: anticipo de bien de uso (vehiculo), gasto, o cta. cte. socio si el vehiculo es personal.'},
     {sev:'MEDIA', titulo:'Documentacion mal archivada y faltante', desc:'Extractos ICBC Ene-Mar estaban como "tarjetas corporativas"; faltan resumenes corporativa Ene-Mar y Jun-Jul; TRANSF. PERSONAL AUGUSTO vacia',
      explicacion:'Los PDF "1. enero", "2. febrero" y "3. marzo" de la carpeta RESUMENES TARJETAS CORPORATIVAS son en realidad extractos bancarios ICBC (ya se cargaron sus saldos al dashboard: Ene +$11.3M, Feb -$478K). A su vez, los PDF Ene y Feb de EXTRACTOS BANCARIOS son solo reportes de transferencias, sin saldos. Faltan los resumenes reales de la Visa corporativa de Ene-Mar y Jun-Jul (las subcarpetas estan vacias). La carpeta TRANSF. PERSONAL AUGUSTO esta vacia y es la fuente para confirmar ~$6M de sueldo socio sin verificar. ACCION: Reordenar el archivo, descargar los resumenes faltantes del home banking y cargar los comprobantes de transferencias personales.'}
   ]
@@ -2492,6 +2583,91 @@ const setupSimulador = () => {
 
 /* ===== RENDER AUGUSTO TAB ===== */
 /* ===== TARJETAS DE CRÉDITO — ECONOMÍA PERSONAL (ICBC + SANTANDER) ===== */
+/* ===== COMPARACION INTERANUAL ===== */
+const renderInteranual = () => {
+  const I = D.interanual;
+  if (!I || !document.getElementById('chart-interanual')) return;
+  charts.interanual = new Chart(document.getElementById('chart-interanual'), {
+    type: 'bar',
+    data: {
+      labels: I.anios,
+      datasets: [
+        { label:'Patrimonio Neto', data:I.pn.map(v=>v/1e6), backgroundColor:'rgba(77,168,218,.7)', borderRadius:4, order:2 },
+        { label:'Resultado Neto', data:I.resultado.map(v=>v/1e6), backgroundColor:'rgba(0,201,167,.7)', borderRadius:4, order:2 },
+        { label:'Activo Total', data:I.activo.map(v=>v/1e6), type:'line', borderColor:'#ffc107', pointBackgroundColor:'#ffc107', fill:false, tension:.3, borderWidth:2, order:1 },
+        { label:'Pasivo Total', data:I.pasivo.map(v=>v/1e6), type:'line', borderColor:'#e94560', pointBackgroundColor:'#e94560', fill:false, tension:.3, borderWidth:2, order:1 }
+      ]
+    },
+    options: { responsive:true, maintainAspectRatio:false,
+      scales:{ y:{ ticks:{ callback:v=>'$'+v+'M' } } },
+      plugins:{ legend:{position:'top',labels:{boxWidth:10,padding:8}}, tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: $${ctx.parsed.y.toFixed(1)}M`}} }
+    }
+  });
+  // Tabla con variaciones interanuales
+  const head = document.getElementById('interanual-head');
+  const tb = document.getElementById('interanual-tbody');
+  if (head && tb) {
+    head.innerHTML = '<th>Concepto</th>' + I.anios.map(a=>`<th class="num">${a}</th>`).join('');
+    const fm = (v) => v==null ? '—' : '$'+(Math.abs(v)>=1e6 ? (v/1e6).toFixed(1)+'M' : Math.round(v/1000)+'K');
+    const rowV = (nombre, arr, conVar) => {
+      let cells = '';
+      arr.forEach((v,i) => {
+        let varTxt='';
+        if (conVar && i>0 && arr[i-1] && v!=null && arr[i-1]!==0) {
+          const pct=((v-arr[i-1])/Math.abs(arr[i-1])*100);
+          varTxt=`<div style="font-size:.68rem;color:${pct>=0?'var(--green)':'var(--red)'}">${pct>=0?'+':''}${pct.toFixed(0)}%</div>`;
+        }
+        cells += `<td class="num">${fm(v)}${varTxt}</td>`;
+      });
+      return `<tr><td>${nombre}</td>${cells}</tr>`;
+    };
+    tb.innerHTML = rowV('Activo Total', I.activo, true) + rowV('Pasivo Total', I.pasivo, true) + rowV('Patrimonio Neto', I.pn, true) + rowV('Resultado Neto', I.resultado, true) + rowV('Compras (Libro IVA)', I.comprasIVA, true) + rowV('Ventas', I.ventas, false);
+  }
+  const nt = document.getElementById('interanual-notas');
+  if (nt) nt.innerHTML = I.notas.map(n=>'&#9679; '+n).join('<br>');
+};
+
+/* ===== CONCILIACION INTEGRAL ===== */
+const renderConciliacion = () => {
+  const C = D.conciliacion;
+  const el = document.getElementById('conciliacion-container');
+  if (!C || !el) return;
+  const f = (v) => '$' + Math.round(v).toLocaleString('es-AR');
+  const cv = C.cobradoVsFacturado;
+  let h = `<div style="font-size:.8rem;color:var(--text-muted);margin-bottom:12px">Conciliación al ${C.fecha} — ${C.bancosOk}</div>`;
+  // A. Cobrado vs Facturado
+  h += `<h4 style="color:var(--red);font-size:.9rem;margin-bottom:8px">A. Cobrado vs Facturado — GAP ${f(cv.gap)}</h4>
+  <div class="table-wrap"><table style="min-width:500px"><tbody>
+    <tr><td>Facturado 2026 (ARCA, c/IVA)</td><td class="num">${f(cv.facturado)}</td></tr>
+    <tr><td>Transferencias de clientes (matchean facturas ✓)</td><td class="num">${f(cv.transferenciasClientes)}</td></tr>
+    <tr><td style="color:var(--red)">Cheques descontados SIN factura asociada</td><td class="num" style="color:var(--red)">${f(cv.chequesDescontados)}</td></tr>
+    <tr><td style="color:var(--orange)">Crédito 16/01 sin identificar</td><td class="num" style="color:var(--orange)">${f(cv.creditoSinIdentificar)}</td></tr>
+    <tr><td style="font-weight:700">TOTAL COBRADO</td><td class="num" style="font-weight:700">${f(cv.totalCobrado)}</td></tr>
+    <tr><td style="font-weight:700;color:var(--red)">COBRADO POR ENCIMA DE LO FACTURADO</td><td class="num" style="font-weight:700;color:var(--red)">${f(cv.gap)}</td></tr>
+  </tbody></table></div>
+  <div style="font-size:.78rem;color:var(--text-muted);margin:6px 0 16px">${cv.nota}</div>`;
+  // B. Galicia implicito
+  const g = C.galiciaImplicito;
+  h += `<h4 style="color:var(--orange);font-size:.9rem;margin-bottom:8px">B. Galicia reconstruido — ${f(g.totalSinDoc)} sin documentar</h4>
+  <div class="table-wrap"><table style="min-width:600px"><thead><tr><th>Mes</th><th class="num">Entradas conocidas</th><th class="num">Salidas conocidas</th><th class="num">Saldo esperado</th><th class="num">Saldo real</th><th class="num">Sin documentar</th></tr></thead><tbody>`;
+  g.filas.forEach(r => { h += `<tr><td>${r.mes}</td><td class="num">${f(r.entradas)}</td><td class="num">${f(r.salidas)}</td><td class="num">${f(r.esperado)}</td><td class="num">${f(r.real)}</td><td class="num" style="color:${r.sinDoc>0?'var(--red)':'var(--green)'}">${r.sinDoc>0?f(r.sinDoc):'—'}</td></tr>`; });
+  h += `</tbody></table></div><div style="font-size:.78rem;color:var(--text-muted);margin:6px 0 16px">${g.nota}</div>`;
+  // C. Pagos vs Compras
+  const p = C.pagosVsCompras;
+  h += `<h4 style="color:var(--yellow);font-size:.9rem;margin-bottom:8px">C. Pagos vs Compras — deuda comercial implícita ${f(p.deudaImplicita)}</h4>
+  <div style="font-size:.82rem;line-height:1.8">Compras ARCA ene-jun: <strong>${f(p.comprasArca)}</strong> · Pagos identificados: <strong>${f(p.pagosIdentificados)}</strong> (${p.desglosePagos}) · Deuda inicial: ${f(p.deudaInicialProveedores)} → <strong style="color:var(--yellow)">Deuda implícita al 30/06: ${f(p.deudaImplicita)}</strong></div>
+  <div style="font-size:.78rem;color:var(--text-muted);margin:6px 0 16px">${p.nota}</div>`;
+  // CxC
+  h += `<h4 style="color:var(--blue);font-size:.9rem;margin-bottom:8px">D. Pendiente de cobro</h4><ul style="padding-left:18px;margin-bottom:16px">`;
+  C.cxcPendiente.forEach(c => { h += `<li style="font-size:.82rem;line-height:1.6">${c.cliente} — ${c.factura} — <strong>${f(c.monto)}</strong>. ${c.nota}</li>`; });
+  h += '</ul>';
+  // Checklist
+  h += `<h4 style="color:var(--green);font-size:.9rem;margin-bottom:8px">E. Checklist para cerrar la contabilidad</h4><ol style="padding-left:20px">`;
+  C.checklist.forEach(c => { h += `<li style="font-size:.8rem;line-height:1.7;color:var(--text-muted)">${c}</li>`; });
+  h += '</ol>';
+  el.innerHTML = h;
+};
+
 /* ===== APORTES DE SOCIO ===== */
 const renderAportesSocio = () => {
   const A = D.aportesSocio;
@@ -2510,6 +2686,9 @@ const renderAportesSocio = () => {
     <div style="font-size:.8rem;line-height:1.7">2025: ${A.sueldosAcreditados.y2025.map(s=>`${s.f} ${f(s.m)}`).join(' · ')}<br>2026: ${A.sueldosAcreditados.y2026.map(s=>`${s.f} ${f(s.m)}${s.nota?' ('+s.nota+')':''}`).join(' · ')}</div>
     <div style="font-size:.8rem;color:var(--yellow);margin-top:8px">${A.sueldosAcreditados.notaVerificacion}</div>
     <div style="font-size:.8rem;color:var(--text-muted);margin-top:10px;border-top:1px solid var(--border);padding-top:8px"><strong>Tratamiento contable:</strong> ${A.tratamiento}</div>`;
+  if (A.posicionNeta) {
+    h += `<div style="margin-top:12px;padding:10px 14px;border:1px solid var(--yellow);border-radius:8px;background:rgba(255,193,7,.07)"><strong style="color:var(--yellow)">POSICIÓN NETA SOCIO ↔ SOCIEDAD: ${f(A.posicionNeta.aFavorAugusto)} a favor de Augusto.</strong><div style="font-size:.78rem;color:var(--text-muted);margin-top:4px">${A.posicionNeta.detalle}</div></div>`;
+  }
   el.innerHTML = h;
 };
 
@@ -3342,6 +3521,8 @@ const renderAll = () => {
   renderTables();
   renderCockpit();
   renderArca();
+  renderInteranual();
+  renderConciliacion();
   renderCobertura();
   renderAcciones();
   renderResumenPMD();
