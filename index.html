@@ -992,10 +992,10 @@ const DATA = {
       costoFinanciero: { intereses: 653711, punitorios: 325222, ivaSobreIntereses: 153239, comisiones: 71424, total: 1203596, nota: 'Plata PERDIDA (no recuperable): $748K en ICBC (incluye $325K de PUNITORIOS por pagar fuera de termino) + $455K en Santander por revolving.' },
       impuestosNoRecuperables: { ivaRG4240: 220941, iibbPercep: 21120, total: 242061, nota: 'IVA sobre servicios digitales e IIBB CABA: no computables siendo consumidor final.' },
       porTarjeta: {
-        icbcVisa: { percNeta: 109518, costoFin: 748176 },
+        icbcVisa: { percNeta: 109518, costoFin: 748255, nota: 'ICBC Visa + Mastercard combinadas (los resumenes MC dic-25/jun-26 estan integrados)' },
         santVisa: { percNeta: 2122772, costoFin: 455420 }
       },
-      pendiente: 'Resumenes ICBC Mastercard sin carga — este analisis cubre las 2 Visa. Visa Frances NO existe (solo cuenta con prestamo prendario).'
+      pendiente: 'ANALISIS COMPLETO 14/07: cubre las 3 tarjetas (ICBC Visa, ICBC Mastercard y Santander Visa). Visa Frances NO existe (solo prestamo prendario). MC junio: saldo $225K, sin consumos, punitorios $79.'
     },
     fijoVsVariable: { fijo: 4773848, variable: 8573519, fijoPct: 35.8, variablePct: 64.2, nota: 'Solo sobre transacciones categorizadas (44% del total)' },
     byGroup: [
@@ -1067,7 +1067,7 @@ const DATA = {
       'Santander: saldo creció de $119K (Jun 25) a $4.4M (May 26). En Jul 26 bajó a $3.25M con un pago de $4.37M.',
       'Categorías cubren 44% del gasto total (ICBC tiene detalle completo, Santander parcial). Visa Francés pendiente.'
     ],
-    tarjetasPendientes: ['ICBC Mastercard (faltan resúmenes para el análisis de costos)'] /* Visa Francés NO existe: solo cuenta con préstamo prendario */
+    tarjetasPendientes: [] /* Analisis completo: 3 tarjetas cubiertas. Visa Frances NO existe (solo prestamo prendario). */
   },
 
   /* === DATOS ARCA (extraidos 10/07/2026) === */
@@ -1222,7 +1222,7 @@ const DATA = {
       'Resumenes Santander personales Jul/Ago/Dic 2025 (aportes adicionales)',
       'F931 abril + regularizar SCT ($997K)',
       'Formalizar posicion socio ~$26.3M con actas y registracion',
-      '✔ PARCIAL 14/07: tarjetas Visa analizadas (29 resumenes) + Visa corporativa completa ene-jun (consumos Augusto $5.0M). Falta solo ICBC Mastercard. Visa Frances no existe (solo prestamo prendario ~$605K/mes, ya plasmado).',
+      '✔ RESUELTO 14/07: tarjetas personales COMPLETAS (ICBC Visa + Mastercard + Santander Visa, 30 resumenes analizados) + Visa corporativa ene-jun (consumos Augusto $5.0M). Visa Frances no existe (solo prestamo prendario ~$605K/mes, ya plasmado).',
       '✔ RESUELTO 14/07: Fondos Alpha cargados — 44 operaciones 2024-2025: suscripto $129.8M, rescatado $153.6M, RENTA ~$23.8M. Verificar que esa renta financiera este en los balances 2024/2025 (gravada en Ganancias); posicion actual en Alpha: cerrada (ultimo rescate 06/08/25). En 2026 se opero FIMA via Galicia (renta $155K).',
       'Registro de caja fisica en efectivo (hoy inexistente; hubo $9.98M depositados en efectivo)'
     ]
@@ -1270,7 +1270,7 @@ const DATA = {
     notas: [
       'Los PDF Ene y Feb de EXTRACTOS BANCARIOS son reportes de transferencias (sin saldos); los extractos reales estaban mal archivados en RESUMENES TARJETAS CORPORATIVAS y ya fueron cargados al dashboard.',
       'Julio: ARCA ya registra comprobantes recibidos por $37.5M pero el mes todavia no esta incorporado al detalle mensual del dashboard.',
-      'Tarjetas personales: 29 resumenes Visa cargados y analizados. Faltan solo los de ICBC Mastercard. Visa Frances NO existe (confirmado por Augusto: solo prestamo prendario en esa entidad). Visa corporativa: serie ene-jun completa.',
+      'Tarjetas personales: COMPLETO — 30 resumenes analizados (ICBC Visa + Mastercard + Santander Visa). Visa Frances NO existe (solo prestamo prendario). Visa corporativa: serie ene-jun completa. Unico opcional: resumenes ICBC Visa jul-sep 2025 si existieran.',
       'Fondos de inversion: historial Alpha completo cargado 14/07 (renta 2024-2025 ~$23.8M, posicion cerrada 08/25). En 2026: FIMA via Galicia ($20M, renta $155K). Verificar registracion contable de ambas rentas.',
       'APORTES DE AUGUSTO A PMD: confirmados $21.58M (ver seccion en tab personal). Recibidos 15 resumenes Santander personales (ene-25 a jun-26); faltan Jul/Ago/Dic 2025. Sueldo 2026: acreditados $8M de $13.94M declarados — Feb/May/Jun sin acreditacion en Santander personal.',
       'Sigue sin identificar el credito de $13.114.887 del 16/01/2026 en ICBC PMD (no salio del Santander personal de Augusto). Extractos Galicia siguen faltando; los "extractos" ICBC 2025 archivados son reportes de salidas (pedir extractos reales 2025 para cruzar los aportes de Sep/Oct).',
