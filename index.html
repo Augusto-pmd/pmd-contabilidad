@@ -1169,33 +1169,37 @@ const DATA = {
       facturado: 83022888,
       transferenciasClientes: 76809568,
       chequesDescontados: 96886412,
+      efectivoGalicia: 18265000,
       creditoSinIdentificar: 13114887,
-      totalCobrado: 186810867,
-      gap: 103787979,
-      nota: 'Las 6 facturas cobradas por transferencia matchean al centavo (SIC, BA75, Cuenca, Trames, Astillero). Los $96.9M de cheques descontados NO matchean con ninguna factura 2026. Aun asumiendo cobro total de los creditos 2025 del balance ($39.6M), quedan MAS DE $60M cobrados sin factura emitida. Riesgo ARCA alto: los bancos informan acreditaciones y ARCA las cruza contra facturacion. Explica ademas el ratio anomalo IIBB (base 5% de ventas). PENDIENTE: detalle de libradores de cada cheque descontado (home banking Galicia/ICBC) para mapear cliente/obra y regularizar facturacion.'
+      totalCobrado: 205075867,
+      gap: 122052979,
+      nota: 'Las 6 facturas cobradas por transferencia matchean al centavo (SIC, BA75, Cuenca, Trames, Astillero). Los $96.9M de cheques descontados NO matchean con ninguna factura 2026, y ahora se suma el DEPOSITO EN EFECTIVO de $18.3M en Galicia (01/06) sin origen — posiblemente incluye el cheque de Ritail $7.48M cambiado por ventanilla; el resto (~$10.8M) sin factura conocida. Aun asumiendo cobro total de los creditos 2025 del balance ($39.6M), quedan MAS DE $75M cobrados sin factura emitida. Riesgo ARCA alto: los bancos informan acreditaciones y ARCA las cruza contra facturacion. PENDIENTE: detalle de libradores de cada cheque descontado y composicion del deposito en efectivo.'
     },
     galiciaImplicito: {
       filas: [
-        {mes:'Mar', entradas:18390783, salidas:2390000, esperado:16000783, real:13988783, sinDoc:2012000},
-        {mes:'Abr', entradas:18123143, salidas:6000000, esperado:26111926, real:13921, sinDoc:26098005},
+        {mes:'Ene', entradas:0, salidas:0, esperado:0, real:0, sinDoc:0},
+        {mes:'Feb', entradas:0, salidas:0, esperado:0, real:0, sinDoc:0},
+        {mes:'Mar', entradas:20000000, salidas:6011217, esperado:13988783, real:13988783, sinDoc:0},
+        {mes:'Abr', entradas:20000000, salidas:33974862, esperado:13921, real:13921, sinDoc:0},
         {mes:'May', entradas:0, salidas:0, esperado:13921, real:13921, sinDoc:0},
-        {mes:'Jun', entradas:45683073, salidas:32400000, esperado:13297073, real:11411379, sinDoc:1885694}
+        {mes:'Jun', entradas:88420330, salidas:77022873, esperado:11411379, real:11411379, sinDoc:0}
       ],
-      totalSinDoc: 29995699,
-      nota: 'Reconstruccion implicita (sin extractos Galicia): entradas = netos de cheques descontados acreditados; salidas conocidas = transferencias propias a ICBC (MTITU) + MOENA $1M (comprobante LR4HCba233). El resto salio sin respaldo contable. PENDIENTE: extractos Galicia Mar-Jun 2026.'
+      totalSinDoc: 0,
+      nota: 'CONCILIADO 14/07/2026 con los 6 extractos reales de Galicia: la cuenta CIERRA AL PESO todos los meses. Los ~$30M antes "sin documentar" quedaron identificados: ABRIL = pagos a proveedores $22.5M (Posanli $4.4M, Polacek $2.9M, Coop del Norte $2.3M, Ducco $1.9M, Guzman $1.7M, Fabrizio $1.2M, Aserradero Vagol $1.2M, MOENA $1M, Capurso $1.5M, y otros) + sueldos Augusto $6M + impuestos; JUNIO = suscripcion FIMA $20M (rescatada 18/06 por $20.155M, renta $155K) + pago a ASTILLERO ALPHA $20M + transferencias a ICBC $32.4M + intereses de descuento. NUEVO INTERROGANTE: deposito EN EFECTIVO de $18.265.000 el 01/06 sin origen documentado (posiblemente incluye el cheque de Ritail $7.48M cambiado por ventanilla).'
     },
     pagosVsCompras: {
       comprasArca: 211608975,
-      pagosIdentificados: 143700000,
+      pagosIdentificados: 156200000,
       deudaInicialProveedores: 15685643,
-      deudaImplicita: 83594618,
-      desglosePagos: 'DEBIN proveedores $15.4M + transf. Connection $43.4M + cheques emitidos $41.3M + otros ICBC $11.7M + Galicia s/doc ~$30M + MP ~$2M',
-      nota: 'El mapa de deudas muestra proveedores por $15.7M (dato balance 2025, desactualizado). La deuda comercial implicita al 30/06 es ~$83.6M. Gran parte: Astillero Alpha ($105M comprado vs $40M vendido) — la compensacion de la operacion circular no esta documentada. PENDIENTE: cuenta corriente por proveedor, empezando por Astillero.'
+      deudaImplicita: 71094618,
+      desglosePagos: 'DEBIN proveedores $15.4M + transf. Connection $43.4M + cheques emitidos $41.3M + otros ICBC $11.7M + Galicia proveedores REALES $42.5M (incl. ASTILLERO $20M el 22/06 y MOENA $1M) + MP ~$2M',
+      nota: 'Con los extractos Galicia reales, los pagos a proveedores identificados suben a ~$156.2M y la deuda comercial implicita al 30/06 baja a ~$71.1M (el mapa de deudas muestra $15.7M, dato balance 2025). CTA CTE ASTILLERO ALPHA: $105M comprado, $40M facturado a ellos, $20M pagado en efectivo (22/06) — HIPOTESIS DE AUGUSTO A VERIFICAR: los cheques descontados ($96.9M) serian pagos de Alpha por obra aun no facturada; si se confirma, la cta cte se cierra asi: Alpha pago ~$131M (transferencias+echeq+cheques) contra $40M facturados = FALTA FACTURAR ~$90M a Alpha, y PMD le debe $105M de compras menos lo pagado. PENDIENTE: detalle de libradores de los cheques para confirmar.'
     },
-    cxcPendiente: [ {cliente:'RITAIL SRL', factura:'A 5-68 (02/02/26)', monto:7477800, nota:'No aparece cobrada en ICBC ni MP — confirmar si entro por Galicia, cheque, o esta impaga.'} ],
+    cxcPendiente: [ {cliente:'RITAIL SRL', factura:'A 5-68 (02/02/26)', monto:7477800, nota:'Augusto indica que se cobro con un cheque cambiado por ventanilla en Galicia. No hay credito individual por ese monto en el extracto: el cobro estaria dentro del DEPOSITO EN EFECTIVO de $18.265.000 del 01/06. Documentar la composicion de ese deposito para cerrar el circuito.'} ],
     checklist: [
-      'Extractos Galicia Mar-Jun 2026 → explicar ~$30M de salidas (LO MAS URGENTE)',
-      'Detalle de libradores de cheques descontados → resolver >$60M cobrados sin facturar',
+      '✔ RESUELTO 14/07: Extractos Galicia cargados — la cuenta cierra al peso, salidas identificadas',
+      'Detalle de libradores de cheques descontados → confirmar hipotesis Astillero Alpha y facturar ~$98M si corresponde (LO MAS URGENTE)',
+      'Composicion del deposito en efectivo Galicia $18.3M (01/06) — incluye cheque Ritail $7.48M cambiado por ventanilla',
       'Factura A de MOENA SA ($1M, comprobante ya obtenido)',
       'Origen del credito $13.114.887 del 16/01/26 en ICBC',
       'Cobro de Ritail $7.48M (fc 68): ¿Galicia, cheque o impago?',
@@ -1300,12 +1304,12 @@ const DATA = {
     {sev:'MEDIA', titulo:'Vencimientos proximos: 3 obligaciones julio', desc:'Ganancias y SUSS 15/07, IVA 24/07 - confirmar liquidez',
      explicacion:'Vencen en julio: Anticipo 2 Ganancias Sociedades (15/07), F931 SUSS Junio (15/07) y IVA Junio (24/07). Asegurar liquidez en cuenta corriente para cubrir las tres obligaciones. ACCION: Calcular importe exacto del anticipo y F931 para provisionar fondos.'},
     /* --- Hallazgos de la conciliacion integral 13/07/2026 --- */
-    {sev:'ALTA', titulo:'Cobrado sin facturar: >$60M', desc:'Entraron $186.8M vs $83M facturados; $96.9M en cheques descontados sin factura 2026 asociada',
-     explicacion:'Conciliacion integral 13/07: las cobranzas identificadas en bancos suman ~$186.8M en el semestre (transferencias de clientes $76.8M que matchean facturas al centavo + cheques descontados $96.9M brutos + credito sin identificar $13.1M) contra $83M facturados en ARCA. Aun asumiendo que TODOS los creditos por cobrar del balance 2025 ($39.6M) se cobraron en cheques este semestre, quedan mas de $60M cobrados sin factura emitida. Riesgo ARCA alto (cruce de acreditaciones bancarias vs facturacion) y explica el ratio anomalo de IIBB. ACCION: obtener el detalle de libradores de cada cheque descontado, mapear a que obra/cliente corresponde y regularizar la facturacion. Ver seccion Conciliacion Integral.'},
-    {sev:'ALTA', titulo:'Galicia: ~$30M de salidas sin documentar', desc:'Reconstruccion implicita Mar-Jun: Abr $26.1M + Mar $2M + Jun $1.9M sin respaldo',
-     explicacion:'No hay UN SOLO extracto de Galicia archivado. Reconstruyendo la cuenta con los netos de cheques descontados (entradas), las transferencias propias a ICBC y el pago a MOENA, faltan explicar ~$30M de salidas: Mar $2.0M, Abr $26.1M, Jun $1.9M. Es el agujero de caja mas grande del sistema. ACCION: bajar extractos Galicia Mar-Jun del home banking y categorizar cada salida. Ver seccion Conciliacion Integral.'},
-    {sev:'ALTA', titulo:'Deuda a proveedores implicita ~$83.6M (mapa muestra $15.7M)', desc:'Compras $211.6M vs pagos identificados ~$143.7M; Astillero $105M sin cta cte documentada',
-     explicacion:'El mapa de deudas usa el dato del balance 2025 ($15.7M proveedores). Con compras ARCA ene-jun de $211.6M y pagos identificables de ~$143.7M, la deuda comercial implicita al 30/06 ronda $83.6M. Gran parte es Astillero Alpha ($105M comprado vs $40M vendido): la compensacion de la operacion circular no esta documentada. ACCION: cuenta corriente por proveedor (Astillero primero) y actualizar el mapa de deudas.'},
+    {sev:'ALTA', titulo:'Cobrado sin facturar: >$75M', desc:'Entraron $205.1M vs $83M facturados; cheques $96.9M + efectivo $18.3M sin factura asociada',
+     explicacion:'Conciliacion actualizada 14/07 con Galicia real: cobranzas identificadas ~$205.1M en el semestre (transferencias de clientes $76.8M que matchean facturas al centavo + cheques descontados $96.9M brutos + deposito en efectivo Galicia $18.3M + credito sin identificar $13.1M) contra $83M facturados en ARCA. Aun descontando creditos 2025 ($39.6M) y el cobro de Ritail dentro del efectivo, quedan MAS DE $75M cobrados sin factura emitida. HIPOTESIS DE AUGUSTO A VERIFICAR: los cheques serian pagos de ASTILLERO ALPHA por obra aun no facturada — si se confirma, la regularizacion es facturarle ~$98M a Alpha (y compensar cta cte con los $105M que PMD le compro). El prestamo ICBC ($18M) NO esta contado como cobranza — no hay doble conteo. ACCION: detalle de libradores de cheques para confirmar la hipotesis y facturar lo que falte. Ver seccion Conciliacion Integral.'},
+    {sev:'MEDIA', titulo:'Galicia CONCILIADO — queda 1 interrogante: efectivo $18.3M', desc:'Extractos reales cargados 14/07: cierra al peso; deposito en efectivo 01/06 sin origen documentado',
+     explicacion:'RESUELTO: con los 6 extractos reales de Galicia la cuenta cierra al peso todos los meses y los ~$30M "sin documentar" quedaron identificados (proveedores de abril, sueldos, FIMA, Astillero $20M, MOENA $1M). HALLAZGOS NUEVOS: (1) deposito EN EFECTIVO de $18.265.000 el 01/06 sin origen — Augusto indica que incluye el cheque de Ritail ($7.48M) cambiado por ventanilla; el resto (~$10.8M) sin respaldo; (2) suscripcion FIMA Ahorro Plus $20M (01/06) rescatada el 18/06 por $20.155M — renta de $155.330 gravada en Ganancias, y los fondos 2026 existen aunque la carpeta este vacia. ACCION: documentar la composicion del deposito en efectivo y archivar los comprobantes FIMA.'},
+    {sev:'ALTA', titulo:'Deuda a proveedores implicita ~$71.1M (mapa muestra $15.7M)', desc:'Compras $211.6M vs pagos identificados ~$156.2M; Astillero: comprado $105M, pagado $20M',
+     explicacion:'El mapa de deudas usa el dato del balance 2025 ($15.7M proveedores). Con compras ARCA ene-jun de $211.6M y pagos identificables de ~$156.2M (incluye Galicia real: Astillero $20M el 22/06), la deuda comercial implicita al 30/06 ronda $71.1M. HIPOTESIS DE AUGUSTO A VERIFICAR: los cheques descontados ($96.9M) serian pagos de Astillero Alpha por obra no facturada; si se confirma, Alpha pago ~$138M contra $40M facturados (faltaria facturarle ~$98M) y a la vez PMD le debe $105M de compras — la cta cte neta cambiaria todo el cuadro. ACCION: pedir el detalle de libradores de los cheques negociados en Galicia/ICBC y armar la cta cte Astillero.'},
     /* --- Hallazgos del relevamiento documental 12/07/2026 --- */
     {sev:'MEDIA', titulo:'Visa corporativa: consumos personales de Augusto', desc:'Abr $1.13M + May $0.11M en tarjeta 9086 - definir tratamiento contable',
      explicacion:'Los resumenes de la Visa corporativa ICBC muestran consumos de la tarjeta de Augusto (term. 9086): $1.126.838 en abril (MercadoLibre, Allianz, CompraGamer, PDFE) y $113.415 en mayo. Si son gastos personales pagados por la SRL, corresponde imputarlos a cuenta corriente de socios o como parte de honorarios. ACCION: Revisar con la contadora el tratamiento de estos consumos y de los intereses de financiacion del resumen.'},
@@ -2640,7 +2644,8 @@ const renderConciliacion = () => {
   <div class="table-wrap"><table style="min-width:500px"><tbody>
     <tr><td>Facturado 2026 (ARCA, c/IVA)</td><td class="num">${f(cv.facturado)}</td></tr>
     <tr><td>Transferencias de clientes (matchean facturas ✓)</td><td class="num">${f(cv.transferenciasClientes)}</td></tr>
-    <tr><td style="color:var(--red)">Cheques descontados SIN factura asociada</td><td class="num" style="color:var(--red)">${f(cv.chequesDescontados)}</td></tr>
+    <tr><td style="color:var(--red)">Cheques descontados SIN factura asociada (¿Astillero Alpha?)</td><td class="num" style="color:var(--red)">${f(cv.chequesDescontados)}</td></tr>
+    ${cv.efectivoGalicia?`<tr><td style="color:var(--red)">Depósito en efectivo Galicia 01/06 (incl. Ritail $7.5M)</td><td class="num" style="color:var(--red)">${f(cv.efectivoGalicia)}</td></tr>`:''}
     <tr><td style="color:var(--orange)">Crédito 16/01 sin identificar</td><td class="num" style="color:var(--orange)">${f(cv.creditoSinIdentificar)}</td></tr>
     <tr><td style="font-weight:700">TOTAL COBRADO</td><td class="num" style="font-weight:700">${f(cv.totalCobrado)}</td></tr>
     <tr><td style="font-weight:700;color:var(--red)">COBRADO POR ENCIMA DE LO FACTURADO</td><td class="num" style="font-weight:700;color:var(--red)">${f(cv.gap)}</td></tr>
