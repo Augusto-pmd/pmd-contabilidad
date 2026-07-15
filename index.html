@@ -890,9 +890,9 @@ const DATA = {
     { fecha:'07/04/26', bruto:20000000, interes:1584592.81, iibb:47537.78, sellos:54575.34, iva:166382.25, percIva:23768.89, costos:1876857.07, neto:18123142.93, tasa:9.38, banco:'Galicia' },
     { fecha:'01/06/26', bruto:25000000, interes:2029347.05, iibb:50733.68, sellos:75616.44, iva:213081.44, percIva:30440.21, costos:2399218.82, neto:22600781.18, tasa:9.60, banco:'Galicia' },
     { fecha:'25/06/26', bruto:25000000, interes:1614556.64, iibb:40363.92, sellos:69041.10, iva:169528.45, percIva:24218.35, costos:1917708.46, neto:23082291.54, tasa:7.67, banco:'Galicia' },
-    { fecha:'08/05/26', bruto:6886412, interes:688641.20, iibb:0, sellos:15082.50, iva:37903.05, percIva:5414.72, costos:747041.47, neto:6139370.50, tasa:10.85, banco:'ICBC' }
+    { fecha:'08/05/26', bruto:7247393.40, interes:360981.43, iibb:0, sellos:15082.50, iva:37903.05, percIva:5414.72, costos:419381.70, neto:6828011.70, tasa:5.79, banco:'ICBC (op.251692: 2 echeqs RITAIL fc 68)' }
   ],
-  chequesTotals: { bruto:96886412, costos:8550042.95, tasaPromedio:8.82 },
+  chequesTotals: { bruto:97247393.40, costos:8222383.18, tasaPromedio:8.46 },
   veps: [
     { fecha:'29/05/26', concepto:'Autonomos SUSS (04/2026)', importe:300582.32 },
     { fecha:'29/05/26', concepto:'Autonomos SUSS (05/2026)', importe:310742.00 },
@@ -1181,12 +1181,12 @@ const DATA = {
     cobradoVsFacturado: {
       facturado: 83022888,
       transferenciasClientes: 76809568,
-      chequesDescontados: 96886412,
+      chequesDescontados: 97247393,
       efectivoGalicia: 18265000,
       creditoSinIdentificar: 13114887,
-      totalCobrado: 205075867,
-      gap: 122052979,
-      nota: 'Las 6 facturas cobradas por transferencia matchean al centavo (SIC, BA75, Cuenca, Trames, Astillero). Los $96.9M de cheques descontados NO matchean con ninguna factura 2026, y ahora se suma el DEPOSITO EN EFECTIVO de $18.3M en Galicia (01/06) sin origen — posiblemente incluye el cheque de Ritail $7.48M cambiado por ventanilla; el resto (~$10.8M) sin factura conocida. Aun asumiendo cobro total de los creditos 2025 del balance ($39.6M), quedan MAS DE $75M cobrados sin factura emitida. Riesgo ARCA alto: los bancos informan acreditaciones y ARCA las cruza contra facturacion. PENDIENTE: detalle de libradores de cada cheque descontado y composicion del deposito en efectivo.'
+      totalCobrado: 205436848,
+      gap: 122413960,
+      nota: 'ACTUALIZADO 14/07 con consulta EN VIVO en ICBC Multipay: el gap ya tiene NOMBRE. Cobros identificados por cliente sin factura 2026 suficiente: (1) ASTILLERO ALPHA ~$101.3M cobrados (transferencia $21.3M abr + 3 echeqs de $20M: 20/06, 26/06 y 26/06) contra $40M facturados → ~$61M sin facturar; (2) PERFIDUR SRL $38.8M (nov-25, 2 transferencias identificadas) — verificar si hay factura 2025; (3) PALCARE SRL $13.1M (16/01/26) sin factura; (4) CORDIS MS SA $5.7M (nov-25). RESUELTO: Ritail fc 68 cobrada con 2 echeqs descontados en ICBC 08/05 (op. 251692, neto $6.83M; dif ~$230K = retenciones, pedir certificados). El deposito en efectivo Galicia $18.3M (01/06) sigue SIN origen (Ritail NO esta ahi). Pendiente: libradores de los descuentos Galicia de mar/abr ($40M, posiblemente Astillero tambien). ACCION: facturar a Astillero/Palcare/Cordis lo que corresponda y verificar Perfidur contra facturacion 2025.'
     },
     galiciaImplicito: {
       filas: [
@@ -1208,11 +1208,12 @@ const DATA = {
       desglosePagos: 'DEBIN proveedores $15.4M + transf. Connection $43.4M + cheques emitidos $41.3M + otros ICBC $11.7M + Galicia proveedores REALES $42.5M (incl. ASTILLERO $20M el 22/06 y MOENA $1M) + MP ~$2M',
       nota: 'Con los extractos Galicia reales, los pagos a proveedores identificados suben a ~$156.2M y la deuda comercial implicita al 30/06 baja a ~$71.1M (el mapa de deudas muestra $15.7M, dato balance 2025). CTA CTE ASTILLERO ALPHA: $105M comprado, $40M facturado a ellos, $20M pagado en efectivo (22/06) — HIPOTESIS DE AUGUSTO A VERIFICAR: los cheques descontados ($96.9M) serian pagos de Alpha por obra aun no facturada; si se confirma, la cta cte se cierra asi: Alpha pago ~$131M (transferencias+echeq+cheques) contra $40M facturados = FALTA FACTURAR ~$90M a Alpha, y PMD le debe $105M de compras menos lo pagado. PENDIENTE: detalle de libradores de los cheques para confirmar.'
     },
-    cxcPendiente: [ {cliente:'RITAIL SRL', factura:'A 5-68 (02/02/26)', monto:7477800, nota:'COBRADA CON CHEQUE (confirmado por Augusto). El cheque NO aparece acreditado individualmente en ninguna cuenta (verificado en ICBC, Galicia, MP y Santander personal por monto exacto). Opciones: (a) esta dentro de una tanda de cheques descontada en Galicia, (b) fue endosado a un proveedor, (c) sigue en cartera. El detalle de valores negociados de cada descuento (home banking Galicia) resuelve este punto y la hipotesis Astillero a la vez.'} ],
+    cxcPendiente: [ {cliente:'RITAIL SRL', factura:'A 5-68 (02/02/26)', monto:7477800, nota:'✔ RESUELTA 14/07 (ICBC Multipay en vivo): cobrada con 2 eCheqs de RITAIL (30000503 $3.700.000 vto 30/06 + 30000504 $3.547.393,40 vto 17/07) descontados en ICBC el 08/05/26 (op. 251692, neto acreditado $6.828.011,70). Diferencia con la factura ~$230.407 = retenciones — pedir certificados de retencion a Ritail para computarlos.'} ],
     checklist: [
       '✔ RESUELTO 14/07: Extractos Galicia cargados — la cuenta cierra al peso, salidas identificadas',
-      'Detalle de libradores de cheques descontados → confirmar hipotesis Astillero Alpha y facturar ~$98M si corresponde (LO MAS URGENTE)',
-      'Composicion del deposito en efectivo Galicia $18.3M (01/06) — incluye cheque Ritail $7.48M cambiado por ventanilla',
+      '✔ PARCIAL 14/07 (consulta en vivo ICBC): descuento ICBC 08/05 = 2 eCheqs RITAIL (fc 68 COBRADA); eCheqs recibidos = 3 de ASTILLERO por $60M. Falta solo el detalle de los descuentos GALICIA de mar/abr ($40M) — probablemente Astillero tambien (home banking Galicia → cheques negociados)',
+      'Composicion del deposito en efectivo Galicia $18.3M (01/06) — sigue SIN origen (Ritail descartado: cobro por eCheq). ¿Cobros de obra en efectivo?',
+      'FACTURAR: Astillero ~$61M cobrados de mas; Palcare $13.1M; Cordis $5.7M; verificar Perfidur $38.8M contra facturacion 2025',
       'Factura A de MOENA SA ($1M, comprobante ya obtenido)',
       'Origen del credito $13.114.887 del 16/01/26 en ICBC',
       'Cobro de Ritail $7.48M (fc 68): cobrada con cheque (confirmado) — ubicarlo en el detalle de valores negociados o endoso',
@@ -1322,8 +1323,8 @@ const DATA = {
     /* --- Hallazgos de la conciliacion integral 13-14/07/2026 --- */
     {sev:'MEDIA', titulo:'Fondos Alpha: renta ~$23.8M (2024-2025) a validar en balances', desc:'44 operaciones: suscripto $129.8M, rescatado $153.6M; posicion cerrada 08/2025',
      explicacion:'El historial completo de Alpha Fondos (cargado 14/07) muestra: 2024 suscripto $20M / rescatado $26M; 2025 suscripto $109.8M / rescatado $127.6M. Renta financiera estimada ~$23.8M en el periodo (a validar contra los resumenes mensuales del fondo, ya que asume posicion inicial y final en cero). Es ganancia gravada en Ganancias Sociedades y debe estar reflejada como resultado financiero en los balances 2024 y 2025 (el balance 2024 muestra Inversiones por $15.9M al cierre). En 2026 se opero FIMA Ahorro Plus via Galicia: $20M suscriptos 01/06, rescatados $20.155M el 18/06 (renta $155K). ACCION: confirmar con la contadora que ambas rentas esten registradas.'},
-    {sev:'ALTA', titulo:'Cobrado sin facturar: >$75M', desc:'Entraron $205.1M vs $83M facturados; cheques $96.9M + efectivo $18.3M sin factura asociada',
-     explicacion:'Conciliacion actualizada 14/07 con Galicia real: cobranzas identificadas ~$205.1M en el semestre (transferencias de clientes $76.8M que matchean facturas al centavo + cheques descontados $96.9M brutos + deposito en efectivo Galicia $18.3M + credito sin identificar $13.1M) contra $83M facturados en ARCA. Aun descontando creditos 2025 ($39.6M) y el cobro de Ritail dentro del efectivo, quedan MAS DE $75M cobrados sin factura emitida. HIPOTESIS DE AUGUSTO A VERIFICAR: los cheques serian pagos de ASTILLERO ALPHA por obra aun no facturada — si se confirma, la regularizacion es facturarle ~$98M a Alpha (y compensar cta cte con los $105M que PMD le compro). El prestamo ICBC ($18M) NO esta contado como cobranza — no hay doble conteo. ACCION: detalle de libradores de cheques para confirmar la hipotesis y facturar lo que falte. Ver seccion Conciliacion Integral.'},
+    {sev:'ALTA', titulo:'Cobrado sin facturar: identificado por cliente (Astillero ~$61M + Perfidur $38.8M + Palcare $13.1M + Cordis $5.7M)', desc:'Consulta en vivo ICBC 14/07: el gap de $122M quedo explicado casi por completo — hipotesis de Augusto CONFIRMADA para Astillero',
+     explicacion:'Con la consulta en vivo en ICBC Multipay (14/07) el gap cobrado-vs-facturado quedo asignado: ASTILLERO ALPHA pago ~$101.3M (transferencia $21.3M en abril + 3 eCheqs de $20M: 20/06, 26/06 y 26/06 — dos depositados via Galicia y uno en ICBC) contra solo $40M facturados → FALTA FACTURAR ~$61M (o compensar formalmente contra los $105M comprados a Alpha). PERFIDUR SRL transfirio $38.8M en nov-25 ($10M + $28.8M desde Santander Rio) — verificar factura 2025. PALCARE SRL $13.1M (ene-26) sin factura. CORDIS MS SA $5.7M (nov-25). Ademas los descuentos Galicia de mar/abr ($40M) probablemente sean tambien eCheqs de Astillero (verificar en home banking Galicia). RITAIL quedo RESUELTO: cobrada via eCheqs descontados. ACCION URGENTE con la contadora: regularizar facturacion de Astillero/Palcare/Cordis y armar las cuentas corrientes comerciales.'},
     {sev:'MEDIA', titulo:'Galicia CONCILIADO — queda 1 interrogante: efectivo $18.3M', desc:'Extractos reales cargados 14/07: cierra al peso; deposito en efectivo 01/06 sin origen documentado',
      explicacion:'RESUELTO: con los 6 extractos reales de Galicia la cuenta cierra al peso todos los meses y los ~$30M "sin documentar" quedaron identificados (proveedores de abril, sueldos, FIMA, Astillero $20M, MOENA $1M). HALLAZGOS NUEVOS: (1) deposito EN EFECTIVO de $18.265.000 el 01/06 sin origen — Augusto indica que incluye el cheque de Ritail ($7.48M) cambiado por ventanilla; el resto (~$10.8M) sin respaldo; (2) suscripcion FIMA Ahorro Plus $20M (01/06) rescatada el 18/06 por $20.155M — renta de $155.330 gravada en Ganancias, y los fondos 2026 existen aunque la carpeta este vacia. ACCION: documentar la composicion del deposito en efectivo y archivar los comprobantes FIMA.'},
     {sev:'ALTA', titulo:'Deuda a proveedores implicita ~$71.1M (mapa muestra $15.7M)', desc:'Compras $211.6M vs pagos identificados ~$156.2M; Astillero: comprado $105M, pagado $20M',
