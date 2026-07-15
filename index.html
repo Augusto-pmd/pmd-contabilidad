@@ -1216,7 +1216,8 @@ const DATA = {
       'Factura A de MOENA SA ($1M, comprobante ya obtenido)',
       'Origen del credito $13.114.887 del 16/01/26 en ICBC',
       'Cobro de Ritail $7.48M (fc 68): cobrada con cheque (confirmado) — ubicarlo en el detalle de valores negociados o endoso',
-      '✔ RESUELTO 14/07: Extractos ICBC reales 2025 COMPLETOS (ene-dic, renombrados) — los 3 aportes de Augusto verificados de ambos lados; cadena de saldos continua ene-25 → jun-26. Nota: 07/11/25 entraron 2 TRANSF E/BCOS sin nombre ($10M + $5.74M, mismo patron que el credito de $13.1M del 16/01/26) — identificar origen de los 3.',
+      '✔ RESUELTO 14/07: Extractos ICBC reales 2025 COMPLETOS — aportes de Augusto verificados de ambos lados; cadena de saldos continua ene-25 → jun-26.',
+      '✔ RESUELTO 14/07 (consulta en vivo ICBC Multipay): los 3 creditos sin nombre IDENTIFICADOS — $13.114.887 (16/01/26) = PALCARE SRL (30-71007281-3); $10.000.000 (06/11/25) = PERFIDUR SRL (30-63416316-2, que ademas es PROVEEDOR de PMD: otra relacion circular a documentar); $5.741.796 (06/11/25) = CORDIS MS SA (30-71413069-9). Ninguno es aporte de Augusto. Verificar si existen facturas emitidas a estos 3 clientes (Palcare no tiene factura 2026 → suma a facturacion faltante); ese dia tambien entro un TRANS PAG PROV de $28.8M a identificar.',
       'Resumenes Santander personales Jul/Ago/Dic 2025 (aportes adicionales)',
       'F931 abril + regularizar SCT ($997K)',
       'Formalizar posicion socio ~$26.3M con actas y registracion',
@@ -1238,7 +1239,7 @@ const DATA = {
     ],
     totalConfirmado: 21580000,
     pendientes: [
-      {fecha:'16/01/26', monto:13114887.08, nota:'TRANSF E/BCOS recibida en ICBC PMD sin identificar — NO salio de la cuenta Santander personal de Augusto. Confirmar origen (¿ICBC personal? ¿Mi Container? ¿cliente?).'},
+      {fecha:'16/01/26', monto:13114887.08, nota:'RESUELTO 14/07 (consultado en ICBC Multipay): la transferencia vino de PALCARE SRL (CUIT 30-71007281-3) — NO es aporte de Augusto. Es un cobro comercial sin factura asociada: pasa al analisis de facturacion faltante.'},
       {fecha:'Jul/Ago/Dic 2025', monto:null, nota:'Sin resumen Santander personal de esos meses — puede haber aportes adicionales.'}
     ],
     sueldosAcreditados: {
@@ -2663,7 +2664,7 @@ const renderConciliacion = () => {
     <tr><td>Transferencias de clientes (matchean facturas ✓)</td><td class="num">${f(cv.transferenciasClientes)}</td></tr>
     <tr><td style="color:var(--red)">Cheques descontados SIN factura asociada (¿Astillero Alpha?)</td><td class="num" style="color:var(--red)">${f(cv.chequesDescontados)}</td></tr>
     ${cv.efectivoGalicia?`<tr><td style="color:var(--red)">Depósito en efectivo Galicia 01/06 (incl. Ritail $7.5M)</td><td class="num" style="color:var(--red)">${f(cv.efectivoGalicia)}</td></tr>`:''}
-    <tr><td style="color:var(--orange)">Crédito 16/01 sin identificar</td><td class="num" style="color:var(--orange)">${f(cv.creditoSinIdentificar)}</td></tr>
+    <tr><td style="color:var(--orange)">Crédito 16/01: PALCARE SRL (sin factura 2026)</td><td class="num" style="color:var(--orange)">${f(cv.creditoSinIdentificar)}</td></tr>
     <tr><td style="font-weight:700">TOTAL COBRADO</td><td class="num" style="font-weight:700">${f(cv.totalCobrado)}</td></tr>
     <tr><td style="font-weight:700;color:var(--red)">COBRADO POR ENCIMA DE LO FACTURADO</td><td class="num" style="font-weight:700;color:var(--red)">${f(cv.gap)}</td></tr>
   </tbody></table></div>
