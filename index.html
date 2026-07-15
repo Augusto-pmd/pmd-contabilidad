@@ -986,6 +986,17 @@ const DATA = {
     promedioMensual: 2333649,
     deudaActual: { icbcVisa: 1075861, icbcMc: 0, santVisa: 3253713, santUsd: 538.66, total: 4329574 },
     impuestosTC: { icbcVisa: 760824, icbcMc: 194759, santVisa: 5125818, total: 6081401 },
+    /* Analisis fino 14/07/2026 parseando los 29 resumenes de tarjeta reales (15 ICBC Visa + 14 Santander Visa) */
+    analisisCostos: {
+      percepcion30: { debitada: 5491858, devuelta: 3259567, neta: 2232291, nota: 'Los bancos DEVOLVIERON automaticamente el 59% de las percepciones RG 5617 en los propios resumenes. La neta ($2.23M) es pago a cuenta de Ganancias — computar en DDJJ.' },
+      costoFinanciero: { intereses: 653711, punitorios: 325222, ivaSobreIntereses: 153239, comisiones: 71424, total: 1203596, nota: 'Plata PERDIDA (no recuperable): $748K en ICBC (incluye $325K de PUNITORIOS por pagar fuera de termino) + $455K en Santander por revolving.' },
+      impuestosNoRecuperables: { ivaRG4240: 220941, iibbPercep: 21120, total: 242061, nota: 'IVA sobre servicios digitales e IIBB CABA: no computables siendo consumidor final.' },
+      porTarjeta: {
+        icbcVisa: { percNeta: 109518, costoFin: 748176 },
+        santVisa: { percNeta: 2122772, costoFin: 455420 }
+      },
+      pendiente: 'Resumenes ICBC Mastercard y Visa Frances aun sin carga — este analisis cubre solo las 2 Visa.'
+    },
     fijoVsVariable: { fijo: 4773848, variable: 8573519, fijoPct: 35.8, variablePct: 64.2, nota: 'Solo sobre transacciones categorizadas (44% del total)' },
     byGroup: [
       {g:'Compras',m:4455249,p:33.4},{g:'Otros',m:2397084,p:18.0},{g:'Salud',m:2204949,p:16.5},
@@ -1049,7 +1060,9 @@ const DATA = {
       'El análisis anterior era engañoso: mostraba Santander en $2.3M porque solo se habían extraído 52 de ~200 transacciones. Ahora usa totales de resúmenes.',
       'MercadoLibre + MercadoPago = $4.5M (33% de lo categorizado). Principal canal de compra.',
       'OSDE Prepaga: ~$276K/mes. 2do gasto más grande. Verificar si corresponde deducir en Ganancias.',
-      'Percepciones e impuestos TC: $6.1M recuperables (Perc 30%: $5.5M, IVA RG4240: $0.3M, IIBB: $0.02M). Computar en DDJJ.',
+      'ANALISIS FINO (29 resumenes reales, 14/07): Percepciones 30% debitadas $5.49M pero los bancos DEVOLVIERON $3.26M automaticamente — la neta computable en Ganancias es $2.23M (casi toda en Santander).',
+      'COSTO FINANCIERO PERDIDO: $1.204.000 — intereses de financiacion $654K + PUNITORIOS ICBC $325K (pagos fuera de termino) + IVA s/intereses $153K + comisiones $71K. Los punitorios son 100% evitables pagando el minimo en fecha.',
+      'La tasa de financiacion de las tarjetas ronda TEA 122-125% (CFT c/IVA ~164%) vs prestamo ICBC de PMD al 36% TNA: financiarse con tarjeta cuesta ~3.5 veces mas.',
       'Deuda total TC: $4.3M. Santander $3.25M + U$S 538 es la mayor. ICBC $1.08M casi controlada.',
       'Santander: saldo creció de $119K (Jun 25) a $4.4M (May 26). En Jul 26 bajó a $3.25M con un pago de $4.37M.',
       'Categorías cubren 44% del gasto total (ICBC tiene detalle completo, Santander parcial). Visa Francés pendiente.'
@@ -1195,7 +1208,7 @@ const DATA = {
       desglosePagos: 'DEBIN proveedores $15.4M + transf. Connection $43.4M + cheques emitidos $41.3M + otros ICBC $11.7M + Galicia proveedores REALES $42.5M (incl. ASTILLERO $20M el 22/06 y MOENA $1M) + MP ~$2M',
       nota: 'Con los extractos Galicia reales, los pagos a proveedores identificados suben a ~$156.2M y la deuda comercial implicita al 30/06 baja a ~$71.1M (el mapa de deudas muestra $15.7M, dato balance 2025). CTA CTE ASTILLERO ALPHA: $105M comprado, $40M facturado a ellos, $20M pagado en efectivo (22/06) — HIPOTESIS DE AUGUSTO A VERIFICAR: los cheques descontados ($96.9M) serian pagos de Alpha por obra aun no facturada; si se confirma, la cta cte se cierra asi: Alpha pago ~$131M (transferencias+echeq+cheques) contra $40M facturados = FALTA FACTURAR ~$90M a Alpha, y PMD le debe $105M de compras menos lo pagado. PENDIENTE: detalle de libradores de los cheques para confirmar.'
     },
-    cxcPendiente: [ {cliente:'RITAIL SRL', factura:'A 5-68 (02/02/26)', monto:7477800, nota:'Augusto indica que se cobro con un cheque cambiado por ventanilla en Galicia. No hay credito individual por ese monto en el extracto: el cobro estaria dentro del DEPOSITO EN EFECTIVO de $18.265.000 del 01/06. Documentar la composicion de ese deposito para cerrar el circuito.'} ],
+    cxcPendiente: [ {cliente:'RITAIL SRL', factura:'A 5-68 (02/02/26)', monto:7477800, nota:'COBRADA CON CHEQUE (confirmado por Augusto). El cheque NO aparece acreditado individualmente en ninguna cuenta (verificado en ICBC, Galicia, MP y Santander personal por monto exacto). Opciones: (a) esta dentro de una tanda de cheques descontada en Galicia, (b) fue endosado a un proveedor, (c) sigue en cartera. El detalle de valores negociados de cada descuento (home banking Galicia) resuelve este punto y la hipotesis Astillero a la vez.'} ],
     checklist: [
       '✔ RESUELTO 14/07: Extractos Galicia cargados — la cuenta cierra al peso, salidas identificadas',
       'Detalle de libradores de cheques descontados → confirmar hipotesis Astillero Alpha y facturar ~$98M si corresponde (LO MAS URGENTE)',
@@ -2724,7 +2737,7 @@ const renderTarjetas = () => {
     <div class="kpi-card" style="--kpi-color:var(--blue)"><div class="kpi-label">Total Consumos Reales</div><div class="kpi-value blue">${f(T.totalGasto)}</div><div class="kpi-sub">${T.numMeses} meses · 3 tarjetas · sin percepciones</div></div>
     <div class="kpi-card" style="--kpi-color:var(--yellow)"><div class="kpi-label">Promedio Mensual</div><div class="kpi-value" style="color:var(--yellow)">${f(T.promedioMensual)}</div><div class="kpi-sub">${T.periodo}</div></div>
     <div class="kpi-card" style="--kpi-color:var(--red)"><div class="kpi-label">Deuda Total TC</div><div class="kpi-value red">${f(T.deudaActual.total)}</div><div class="kpi-sub">ICBC ${f(T.deudaActual.icbcVisa)} · Sant ${f(T.deudaActual.santVisa)}</div></div>
-    <div class="kpi-card" style="--kpi-color:var(--orange)"><div class="kpi-label">Percepciones e Impuestos TC</div><div class="kpi-value" style="color:var(--orange)">${f(T.impuestosTC.total)}</div><div class="kpi-sub">Perc. 30% + IVA + IIBB · computables en DDJJ</div></div>`;
+    <div class="kpi-card" style="--kpi-color:var(--orange)"><div class="kpi-label">Costo Financiero Perdido</div><div class="kpi-value" style="color:var(--orange)">${T.analisisCostos?f(T.analisisCostos.costoFinanciero.total):f(T.impuestosTC.total)}</div><div class="kpi-sub">${T.analisisCostos?'Int.+punit.+IVA+comis. · Perc.30% neta '+f(T.analisisCostos.percepcion30.neta)+' a cta Ganancias':'Perc. 30% + IVA + IIBB'}</div></div>`;
 
   // Chart 1: Donut por rubro (porcentajes sobre lo categorizado, no sobre el total)
   const grps = T.byGroup;
