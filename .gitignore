@@ -1,0 +1,7 @@
+CLAUDE.md
+SPEC.md
+AGENTS.md
+tools/
+*.plano.html
+*.bak
+push.bat
